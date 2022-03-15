@@ -1,7 +1,7 @@
 <template>
     <div class='container'>
         <div style='height: 100%; width: 100%;'>
-            <el-row :gutter='20' style='display: inline-flex;'>
+            <el-row :gutter='20' style='display: inline-flex;width: 100%'>
                 <el-col :xs='16' :sm='16' :md='16' :lg='18' :xl='24'>
                     <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
                         <div class='bd3 flex-col'></div>
@@ -9,28 +9,104 @@
                     </div>
                     <!--                    表单-->
                     <div>
-                        <el-form :rules='rules' ref='formData' label-position='left' :model='form' label-width='80px'>
-                            <el-form-item label='标题：' prop='newsTitle'>
-                                <el-input show-word-limit clearable maxlength='100' v-model='form.newsTitle'></el-input>
+                        <el-form :rules='rules' ref='formData' label-position='right' :model='form' label-width='100px'>
+                            <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
+                                <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
+                                          v-model='form.newsTitle'></el-input>
                             </el-form-item>
-                            <el-form-item label='来源：' prop='newsSource'>
-                                <template>
-                                    <el-row style='margin-bottom: 0' type='flex' justify='space-between'>
-                                        <el-col :span='14'>
-                                            <el-input show-word-limit clearable maxlength='30'
-                                                      v-model='form.newsSource'></el-input>
+                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>
+                                <el-col :span='14'>
+                                    <el-form-item label='来源：' prop='newsSource'>
+                                        <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'
+                                                  v-model='form.newsSource'></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col class='flex flex-row-reverse' :span='8'>
+                                    <el-form-item style='width: 100%;' label='发布时间：'>
+                                        <el-date-picker
+                                            disabled
+                                            style='width: 100%'
+                                            v-model='form.createTime'
+                                            type='datetime'
+                                            placeholder='选择日期时间'>
+                                        </el-date-picker>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <!--                            <el-form-item label='来源：' prop='newsSource'>-->
+                            <!--                                <template>-->
+                            <!--                                    <el-row style='margin-bottom: 0' type='flex' justify='space-between'>-->
+                            <!--                                        <el-col :span='14'>-->
+                            <!--                                            <el-input placeholder="请输入来源" show-word-limit clearable maxlength='30'-->
+                            <!--                                                      v-model='form.newsSource'></el-input>-->
+                            <!--                                        </el-col>-->
+                            <!--                                        <el-col class='flex flex-row-reverse' :span='4'>-->
+                            <!--                                            <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>-->
+                            <!--                                                <span>{{isUnfold ? '收起信息' :'展开信息'}}</span>-->
+                            <!--                                                <i :class='{"is-active": isUnfold}'-->
+                            <!--                                                   class='el-collapse-item__arrow el-icon-arrow-right '></i>-->
+                            <!--                                            </div>-->
+                            <!--                                        </el-col>-->
+                            <!--                                    </el-row>-->
+
+                            <!--                                </template>-->
+                            <!--                            </el-form-item>-->
+                            <el-collapse-transition>
+                                <div v-show='isUnfold'>
+                                    <el-form-item label='摘要：' style='margin-left: 0'>
+                                        <el-input
+                                            type='textarea'
+                                            :rows='4'
+                                            maxlength='200'
+                                            show-word-limit
+                                            v-model='form.newsDesc'
+                                            placeholder='请输入摘要'>
+                                        </el-input>
+                                    </el-form-item>
+
+                                    <el-row :gutter='20'>
+                                        <el-col :span='12'>
+                                            <el-form-item label='作者：'>
+                                                <el-input placeholder='请输入作者' v-model='form.newsAuthor'
+                                                          clearable></el-input>
+                                            </el-form-item>
                                         </el-col>
-                                        <el-col :span='8'>
-                                            <span>入库时间：</span>
-                                            <span>{{ inputTime }}</span>
+                                        <el-col :span='12'>
+                                            <el-form-item label='来源地址：'>
+                                                <el-input placeholder='请输入来源地址' v-model='form.sourceAddress'
+                                                          clearable></el-input>
+                                            </el-form-item>
                                         </el-col>
                                     </el-row>
-                                </template>
-                            </el-form-item>
+
+                                </div>
+                            </el-collapse-transition>
+                            <el-row type='flex' justify='end' :gutter='20'>
+                                <el-col class='flex flex-row-reverse' :span='2'>
+                                    <div class='pointer color-1683ff'>
+                                        <span>一键排版</span>
+                                    </div>
+                                </el-col>
+                                <el-col class='flex flex-row-reverse' :span='3'>
+                                    <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
+                                        <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
+                                        <!--                                        <i :class='{"is-active": isUnfold}'-->
+                                        <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
+                                        <i class='el-collapse-item__arrow el-icon-arrow-up '></i>
+                                    </div>
+                                </el-col>
+                            </el-row>
                             <el-form-item label='正文：' prop='newsContext'>
-                                <quill-editor v-model='form.newsContext' ref='myQuillEditor' :options='editorOption'
-                                              @ready='onEditorReady($event)'>
-                                </quill-editor>
+                                <div class='editor-box relative'>
+<!--                                    <quill-editor id='quill-editor' v-model='form.newsContext' ref='myQuillEditor'-->
+<!--                                                  :options='editorOption'-->
+<!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
+<!--                                    </quill-editor>-->
+                                    <tinymce v-model="form.newsContext" :toolbar="toolbar" :height="450" />
+<!--                                    <span class='absolute'-->
+<!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
+<!--                                        }}字</span>-->
+                                </div>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -85,20 +161,25 @@
                                     <div class='bd3 flex-col'></div>
                                     <h4 class='ml-5'>情绪标签：</h4>
                                 </div>
-                                <div v-for='i in moodList' :key='i.id' style='display: inline-flex;'>
-                                    <template>
-                                        <el-tag :key='i.id' v-if='i.isLight'
-                                                v-bind:style="{'color':i.color,'background-color':i.bColor,'border-color':i.color,'margin': '0 5px 0 5px'}"
-                                                @click='moodClick(i)'>
-                                            {{ i.name }}
-                                        </el-tag>
-                                        <el-tag :key='i.id' v-if='!i.isLight'
-                                                style='color: #8C939D;background-color: #FFFFFF;border-color: #8C939D; margin: 0 5px 0 5px;'
-                                                @click='moodClick(i)'>
-                                            {{ i.name }}
-                                        </el-tag>
-                                    </template>
-                                </div>
+                                <el-radio-group @change='radioGroupChange' :text-color='radioGroupStyle.textColor'
+                                                :fill='radioGroupStyle.fill' v-model='form.value'>
+                                    <el-radio-button v-for='item in moodList' :key='item.id'
+                                                     :label='item.name'></el-radio-button>
+                                </el-radio-group>
+                                <!--                                <div v-for='i in moodList' :key='i.id' style='display: inline-flex;'>-->
+                                <!--                                    <template>-->
+                                <!--                                        <el-tag :key='i.id' v-if='i.isLight'-->
+                                <!--                                                v-bind:style="{'color':i.color,'background-color':i.bColor,'border-color':i.color,'margin': '0 5px 0 5px'}"-->
+                                <!--                                                @click='moodClick(i)'>-->
+                                <!--                                            {{ i.name }}-->
+                                <!--                                        </el-tag>-->
+                                <!--                                        <el-tag :key='i.id' v-if='!i.isLight'-->
+                                <!--                                                style='color: #8C939D;background-color: #FFFFFF;border-color: #8C939D; margin: 0 5px 0 5px;'-->
+                                <!--                                                @click='moodClick(i)'>-->
+                                <!--                                            {{ i.name }}-->
+                                <!--                                        </el-tag>-->
+                                <!--                                    </template>-->
+                                <!--                                </div>-->
                                 <div style='padding: 10px 0px; '>
                                     <div class='tableTitle'></div>
                                 </div>
@@ -122,12 +203,17 @@
                                     <div style='width:auto;text-align: center;min-width: 60px;'>
                                         <h5>{{ p.name }}:</h5>
                                     </div>
-                                    <el-col>
-                                        <el-tag v-for='c in p.child' size='small' :key='c.id'
-                                                v-bind:style="{'color':c.color,'border-color':c.color,'background-color':c.bColor,'marging': '5px 5px'}"
-                                                @close='tagClose(c.id,1)' @click='handleClick(c)' closable>{{ c.name }}
-                                        </el-tag>
-                                    </el-col>
+                                    <el-tooltip v-for='c in p.child' :key='c.id' class=' pointer' effect='dark'
+                                                placement='top'>
+                                        <div slot='content'> {{ c.name }}</div>
+                                       <div>
+                                           <el-tag size='small'
+                                                   v-bind:style="{'color':c.color,'background-color':c.bColor,'margin': '5px 5px'}"
+                                                   @close='tagClose(c.id,1)' @click='handleClick(c)' closable>
+                                               {{ c.name }}
+                                           </el-tag>
+                                       </div>
+                                    </el-tooltip>
                                 </div>
                                 <div class='grid-content bg-purple'
                                      style='align-items: center;margin: 5px 0px;display: flex;'>
@@ -137,10 +223,8 @@
                                                      :trigger-on-focus='false' @select='handleSelect' size='small'
                                                      clearable>
                                         <template slot-scope='scope'>
-                                            <el-item>
-                                                <span>{{ scope.item.name }}</span>
-                                                <span style='float: right;'>{{ scope.item.ideaName }}</span>
-                                            </el-item>
+                                            <span>{{ scope.item.name }}</span>
+                                            <span style='float: right;'>{{ scope.item.ideaName }}</span>
                                         </template>
                                     </el-autocomplete>
                                 </div>
@@ -155,13 +239,23 @@
                                     <h4 class='ml-5'>栏目标签：</h4>
                                 </div>
                                 <div style='margin: 10px 0 10px 0;display: inline-block;'>
+                                    <!--                                    <el-tooltip v-for='(c,index) in colList' :key='index' class='mr-5 pointer' effect='dark'-->
+                                    <!--                                                :content='c.name' placement='top'>-->
+                                    <!--                                        <el-tag size='small'-->
+                                    <!--                                                v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px 0 5px'}"-->
+                                    <!--                                                @close='tagClose(c.id,0)' @click='handleClick(c)' closable>-->
+                                    <!--                                            {{ c.name }}-->
+                                    <!--                                        </el-tag>-->
+                                    <!--                                    </el-tooltip>-->
+
                                     <el-tag v-for='c in colList' :key='c.id' size='small'
                                             v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px 0 5px'}"
-                                            @close='tagClose(c.id,0)' @click='handleClick(c)' closable> {{ c.name }}
+                                            @close='tagClose(c.id,0)' @click='handleClick(c)' closable>
+                                        {{ c.name }}
                                     </el-tag>
                                 </div>
                                 <div style='margin: 10px 0 10px 0;display: inline-block;'>
-                                    <el-tag class='new-tag' size='small' @click='showDialog()'>+添加标签</el-tag>
+                                    <el-tag class='new-tag pointer' size='small' @click='showDialog()'>+添加标签</el-tag>
                                 </div>
                                 <div style='padding: 10px 0px; '>
                                     <div class='tableTitle'></div>
@@ -171,8 +265,15 @@
                     </div>
 
                     <div class='grid-content bg-purple'>
-                        <el-button type='primary' style='float: right;width: 100%;' @click='submitTag()'>确定
-                        </el-button>
+                        <el-row :gutter='20'>
+                            <el-col :span='12'>
+                                <el-button type='primary' style='float: right;width: 100%;' @click='submitTag()'>提交
+                                </el-button>
+                            </el-col>
+                            <el-col :span='12'>
+                                <el-button @click='openDialogPreview' style='width: 100%' plain>预览</el-button>
+                            </el-col>
+                        </el-row>
                     </div>
 
                 </el-col>
@@ -186,12 +287,12 @@
                     </div>
                     <div v-for='c in p.child' :key='c.id' style='display: inline-flex;'>
                         <template>
-                            <el-tag :key='c.id' v-if='c.isLight'
+                            <el-tag class='pointer' :key='c.id' v-if='c.isLight'
                                     v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px'}"
                                     @click='handleClick(c)'>
                                 {{ c.name }}
                             </el-tag>
-                            <el-tag :key='c.id' v-if='!c.isLight'
+                            <el-tag class='pointer' :key='c.id' v-if='!c.isLight'
                                     style='color: #8C939D;background-color: #FFFFFF;border-color: #8C939D; margin: 5px 5px;'
                                     @click='handleClick(c)'>
                                 {{ c.name }}
@@ -199,12 +300,51 @@
                         </template>
                     </div>
                 </div>
-                <div style='height: 20px; border-top: 1px solid #d5d5d5;align-self: center;text-align: center;'>
-                    <el-button style='display: flex;' type='primary' @click='submitTag()'>确定
+                <div class='mt-20'
+                     style='height: 40px; border-top: 1px solid #d5d5d5;align-self: center;text-align: center;'>
+                    <el-button style='display: flex;margin-top: 15px' type='primary' @click='submitTag()'>确定
                     </el-button>
                 </div>
             </el-dialog>
         </div>
+        <el-dialog width='0' :show-close='false' :visible.sync='dialogPreviewVisible'>
+            <!--            <div slot="footer" class="dialog-footer">-->
+            <!--                <el-button @click="dialogPreviewVisible = false">取 消</el-button>-->
+            <!--                <el-button type="primary" @click="dialogPreviewVisible = false">确 定</el-button>-->
+            <!--            </div>-->
+            <div class=' relative'>
+                <div class='preview absolute'>
+                    <div class='preview-header flex space-between'>
+                        <div><i class='el-icon-arrow-left'></i></div>
+                        <div class='font-500'>文章详情</div>
+                        <div><i class='el-icon-more'></i></div>
+                    </div>
+                    <div class='preview-content'>
+                        <div class='preview-title mt-20'>
+                            {{ form.newsTitle }}
+                        </div>
+                        <div class='flex preview-author' style='margin-top: 8px'>
+                            <div style='width: 73px;height: 14px;overflow: hidden'>{{ form.createTime }}</div>
+                            <div>{{ form.newsSource }}</div>
+                            <div style='margin: 0 5px' v-if='form.newsSource'>|</div>
+                            <div>{{ form.newsAuthor }}</div>
+                        </div>
+                        <div class='flex flex-wrap' style='padding: 0 10px;margin-top: 10px'>
+                            <el-tag class='preview-tag' v-for='c in tagList' :key='c.id' size='small'
+                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color}"
+                            >
+                                {{ c.name }}
+                            </el-tag>
+                        </div>
+                        <div class='preview-text' style='margin-top: 10px' v-html='form.newsContext'>
+                        </div>
+                    </div>
+                </div>
+                <div class='close absolute pointer' @click='dialogPreviewVisible = false'>
+                    <img style='width: 30px;height: 30px' src='../assets/img/close2x.png'>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 
 </template>
@@ -222,7 +362,7 @@ import {
     getConceptByList
 
 } from '../api/getData.js';
-
+import Tinymce from '@/components/Tinymce'
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
@@ -230,11 +370,14 @@ import 'quill/dist/quill.bubble.css';
 import {
     quillEditor
 } from 'vue-quill-editor';
+import dayjs from '@/plugins/dayjs';
 
 export default {
+    name: 'newsWrite',
     data() {
         return {
             dialogVisible: false,
+            dialogPreviewVisible: false,
             txtSearch: '',
             // active: '',
             inputTime: '',
@@ -244,18 +387,27 @@ export default {
             form: {
                 newsTitle: '',
                 newsContext: '',
-                newsSource: ''
+                newsSource: '',
+                createTime: dayjs(new Date).format('YYYY-MM-DD HH:mm:ss'),
+                value: ''
             },
+            isUnfold: false,
             moodList: [],
             recommendList: [],
+            tagList: [],
             colList: [],
             rules: {
                 newsTitle: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-                newsContext: [{ required: true, message: '请输入来源', trigger: 'blur' }],
-                newsSource: [{ required: true, message: '请输入正文' }]
+                newsSource: [{ required: true, message: '请输入来源', trigger: 'blur' }],
+                newsContext: [{ required: true, message: '请输入正文' }]
             },
             waitList: [],
-
+            radioGroupStyle: {
+                textColor: '',
+                fill: ''
+            },
+            toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample ', ' hr fontsizeselect bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'],
+            editorTextLength: 0,
             editorOption: {
                 modules: {
                     toolbar: [
@@ -315,15 +467,49 @@ export default {
         this.initData();
     },
     components: {
-        quillEditor
+        quillEditor,Tinymce
     },
     computed: {
         editor() {
             return this.$refs.myQuillEditor.quill;
         }
     },
+    watch: {
+        content() {
+            // 富文本内容长度
+            let a = this.quill.getLength() - 1;
+            console.log(a);
+        }
+    },
     methods: {
-        initData() {
+        openDialogPreview() {
+            this.$refs['formData'].validate((valid) => {
+                if (!valid) return false;
+                let arr = [];
+                for (let i = 0; i < this.recommendList.length; i++) {
+                    for (let q = 0; q < this.recommendList[i].child.length; q++) {
+                        arr.push(this.recommendList[i].child[q]);
+                    }
+                }
+                this.tagList = arr;
+                console.log(arr);
+                this.dialogPreviewVisible = true;
+            });
+
+        },
+        radioGroupChange(value) {
+            if (value === '利好' || value === '正面') {
+                this.radioGroupStyle.fill = 'rgba(245, 108, 108, 0.2)';
+                this.radioGroupStyle.textColor = 'rgba(245, 108, 108, 1)';
+            } else if (value === '利空' || value === '负面') {
+                this.radioGroupStyle.fill = 'rgb(102, 204, 153,0.2)';
+                this.radioGroupStyle.textColor = 'rgb(51, 102, 0)';
+            } else if (value === '中性') {
+                this.radioGroupStyle.fill = 'rgba(246, 155, 64, 0.2)';
+                this.radioGroupStyle.textColor = 'rgba(230, 162, 60, 1)';
+            }
+        },
+        async initData() {
             this.dialogVisible = false;
 
             this.newsTitle = '';
@@ -336,30 +522,35 @@ export default {
             this.moodList = [];
             this.recommendList = [];
             this.colList = [];
-            this.getMood();
-            this.getColumn();
+            await this.getMood();
+            await this.getColumn();
         },
-        onEditorReady(editor) {
+        onEditorChange(event) {
+            this.editorTextLength = event.quill.getLength() - 1;
+        },
+        onEditorReady(event) {
 
         },
-        loadData(data) {
-            if (data.articleID != null) {
+        async loadData(data) {
+            if (data.articleID !== null) {
                 this.articleID = data.articleID;
             }
-            this.newsTitle = data.title;
-            this.newsContext = data.context;
-            this.newsSource = data.source;
+            this.form.newsTitle = data.title;
+            this.form.newsContext = data.context;
+            this.form.newsSource = data.source;
             this.sourceAddress = data.sourceAddress;
             this.sourceTime = data.sourceTime;
             this.inputTime = data.inputTime;
 
-            this.initMood(data.mood);
-            this.initRecommend(data.recommend);
-            this.initColumn(data.column);
+            await this.initMood(data.mood);
+            await this.initRecommend(data.recommend);
+            await this.initColumn(data.column);
         },
         async initMood(val) {
+
             if (val != null) {
                 var ids = JSON.parse(val);
+                console.log(ids, this.moodList);
                 ids.forEach(s => {
                     var index = this.moodList.findIndex((m) => m.id == s);
                     if (index != -1) {
@@ -367,52 +558,67 @@ export default {
                     }
                 });
             }
+            console.log(val, this.moodList);
         },
         async initRecommend(val) {
+            console.log(val);
             if (val != null) {
                 this.recommendList = [];
                 var res = await getConceptByList({
                     ids: JSON.parse(val)
                 });
-                if (res != null && res.code == 200) {
+                if (res != null && res.code === 200) {
                     this.initTree(res.data, this.recommendList);
                 }
             }
         },
         async initColumn(val) {
+            console.log(val);
+
             this.colList = [];
-            var res = await getLabelByList({
+            let res = await getLabelByList({
                 ids: JSON.parse(val)
             });
-            if (res != null && res.code == 200) {
+            if (res !== null && res.code === 200) {
                 this.colList = [];
+                console.log(this.waitList);
                 this.waitList.forEach(i => {
                     if (i.child != null) {
                         i.child.forEach(j => {
                             if (j.isLight) {
-                                const c = {};
-                                c.id = j.id;
-                                c.color = j.color;
-                                c.name = j.name;
-                                this.colList.push(c);
+
                             }
+                            const c = {};
+                            c.id = j.id;
+                            c.color = j.color;
+                            c.name = j.name;
+                            this.colList.push(c);
+                            console.log(j);
+
                         });
                     }
                 });
+                console.log(this.colList);
                 this.lightTree(JSON.parse(val), this.waitList);
             }
         },
         async onMark() {
-            var res = await getOnMark({
-                title: this.newsTitle,
-                context: this.newsContext,
-                source: this.newsSource
+            // this.$refs['formData'].validate(async (valid) => {
+            //     if (!valid) return false;
+            //
+            // })
+            let res = await getOnMark({
+                title: this.form.newsTitle,
+                context: this.form.newsContext,
+                source: this.form.newsSource
             });
-            if (res != null && res.code == 200) {
+            console.log(res);
+            if (res !== null && res.code === 200) {
                 this.loadData(res.data);
             } else {
                 this.initData();
             }
+
         },
         async showRecommend(str, cb) {
             if (str == null || str == '') return;
@@ -438,8 +644,7 @@ export default {
                     this.recommendList[index].child.length == 0) {
                     this.recommendList[index].child = child;
                 } else {
-                    var kindex = this.recommendList[index].child.findIndex((g) => g
-                        .id == c.id);
+                    var kindex = this.recommendList[index].child.findIndex((g) => g.id == c.id);
                     if (kindex == -1) {
                         this.recommendList[index].child.push(c);
                     }
@@ -488,6 +693,8 @@ export default {
             });
         },
         lightTree(data, list) {
+            console.log(data, list);
+
             data.forEach(i => {
                 if (list != null && list.length > 0) {
                     list.forEach(p => {
@@ -500,6 +707,7 @@ export default {
                     });
                 }
             });
+            console.log(this.colList);
         },
         async getMood() {
             var res = await getChildList({
@@ -512,10 +720,11 @@ export default {
             }
         },
         async getColumn() {
-            var res = await getLabelByTree({
+            let res = await getLabelByTree({
                 pid: 3
             });
-            if (res != null && res.code == 200) {
+            console.log(res, this.waitList);
+            if (res != null && res.code === 200) {
                 this.initTree(res.data, this.waitList);
             } else {
                 this.waitList = [];
@@ -709,5 +918,62 @@ export default {
     text-align: center;
     font-size: 16px;
     color: rgba(101, 101, 101, 1);
+}
+
+.el-textarea .el-input__count {
+    bottom: 8px !important;
+
+}
+
+.el-textarea__inner {
+    padding: 0 !important;
+}
+
+.preview {
+    width: 258px;
+    height: 526px;
+
+    transform: translate(-50%, 0);
+    background-image: url("../assets/img/phone2x.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: #fff;
+    border-radius: 30px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.preview-header {
+    height: 26px;
+    line-height: 26px;
+}
+
+.preview-title {
+    color: rgba(60, 69, 86, 1);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.preview-content {
+    height: 450px;
+    overflow-y: auto;
+}
+
+.preview-author {
+    font-size: 10px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #919AAD;
+    line-height: 14px;
+}
+
+.close {
+    right: -160px;
+    top: -30px;
+}
+
+.preview-tag {
+    transform: scale(0.7);
 }
 </style>

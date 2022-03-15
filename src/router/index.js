@@ -10,6 +10,7 @@ export default new Router({
 		},
 		{
 			path: '/home',
+			name: 'home',
 			component: () => import('../components/Home.vue'),
 			meta: {
 				title: '系统首页'
@@ -23,6 +24,7 @@ export default new Router({
 				},
 				{
 					path: '/newsWrite',
+					name: 'newsWrite',
 					component: () => import('../pages/newsWrite.vue'),
 					meta: {
 						title: '新闻录入'

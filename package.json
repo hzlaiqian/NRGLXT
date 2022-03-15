@@ -10,7 +10,8 @@
   "dependencies": {
     "axios": "^0.26.0",
     "babel-polyfill": "^6.26.0",
-    "element-ui": "^2.11.0",
+    "dayjs": "^1.11.0",
+    "element-ui": "^2.15.7",
     "mavon-editor": "^2.10.4",
     "vue": "^2.6.10",
     "vue-cropperjs": "^3.0.0",
@@ -18,11 +19,15 @@
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.3",
     "vue-schart": "^2.0.0",
-    "vuedraggable": "^2.17.0"
+    "vuedraggable": "^2.17.0",
+    "vuex": "3.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.0",
     "@vue/cli-service": "^3.9.0",
+    "node-sass": "^7.0.1",
+    "sass": "1.26.8",
+    "sass-loader": "8.0.2",
     "vue-template-compiler": "^2.6.10"
   }
 }

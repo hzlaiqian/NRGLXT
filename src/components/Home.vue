@@ -22,6 +22,7 @@
 	import vTags from './Tags.vue';
 	import bus from './bus.js';
 	export default {
+        name: 'home',
 		data() {
 			return {
 				tagsList: [],

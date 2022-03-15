@@ -111,6 +111,7 @@
 		top: 70px;
 		bottom: 0;
 		overflow-y: scroll;
+        height: 100%;
 	}
 
 	.sidebar::-webkit-scrollbar {
