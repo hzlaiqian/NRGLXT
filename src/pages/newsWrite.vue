@@ -14,10 +14,10 @@
                                 <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
                                           v-model='form.newsTitle'></el-input>
                             </el-form-item>
-                            <el-form-item label='来源：' prop='newsSource'>
-                                <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'
-                                          v-model='form.newsSource'></el-input>
-                            </el-form-item>
+<!--                            <el-form-item label='来源：' prop='newsSource'>-->
+<!--                                <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
+<!--                                          v-model='form.newsSource'></el-input>-->
+<!--                            </el-form-item>-->
 <!--                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>-->
 <!--                                <el-col :span='14'>-->
 <!--                                    <el-form-item label='来源：' prop='newsSource'>-->
@@ -37,24 +37,24 @@
 <!--                                    </el-form-item>-->
 <!--                                </el-col>-->
 <!--                            </el-row>-->
-                            <!--                            <el-form-item label='来源：' prop='newsSource'>-->
-                            <!--                                <template>-->
-                            <!--                                    <el-row style='margin-bottom: 0' type='flex' justify='space-between'>-->
-                            <!--                                        <el-col :span='14'>-->
-                            <!--                                            <el-input placeholder="请输入来源" show-word-limit clearable maxlength='30'-->
-                            <!--                                                      v-model='form.newsSource'></el-input>-->
-                            <!--                                        </el-col>-->
-                            <!--                                        <el-col class='flex flex-row-reverse' :span='4'>-->
-                            <!--                                            <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>-->
-                            <!--                                                <span>{{isUnfold ? '收起信息' :'展开信息'}}</span>-->
-                            <!--                                                <i :class='{"is-active": isUnfold}'-->
-                            <!--                                                   class='el-collapse-item__arrow el-icon-arrow-right '></i>-->
-                            <!--                                            </div>-->
-                            <!--                                        </el-col>-->
-                            <!--                                    </el-row>-->
+                                                        <el-form-item label='来源：' prop='newsSource'>
+                                                            <template>
+                                                                <el-row style='margin-bottom: 0' type='flex' justify='space-between'>
+                                                                    <el-col :span='10'>
+                                                                        <el-input placeholder="请输入来源" show-word-limit clearable maxlength='20'
+                                                                                  v-model='form.newsSource'></el-input>
+                                                                    </el-col>
+                                                                    <el-col class='flex flex-row-reverse' :span='4'>
+<!--                                                                        <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>-->
+<!--                                                                            <span>{{isUnfold ? '收起信息' :'展开信息'}}</span>-->
+<!--                                                                            <i :class='{"is-active": isUnfold}'-->
+<!--                                                                               class='el-collapse-item__arrow el-icon-arrow-right '></i>-->
+<!--                                                                        </div>-->
+                                                                    </el-col>
+                                                                </el-row>
 
-                            <!--                                </template>-->
-                            <!--                            </el-form-item>-->
+                                                            </template>
+                                                        </el-form-item>
                             <el-collapse-transition>
                                 <div v-show='isUnfold'>
                                     <el-form-item label='摘要：' style='margin-left: 0'>
@@ -272,9 +272,9 @@
 <!--                                        {{ c.name }}-->
 <!--                                    </el-tag>-->
                                     <div class='flex flex-wrap'>
-                                        <div  v-for='item in isLightTagArr' :key='item.id'>
+                                        <div  v-for='item in colList' :key='item.id'>
                                             <transition  mode="out-in" name="el-zoom-in-center" appear >
-                                                <tag @del='delHandleClick(item)' style='margin:12px 12px 0 0' type='closeTag' :title='item.name' v-for='item in isLightTagArr' :key='item.id'></tag>
+                                                <tag @del='delHandleClick(item)' style='margin:12px 12px 0 0' type='closeTag' :title='item.name' ></tag>
                                             </transition>
                                         </div>
 
@@ -641,7 +641,7 @@ export default {
                             c.id = j.id;
                             c.color = j.color;
                             c.name = j.name;
-                            // this.colList.push(c);
+                            this.colList.push(c);
                             this.isLightTagArr.push(c);
                             console.log(j);
 
@@ -802,15 +802,23 @@ export default {
                 }
             }
             this.isLightTagArr = arr
+
         },
         delHandleClick(item) {
+            console.log(item)
             item.isLight = false;
             this.initWaitList()
         },
         handleClick(item) {
             // item.isLight = !item.isLight;
             item.isLight = true;
-            this.initWaitList()
+            let flag = true
+            this.isLightTagArr.forEach(q => {
+                if (q.id === item.id) return  flag = false
+            })
+            if (flag) this.isLightTagArr.push(item)
+
+            // this.initWaitList()
         },
         tagClose(cid, tagType) {
             if (tagType == 0) {
@@ -1056,5 +1064,22 @@ export default {
     background-color: #fff;
     border-radius: 3px;
     border: 1px solid #2A79EE;
+}
+.el-dialog__body {
+    padding-top: 12px;
+}
+.el-dialog__body h5 {
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #3C4556;
+    line-height: 16px;
+}
+.el-dialog__header {
+    border-bottom: 1px solid #EAEDF7;
+}
+.el-dialog__footer {
+    border-top: 1px solid #EAEDF7;
+    padding: 20px;
 }
 </style>

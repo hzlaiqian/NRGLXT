@@ -1,11 +1,11 @@
 <template>
 <div class='tag'>
-   <div v-if='type === "addTag"' class='add-tag'>
+   <div v-if='type === "addTag"' class='add-tag' @click='add' >
        <div class='title'>
            {{title}}
        </div>
        <div>
-           <img @click='add' style='width: 12px;height: 12px' src='../assets/img/add@2x.png'>
+           <img style='width: 12px;height: 12px' src='../assets/img/add@2x.png'>
        </div>
    </div>
     <div v-if='type === "closeTag"' class='isClose-tag'>
