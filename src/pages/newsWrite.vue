@@ -274,7 +274,7 @@
                                     <div class='flex flex-wrap'>
                                         <div  v-for='item in colList' :key='item.id'>
                                             <transition  mode="out-in" name="el-zoom-in-center" appear >
-                                                <tag @del='delHandleClick(item)' style='margin:12px 12px 0 0' type='closeTag' :title='item.name' ></tag>
+                                                <tag @del='tagClose(item.id,0)' style='margin:12px 12px 0 0' type='closeTag' :title='item.name' ></tag>
                                             </transition>
                                         </div>
 
@@ -307,7 +307,7 @@
             </el-row>
         </div>
         <div>
-            <el-dialog title='栏目标签' :visible.sync='dialogVisible' @close='dialogClose()'>
+            <el-dialog class='dialog' title='栏目标签' :visible.sync='dialogVisible' @close='dialogClose()'>
 <!--                <tag type='closeTag' title='小鸡炖蘑菇'></tag>-->
                 <div>
                     <div style='width:100px;align-self: center;margin-top: 12px'>
@@ -374,13 +374,21 @@
                             <div style='margin: 0 5px' v-if='form.newsSource'>|</div>
                             <div>{{ form.newsAuthor }}</div>
                         </div>
-                        <div class='flex flex-wrap' style='padding: 0 10px;margin-top: 10px'>
-                            <el-tag class='preview-tag' v-for='c in tagList' :key='c.id' size='small'
-                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color}"
-                            >
-                                {{ c.name }}
-                            </el-tag>
-                        </div>
+                           <div class='flex pointer flex-wrap'>
+                               <div  v-for='c in tagList' :key='c.id' class=' preview-tag'>
+                                   <tag v-if='c.bColor === "#FFCCCC"' :showClose='false'  @del='tagClose(c.id,1)'  type='tag' :title='c.name ' color='#F56C6C' bg-color='rgba(245, 108, 108, 0.11)'></tag>
+                                   <tag v-else-if='c.bColor === "#E8F0FD"' :showClose='false' @del='tagClose(c.id,1)' type='tag' :title='c.name ' color='#2A79EE' bg-color='rgba(42, 121, 238, 0.11)'></tag>
+                                   <tag v-else :showClose='false'  @del='tagClose(c.id,1)' type='tag' :title='c.name ' color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>
+
+                               </div>
+                           </div>
+<!--                        <div class='flex flex-wrap' style='padding: 0 10px;margin-top: 10px'>-->
+<!--                            <el-tag class='preview-tag' v-for='c in tagList' :key='c.id' size='small'-->
+<!--                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color}"-->
+<!--                            >-->
+<!--                                {{ c.name }}-->
+<!--                            </el-tag>-->
+<!--                        </div>-->
                         <div class='preview-text' style='margin-top: 10px' v-html='form.newsContext'>
                         </div>
                     </div>
@@ -806,8 +814,19 @@ export default {
         },
         delHandleClick(item) {
             console.log(item)
-            item.isLight = false;
-            this.initWaitList()
+            var cIndex = this.isLightTagArr.findIndex((c) => c.id == item.id);
+            if (cIndex != -1) {
+                this.isLightTagArr.splice(cIndex, 1);
+            }
+
+            this.waitList.forEach((p) => {
+                var cIndex = p.child.findIndex((c) => c.id == item.id);
+                if (cIndex != -1) {
+                    p.child[cIndex].isLight = false;
+                }
+            });
+            // item.isLight = false;
+            // this.initWaitList()
         },
         handleClick(item) {
             // item.isLight = !item.isLight;
@@ -873,6 +892,8 @@ export default {
             this.dialogVisible = false;
         },
         async showDialog() {
+            let [...arr] = this.colList
+            this.isLightTagArr = arr
             this.dialogVisible = true;
         },
         dialogClose() {
@@ -1052,7 +1073,9 @@ export default {
 }
 
 .preview-tag {
-    transform: scale(0.7);
+    zoom: 0.7;
+    margin-top: 5px;
+    margin-right: 5px;
 }
 .fold {
     width: 160px;
@@ -1075,10 +1098,10 @@ export default {
     color: #3C4556;
     line-height: 16px;
 }
-.el-dialog__header {
+.dialog .el-dialog__header {
     border-bottom: 1px solid #EAEDF7;
 }
-.el-dialog__footer {
+.dialog .el-dialog__footer {
     border-top: 1px solid #EAEDF7;
     padding: 20px;
 }

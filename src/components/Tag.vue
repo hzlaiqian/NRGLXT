@@ -20,7 +20,7 @@
         <div class='title' :style='"color:" + color '>
             {{title}}
         </div>
-        <div >
+        <div v-if='showClose'>
             <span :style='"color:" + color ' @click='del' class='close'>x</span>
         </div>
     </div>
@@ -46,6 +46,10 @@ export default {
         bgColor: {
             type:String,
             default: 'addTag'
+        },
+        showClose: {
+            type:Boolean,
+            default: true
         }
     },
     methods: {
