@@ -14,25 +14,29 @@
                                 <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
                                           v-model='form.newsTitle'></el-input>
                             </el-form-item>
-                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>
-                                <el-col :span='14'>
-                                    <el-form-item label='来源：' prop='newsSource'>
-                                        <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'
-                                                  v-model='form.newsSource'></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col class='flex flex-row-reverse' :span='8'>
-                                    <el-form-item style='width: 100%;' label='发布时间：'>
-                                        <el-date-picker
-                                            disabled
-                                            style='width: 100%'
-                                            v-model='form.createTime'
-                                            type='datetime'
-                                            placeholder='选择日期时间'>
-                                        </el-date-picker>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
+                            <el-form-item label='来源：' prop='newsSource'>
+                                <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'
+                                          v-model='form.newsSource'></el-input>
+                            </el-form-item>
+<!--                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>-->
+<!--                                <el-col :span='14'>-->
+<!--                                    <el-form-item label='来源：' prop='newsSource'>-->
+<!--                                        <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
+<!--                                                  v-model='form.newsSource'></el-input>-->
+<!--                                    </el-form-item>-->
+<!--                                </el-col>-->
+<!--                                <el-col class='flex flex-row-reverse' :span='8'>-->
+<!--                                    <el-form-item style='width: 100%;' label='发布时间：'>-->
+<!--                                        <el-date-picker-->
+<!--                                            disabled-->
+<!--                                            style='width: 100%'-->
+<!--                                            v-model='form.createTime'-->
+<!--                                            type='datetime'-->
+<!--                                            placeholder='选择日期时间'>-->
+<!--                                        </el-date-picker>-->
+<!--                                    </el-form-item>-->
+<!--                                </el-col>-->
+<!--                            </el-row>-->
                             <!--                            <el-form-item label='来源：' prop='newsSource'>-->
                             <!--                                <template>-->
                             <!--                                    <el-row style='margin-bottom: 0' type='flex' justify='space-between'>-->
@@ -81,31 +85,28 @@
 
                                 </div>
                             </el-collapse-transition>
-                            <el-row type='flex' justify='end' :gutter='20'>
-                                <el-col class='flex flex-row-reverse' :span='2'>
-                                    <div class='pointer color-1683ff'>
-                                        <span>一键排版</span>
-                                    </div>
-                                </el-col>
-                                <el-col class='flex flex-row-reverse' :span='3'>
-                                    <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
-                                        <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
-                                        <!--                                        <i :class='{"is-active": isUnfold}'-->
-                                        <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
-                                        <i class='el-collapse-item__arrow el-icon-arrow-up '></i>
-                                    </div>
-                                </el-col>
-                            </el-row>
+
                             <el-form-item label='正文：' prop='newsContext'>
                                 <div class='editor-box relative'>
-<!--                                    <quill-editor id='quill-editor' v-model='form.newsContext' ref='myQuillEditor'-->
-<!--                                                  :options='editorOption'-->
-<!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
-<!--                                    </quill-editor>-->
-                                    <tinymce v-model="form.newsContext" :toolbar="toolbar" :height="450" />
-<!--                                    <span class='absolute'-->
-<!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
-<!--                                        }}字</span>-->
+                                    <div class='absolute fold'>
+                                        <div class='flex space-between'>
+                                            <div class='pointer color-1683ff'>一键排版</div>
+                                            <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
+                                                <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
+                                                <!--                                        <i :class='{"is-active": isUnfold}'-->
+                                                <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
+                                                <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"' class='el-collapse-item__arrow  '></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                                    <quill-editor id='quill-editor' v-model='form.newsContext' ref='myQuillEditor'-->
+                                    <!--                                                  :options='editorOption'-->
+                                    <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
+                                    <!--                                    </quill-editor>-->
+                                    <tinymce v-model='form.newsContext' :toolbar='toolbar' :height='450' />
+                                    <!--                                    <span class='absolute'-->
+                                    <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
+                                    <!--                                        }}字</span>-->
                                 </div>
                             </el-form-item>
                         </el-form>
@@ -200,19 +201,36 @@
                                 </div>
                                 <div v-for='p in recommendList' :key='p.id' class='grid-content bg-purple'
                                      style='width: 100%; display: flex;align-items: center;margin: 5px 0px;'>
-                                    <div style='width:auto;text-align: center;min-width: 60px;'>
+                                    <div style='width:auto;text-align: center;min-width: 60px;margin-right: 5px'>
                                         <h5>{{ p.name }}:</h5>
                                     </div>
-                                    <el-tooltip v-for='c in p.child' :key='c.id' class=' pointer' effect='dark'
+
+                                    <el-tooltip style='margin-right: 5px' v-for='c in p.child' :key='c.id' class=' pointer' effect='dark'
                                                 placement='top'>
                                         <div slot='content'> {{ c.name }}</div>
-                                       <div>
-                                           <el-tag size='small'
-                                                   v-bind:style="{'color':c.color,'background-color':c.bColor,'margin': '5px 5px'}"
-                                                   @close='tagClose(c.id,1)' @click='handleClick(c)' closable>
-                                               {{ c.name }}
-                                           </el-tag>
-                                       </div>
+                                        <div>
+
+                                            <div v-if='p.name === "A股公司"'>
+                                                <transition  mode="out-in" name="el-zoom-in-center" appear >
+                                                    <tag @del='tagClose(c.id,1)'  type='tag' :title='c.name ' color='#F56C6C' bg-color='rgba(245, 108, 108, 0.11)'></tag>
+                                                </transition>
+                                            </div>
+                                           <div  v-else-if='p.name === "二级行业"'>
+                                               <transition  mode="out-in" name="el-zoom-in-center" appear >
+                                                   <tag @del='tagClose(c.id,1)' type='tag' :title='c.name ' color='#2A79EE' bg-color='rgba(42, 121, 238, 0.11)'></tag>
+                                               </transition>
+                                           </div>
+                                           <div  v-else>
+                                               <transition  mode="out-in" name="el-zoom-in-center" appear >
+                                                   <tag @del='tagClose(c.id,1)' type='tag' :title='c.name ' color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>
+                                               </transition>
+                                           </div>
+<!--                                            <el-tag size='small'-->
+<!--                                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'margin': '5px 5px'}"-->
+<!--                                                    @close='tagClose(c.id,1)' @click='handleClick(c)' closable>-->
+<!--                                                {{ c.name }}-->
+<!--                                            </el-tag>-->
+                                        </div>
                                     </el-tooltip>
                                 </div>
                                 <div class='grid-content bg-purple'
@@ -248,15 +266,24 @@
                                     <!--                                        </el-tag>-->
                                     <!--                                    </el-tooltip>-->
 
-                                    <el-tag v-for='c in colList' :key='c.id' size='small'
-                                            v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px 0 5px'}"
-                                            @close='tagClose(c.id,0)' @click='handleClick(c)' closable>
-                                        {{ c.name }}
-                                    </el-tag>
+<!--                                    <el-tag v-for='c in colList' :key='c.id' size='small'-->
+<!--                                            v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px 0 5px'}"-->
+<!--                                            @close='tagClose(c.id,0)' @click='handleClick(c)' closable>-->
+<!--                                        {{ c.name }}-->
+<!--                                    </el-tag>-->
+                                    <div class='flex flex-wrap'>
+                                        <div  v-for='item in isLightTagArr' :key='item.id'>
+                                            <transition  mode="out-in" name="el-zoom-in-center" appear >
+                                                <tag @del='delHandleClick(item)' style='margin:12px 12px 0 0' type='closeTag' :title='item.name' v-for='item in isLightTagArr' :key='item.id'></tag>
+                                            </transition>
+                                        </div>
+
+                                        <el-tag class='new-tag pointer' style='margin:12px 12px 0 0' size='small' @click='showDialog()'>+添加标签</el-tag>
+                                    </div>
                                 </div>
-                                <div style='margin: 10px 0 10px 0;display: inline-block;'>
-                                    <el-tag class='new-tag pointer' size='small' @click='showDialog()'>+添加标签</el-tag>
-                                </div>
+<!--                                <div style='margin: 10px 0 10px 0;display: inline-block;'>-->
+<!--                                    <el-tag class='new-tag pointer' size='small' @click='showDialog()'>+添加标签</el-tag>-->
+<!--                                </div>-->
                                 <div style='padding: 10px 0px; '>
                                     <div class='tableTitle'></div>
                                 </div>
@@ -280,29 +307,47 @@
             </el-row>
         </div>
         <div>
-            <el-dialog title='选择标签' :visible.sync='dialogVisible' @close='dialogClose()'>
+            <el-dialog title='栏目标签' :visible.sync='dialogVisible' @close='dialogClose()'>
+<!--                <tag type='closeTag' title='小鸡炖蘑菇'></tag>-->
+                <div>
+                    <div style='width:100px;align-self: center;margin-top: 12px'>
+                        <h5>已选栏目:</h5>
+                    </div>
+                    <div class='flex flex-wrap'>
+<div  v-for='item in isLightTagArr' :key='item.id'>
+    <transition  mode="out-in" name="el-zoom-in-center" appear >
+        <tag @del='delHandleClick(item)' style='margin:12px 12px 0 0' type='closeTag' :title='item.name' ></tag>
+    </transition>
+</div>
+
+
+
+
+                    </div>
+                </div>
                 <div v-for='p in waitList' :key='p.id' style='margin: 10px 0 ;display: inline;'>
-                    <div style='width:100px;align-self: center;margin: 5px 0;'>
+                    <div style='width:100px;align-self: center;margin-top: 12px'>
                         <h5>{{ p.name }}:</h5>
                     </div>
                     <div v-for='c in p.child' :key='c.id' style='display: inline-flex;'>
                         <template>
-                            <el-tag class='pointer' :key='c.id' v-if='c.isLight'
-                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px'}"
-                                    @click='handleClick(c)'>
-                                {{ c.name }}
-                            </el-tag>
-                            <el-tag class='pointer' :key='c.id' v-if='!c.isLight'
-                                    style='color: #8C939D;background-color: #FFFFFF;border-color: #8C939D; margin: 5px 5px;'
-                                    @click='handleClick(c)'>
-                                {{ c.name }}
-                            </el-tag>
+                            <tag @add='handleClick(c)' :title='c.name' style='margin:12px 12px 0 0'></tag>
+                            <!--                            <el-tag class='pointer' :key='c.id' v-if='c.isLight'-->
+                            <!--                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px'}"-->
+                            <!--                                    @click='handleClick(c)'>-->
+                            <!--                                {{ c.name }}-->
+                            <!--                            </el-tag>-->
+                            <!--                            <el-tag class='pointer' :key='c.id' v-if='!c.isLight'-->
+                            <!--                                    style='color: #8C939D;background-color: #FFFFFF;border-color: #8C939D; margin: 5px 5px;'-->
+                            <!--                                    @click='handleClick(c)'>-->
+                            <!--                                {{ c.name }}-->
+                            <!--                            </el-tag>-->
                         </template>
                     </div>
                 </div>
-                <div class='mt-20'
-                     style='height: 40px; border-top: 1px solid #d5d5d5;align-self: center;text-align: center;'>
-                    <el-button style='display: flex;margin-top: 15px' type='primary' @click='submitTag()'>确定
+                <div slot='footer' class='dialog-footer'>
+                    <el-button @click='dialogVisible = false'>取 消</el-button>
+                    <el-button type='primary' @click='submitTag()'>确定
                     </el-button>
                 </div>
             </el-dialog>
@@ -362,7 +407,8 @@ import {
     getConceptByList
 
 } from '../api/getData.js';
-import Tinymce from '@/components/Tinymce'
+import Tinymce from '@/components/Tinymce';
+import Tag from '@/components/Tag';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
@@ -384,6 +430,8 @@ export default {
             newsTitle: '',
             newsSource: '',
             newsContext: '',
+            show: [],
+            isLightTagArr: [],
             form: {
                 newsTitle: '',
                 newsContext: '',
@@ -467,7 +515,7 @@ export default {
         this.initData();
     },
     components: {
-        quillEditor,Tinymce
+        quillEditor, Tinymce, Tag
     },
     computed: {
         editor() {
@@ -576,6 +624,7 @@ export default {
             console.log(val);
 
             this.colList = [];
+            this.isLightTagArr = []
             let res = await getLabelByList({
                 ids: JSON.parse(val)
             });
@@ -592,7 +641,8 @@ export default {
                             c.id = j.id;
                             c.color = j.color;
                             c.name = j.name;
-                            this.colList.push(c);
+                            // this.colList.push(c);
+                            this.isLightTagArr.push(c);
                             console.log(j);
 
                         });
@@ -739,8 +789,28 @@ export default {
                 }
             });
         },
+        initWaitList() {
+            let waitList = this.waitList
+            let arr = []
+            for (let i = 0; i < waitList.length; i++) {
+                if (waitList[i].child != null && waitList[i].child.length > 0) {
+                    for (let q = 0; q < waitList[i].child.length;q++) {
+                        if (waitList[i].child[q].isLight) {
+                            arr.push(waitList[i].child[q])
+                        }
+                    }
+                }
+            }
+            this.isLightTagArr = arr
+        },
+        delHandleClick(item) {
+            item.isLight = false;
+            this.initWaitList()
+        },
         handleClick(item) {
-            item.isLight = !item.isLight;
+            // item.isLight = !item.isLight;
+            item.isLight = true;
+            this.initWaitList()
         },
         tagClose(cid, tagType) {
             if (tagType == 0) {
@@ -975,5 +1045,16 @@ export default {
 
 .preview-tag {
     transform: scale(0.7);
+}
+.fold {
+    width: 160px;
+    top: 0;
+    right: 0;
+    z-index: 999;
+}
+.new-tag {
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #2A79EE;
 }
 </style>
