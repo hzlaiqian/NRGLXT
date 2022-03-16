@@ -103,9 +103,9 @@ export default {
             margin-right: 12px;
         }
         .close {
-            font-weight: 700;
+
             color: #2A79EE;
-            font-family:PingFang SC;
+            font-family:STHeiti;
             font-size: 16px;
         }
     }

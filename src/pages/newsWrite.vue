@@ -9,7 +9,7 @@
                     </div>
                     <!--                    表单-->
                     <div>
-                        <el-form :rules='rules' ref='formData' label-position='right' :model='form' label-width='100px'>
+                        <el-form :rules='rules' ref='formData' label-position='left' :model='form' label-width='100px'>
                             <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
                                 <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
                                           v-model='form.newsTitle'></el-input>
@@ -59,6 +59,7 @@
                                 <div v-show='isUnfold'>
                                     <el-form-item label='摘要：' style='margin-left: 0'>
                                         <el-input
+
                                             type='textarea'
                                             :rows='4'
                                             maxlength='200'
@@ -374,7 +375,7 @@
                             <div style='margin: 0 5px' v-if='form.newsSource'>|</div>
                             <div>{{ form.newsAuthor }}</div>
                         </div>
-                           <div class='flex pointer flex-wrap'>
+                           <div class='flex pointer flex-wrap' style='margin-top: 12px'>
                                <div  v-for='c in tagList' :key='c.id' class=' preview-tag'>
                                    <tag v-if='c.bColor === "#FFCCCC"' :showClose='false'  @del='tagClose(c.id,1)'  type='tag' :title='c.name ' color='#F56C6C' bg-color='rgba(245, 108, 108, 0.11)'></tag>
                                    <tag v-else-if='c.bColor === "#E8F0FD"' :showClose='false' @del='tagClose(c.id,1)' type='tag' :title='c.name ' color='#2A79EE' bg-color='rgba(42, 121, 238, 0.11)'></tag>
@@ -462,7 +463,7 @@ export default {
                 textColor: '',
                 fill: ''
             },
-            toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample ', ' hr fontsizeselect bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'],
+            toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample hr', 'fontsizeselect bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'],
             editorTextLength: 0,
             editorOption: {
                 modules: {
@@ -1024,9 +1025,6 @@ export default {
 
 }
 
-.el-textarea__inner {
-    padding: 0 !important;
-}
 
 .preview {
     width: 258px;
@@ -1074,8 +1072,15 @@ export default {
 
 .preview-tag {
     zoom: 0.7;
-    margin-top: 5px;
-    margin-right: 5px;
+   margin-bottom: 6px;
+    margin-right: 6px;
+}
+.preview-text {
+    font-size: 12px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #3C4556;
+    line-height: 20px;
 }
 .fold {
     width: 160px;
