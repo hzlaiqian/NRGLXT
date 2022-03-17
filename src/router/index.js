@@ -45,6 +45,22 @@ export default new Router({
 					}
 				},
 				{
+					path: '/newsReview',
+					name: 'newsReview',
+					component: () => import('../pages/newsReview.vue'),
+					meta: {
+						title: '新闻审核'
+					}
+				},
+				{
+					path: '/editNews',
+					name: 'editNews',
+					component: () => import('../pages/editNews.vue'),
+					meta: {
+						title: '新闻编辑'
+					}
+				},
+				{
 					path: '/awaitCheck',
 					component: () => import('../pages/awaitCheck.vue'),
 					meta: {
