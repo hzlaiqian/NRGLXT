@@ -478,7 +478,7 @@ export default {
                 textColor: '',
                 fill: ''
             },
-            toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright  undo redo  code codesample  fontsizeselect link image media table forecolor backcolor fullscreen hr', 'removeformat subscript superscript outdent indent  blockquote  bullist numlist  charmap preview anchor pagebreak insertdatetime  emoticons '],
+            toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright  undo redo  code codesample  fontsizeselect link image media table forecolor backcolor | fullscreen hr removeformat subscript superscript outdent indent  blockquote  bullist numlist  charmap preview anchor pagebreak insertdatetime  emoticons '],
             editorTextLength: 0,
             editorOption: {
                 modules: {
