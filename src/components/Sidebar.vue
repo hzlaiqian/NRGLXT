@@ -52,7 +52,7 @@
 							index: 'newsWrite',
 							title: '新闻录入'
 						}, {
-							index: 'newsCheck',
+							index: 'newsReview',
 							title: '新闻审核'
 						}, {
 							index: 'awaitCheck',

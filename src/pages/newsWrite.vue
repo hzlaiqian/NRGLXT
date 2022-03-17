@@ -346,7 +346,7 @@
                     </div>
                     <div v-for='c in p.child' :key='c.id' style='display: inline-flex;'>
                         <template>
-                            <tag :bg-color='c.isLight ? "#D3D3D3" : ""' :show-add='!c.isLight' @add='handleClick(c)'
+                            <tag  @add='handleClick(c)'
                                  :title='c.name' style='margin:12px 12px 0 0'></tag>
                             <!--                            <el-tag class='pointer' :key='c.id' v-if='c.isLight'-->
                             <!--                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px'}"-->
