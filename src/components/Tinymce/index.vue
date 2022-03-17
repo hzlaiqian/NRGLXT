@@ -252,4 +252,7 @@ export default {
 .editor-upload-btn {
   display: inline-block;
 }
+.mce-fixed-width {
+    width: 80px;
+}
 </style>

@@ -14,7 +14,6 @@ body,
 
 body {
     font-family: 'PingFang SC', "Helvetica Neue", Helvetica, "microsoft yahei", arial, STHeiTi, sans-serif;
-    font-size: 18;
 }
 
 a {
@@ -193,54 +192,6 @@ a {
 }
 
 
-textarea::-webkit-input-placeholder {
-    /* WebKit browsers */
-    /* placeholder颜色  */
-    color: #c5c5c5;
-    /* placeholder字号  */
-    font-size: 14px;
-    padding: 6px 10px;
-}
-
-textarea:-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
-    color: #c5c5c5;
-    /* placeholder字号  */
-    font-size: 14px;
-    padding: 6px 10px;
-}
-
-textarea::-moz-placeholder {
-    /* Mozilla Firefox 19+ */
-    color: #c5c5c5;
-    /* placeholder字号  */
-    font-size: 14px;
-    padding: 6px 10px;
-}
-
-textarea::-ms-input-placeholder {
-    /* Internet Explorer 10+ */
-    color: #c5c5c5;
-    /* placeholder字号  */
-    font-size: 14px;
-    padding: 6px 10px;
-}
-
-textarea {
-    margin: 5px 0;
-    font-size: 12px;
-    color: #000000;
-    /* height: 2.4rem; */
-    /* width: 100%; */
-    padding: 4px 0px;
-    border-color: #dfdfdf;
-    border-radius: 4px;
-    outline: none;
-}
-
-textarea:focus {
-    outline: 1px solid #70B6FF;
-}
 
 /* .el-collapse-item__content{
 		font-family: 'PingFang SC', "Helvetica Neue", Helvetica, "microsoft yahei", arial, STHeiTi, sans-serif;
@@ -307,4 +258,8 @@ textarea:focus {
 }
 .mr-5 {
     margin-right: 5px;
+}
+.newWrite .el-autocomplete-suggestion li.highlighted, .el-autocomplete-suggestion li:hover {
+    color: #2A79EE !important;
+
 }
