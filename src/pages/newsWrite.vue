@@ -1,120 +1,125 @@
 <template>
-    <div class='container newWrite news'>
-        <div style='height: 100%; width: 100%;'>
-            <el-row style='display: inline-flex;width: 100%'>
-                <el-col :span='16' style='margin-right: 60px'>
-                    <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
-                        <div class='bd3 flex-col'></div>
-                        <h3 style='margin-left: 5px'>基本信息</h3>
-                    </div>
-                    <!--                    表单-->
-                    <div>
-                        <el-form :rules='rules' ref='formData' label-position='left' :model='form' label-width='100px'>
-                            <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
-                                <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
-                                          v-model='form.newsTitle'></el-input>
-                            </el-form-item>
-                            <!--                            <el-form-item label='来源：' prop='newsSource'>-->
-                            <!--                                <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
-                            <!--                                          v-model='form.newsSource'></el-input>-->
-                            <!--                            </el-form-item>-->
-                            <!--                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>-->
-                            <!--                                <el-col :span='14'>-->
-                            <!--                                    <el-form-item label='来源：' prop='newsSource'>-->
-                            <!--                                        <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
-                            <!--                                                  v-model='form.newsSource'></el-input>-->
-                            <!--                                    </el-form-item>-->
-                            <!--                                </el-col>-->
-                            <!--                                <el-col class='flex flex-row-reverse' :span='8'>-->
-                            <!--                                    <el-form-item style='width: 100%;' label='发布时间：'>-->
-                            <!--                                        <el-date-picker-->
-                            <!--                                            disabled-->
-                            <!--                                            style='width: 100%'-->
-                            <!--                                            v-model='form.createTime'-->
-                            <!--                                            type='datetime'-->
-                            <!--                                            placeholder='选择日期时间'>-->
-                            <!--                                        </el-date-picker>-->
-                            <!--                                    </el-form-item>-->
-                            <!--                                </el-col>-->
-                            <!--                            </el-row>-->
+    <div class=' newWrite news'>
+        <div  style='height: 100%; width: 100%;'>
+            <el-row style='display: inline-flex;width: 100%;height: 100%'>
+                <el-col :span='16' style='height: 100%;padding: 20px 0 20px 20px'>
+                    <el-scrollbar style='height: 100%;margin-right: 60px;'>
+                        <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
+                            <div class='bd3 flex-col'></div>
+                            <h3 style='margin-left: 5px'>基本信息</h3>
+                        </div>
+                        <!--                    表单-->
+                        <div>
+                            <el-form :rules='rules' ref='formData' label-position='left' :model='form' label-width='77px'>
+                                <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
+                                    <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
+                                              v-model='form.newsTitle'></el-input>
+                                </el-form-item>
+                                <!--                            <el-form-item label='来源：' prop='newsSource'>-->
+                                <!--                                <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
+                                <!--                                          v-model='form.newsSource'></el-input>-->
+                                <!--                            </el-form-item>-->
+                                <!--                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>-->
+                                <!--                                <el-col :span='14'>-->
+                                <!--                                    <el-form-item label='来源：' prop='newsSource'>-->
+                                <!--                                        <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
+                                <!--                                                  v-model='form.newsSource'></el-input>-->
+                                <!--                                    </el-form-item>-->
+                                <!--                                </el-col>-->
+                                <!--                                <el-col class='flex flex-row-reverse' :span='8'>-->
+                                <!--                                    <el-form-item style='width: 100%;' label='发布时间：'>-->
+                                <!--                                        <el-date-picker-->
+                                <!--                                            disabled-->
+                                <!--                                            style='width: 100%'-->
+                                <!--                                            v-model='form.createTime'-->
+                                <!--                                            type='datetime'-->
+                                <!--                                            placeholder='选择日期时间'>-->
+                                <!--                                        </el-date-picker>-->
+                                <!--                                    </el-form-item>-->
+                                <!--                                </el-col>-->
+                                <!--                            </el-row>-->
 
-                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>
-                                <el-col :span='10'>
-                                    <el-form-item label='来源：' prop='newsSource'>
-                                        <el-input style='width: 100%;' placeholder='请输入来源' show-word-limit clearable
-                                                  maxlength='20'
-                                                  v-model='form.newsSource'></el-input>
-                                    </el-form-item>
+                                <el-row style='margin-bottom: 0' type='flex' justify='space-between'>
+                                    <el-col :span='10'>
+                                        <el-form-item label='来源：' prop='newsSource'>
+                                            <el-input style='width: 100%;' placeholder='请输入来源' show-word-limit clearable
+                                                      maxlength='20'
+                                                      v-model='form.newsSource'></el-input>
+                                        </el-form-item>
 
-                                </el-col>
-                                <el-col class='flex flex-row-reverse' :span='12'>
-                                    <!--                                                                        <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>-->
-                                    <!--                                                                            <span>{{isUnfold ? '收起信息' :'展开信息'}}</span>-->
-                                    <!--                                                                            <i :class='{"is-active": isUnfold}'-->
-                                    <!--                                                                               class='el-collapse-item__arrow el-icon-arrow-right '></i>-->
-                                    <!--                                                                        </div>-->
-                                </el-col>
-                            </el-row>
-                            <el-collapse-transition>
-                                <div v-show='isUnfold'>
-                                    <el-form-item label-width='89px' label='摘要：' style='margin-left: 11px'>
-                                        <el-input
+                                    </el-col>
+                                    <el-col class='flex flex-row-reverse' :span='12'>
+                                        <!--                                                                        <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>-->
+                                        <!--                                                                            <span>{{isUnfold ? '收起信息' :'展开信息'}}</span>-->
+                                        <!--                                                                            <i :class='{"is-active": isUnfold}'-->
+                                        <!--                                                                               class='el-collapse-item__arrow el-icon-arrow-right '></i>-->
+                                        <!--                                                                        </div>-->
+                                    </el-col>
+                                </el-row>
+                                <el-collapse-transition>
+                                    <div v-show='isUnfold'>
+                                        <el-form-item label-width='67px' label='摘要：' style='margin-left: 11px'>
+                                            <el-input
 
-                                            type='textarea'
-                                            :rows='4'
-                                            maxlength='200'
-                                            show-word-limit
-                                            v-model='form.newsDesc'
-                                            placeholder='请输入摘要'>
-                                        </el-input>
-                                    </el-form-item>
+                                                type='textarea'
+                                                :rows='4'
+                                                maxlength='200'
+                                                show-word-limit
+                                                v-model='form.newsDesc'
+                                                placeholder='请输入摘要'>
+                                            </el-input>
+                                        </el-form-item>
 
-                                    <el-row type='flex' justify='space-between'>
-                                        <el-col :span='10'>
-                                            <el-form-item label='作者：' label-width='89px'
-                                                          style='margin-left: 11px;margin-bottom: 0'>
-                                                <el-input style='width: 100%' placeholder='请输入作者'
-                                                          v-model='form.newsAuthor'
-                                                          clearable></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                        <el-col :span='12'>
-                                            <el-form-item style='margin-bottom: 0' label='来源地址：'>
-                                                <el-input placeholder='请输入来源地址' v-model='form.sourceAddress'
-                                                          clearable></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
+                                        <el-row type='flex' justify='space-between'>
+                                            <el-col :span='10'>
+                                                <el-form-item label='作者：' label-width='67px'
+                                                              style='margin-left: 11px;margin-bottom: 0'>
+                                                    <el-input style='width: 100%' placeholder='请输入作者'
+                                                              v-model='form.newsAuthor'
+                                                              clearable></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span='12'>
+                                                <el-form-item label-width='90px' style='margin-bottom: 0' label='来源地址：'>
+                                                    <el-input placeholder='请输入来源地址' v-model='form.sourceAddress'
+                                                              clearable></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
 
-                                </div>
-                            </el-collapse-transition>
-
-                            <el-form-item label='正文：' prop='newsContext'>
-                                <div class='editor-box relative'>
-                                    <div class='absolute fold'>
-                                        <div class='flex space-between'>
-                                            <div class='pointer color-1683ff'>一键排版</div>
-                                            <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
-                                                <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
-                                                <!--                                        <i :class='{"is-active": isUnfold}'-->
-                                                <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
-                                                <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
-                                                   class='el-collapse-item__arrow  '></i>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <!--                                    <quill-editor id='quill-editor' v-model='form.newsContext' ref='myQuillEditor'-->
-                                    <!--                                                  :options='editorOption'-->
-                                    <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
-                                    <!--                                    </quill-editor>-->
-                                    <tinymce v-model='form.newsContext' :height='450' />
-                                    <!--                                    <span class='absolute'-->
-                                    <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
-                                    <!--                                        }}字</span>-->
-                                </div>
-                            </el-form-item>
-                        </el-form>
-                    </div>
+                                </el-collapse-transition>
+
+                                <el-form-item class='context' label='正文：' prop='newsContext'>
+                                    <div class='flex' style='flex-direction: row-reverse'>
+                                        <div style='margin-left: 20px' class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
+                                            <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
+                                            <!--                                        <i :class='{"is-active": isUnfold}'-->
+                                            <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
+                                            <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
+                                               class='el-collapse-item__arrow  '></i>
+                                        </div>
+                                        <div class='pointer color-1683ff'>一键排版</div>
+
+                                    </div>
+                                    <div class='editor-box relative'>
+                                        <div class='absolute fold'>
+
+                                        </div>
+                                        <!--                                    <quill-editor id='quill-editor' v-model='form.newsContext' ref='myQuillEditor'-->
+                                        <!--                                                  :options='editorOption'-->
+                                        <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
+                                        <!--                                    </quill-editor>-->
+                                        <tinymce v-model='form.newsContext' :height='450' />
+                                        <!--                                    <span class='absolute'-->
+                                        <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
+                                        <!--                                        }}字</span>-->
+                                    </div>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </el-scrollbar>
+
                     <!--                    <div class='grid-content bg-purple'-->
                     <!--                         style='width: 100%; display: flex;align-items: center;margin: 5px 0px;'>-->
                     <!--                        <div style='width:auto;align-self: center;text-align: center;min-width: 50px;'>-->
@@ -157,9 +162,8 @@
                     <!--                        </el-col>-->
                     <!--                    </div>-->
                 </el-col>
-                <el-col :span='8'>
-                    <div class='grid-content bg-purple'>
-                        <el-scrollbar style='width: 100%;height: auto;'>
+                <el-col :span='8' style='height: 100%;padding: 20px 20px 20px 0' class='flex flex-column'>
+                        <el-scrollbar class='grid-content bg-purple' style='width: 100%;height: auto;'>
                             <div class='grid-content bg-purple'>
                                 <div class='grid-content bg-purple'
                                      style='align-items: center;display: flex;'>
@@ -205,7 +209,7 @@
                                     </el-row>
                                 </div>
                                 <div v-for='p in recommendList' :key='p.id' class='grid-content bg-purple'
-                                     style='width: 100%; display: flex;align-items: center;margin: 5px 0px;'>
+                                     style='width: 100%; display: flex;align-items: center;'>
                                     <div style='width:auto;text-align: center;min-width: 60px;margin-right: 5px'>
                                         <h5>{{ p.name }}:</h5>
                                     </div>
@@ -216,24 +220,24 @@
                                         <div slot='content'> {{ c.name }}</div>
                                         <div>
 
-                                            <div v-if='p.name === "A股公司"'>
+<!--                                            <div v-if='p.name === "A股公司"'>-->
                                                 <transition mode='out-in' name='el-zoom-in-center' appear>
                                                     <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '
-                                                         color='#F56C6C' bg-color='rgba(245, 108, 108, 0.11)'></tag>
+                                                         :color='c.color' :bg-color='c.bColor'></tag>
                                                 </transition>
-                                            </div>
-                                            <div v-else-if='p.name === "二级行业"'>
-                                                <transition mode='out-in' name='el-zoom-in-center' appear>
-                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '
-                                                         color='#2A79EE' bg-color='rgba(42, 121, 238, 0.11)'></tag>
-                                                </transition>
-                                            </div>
-                                            <div v-else>
-                                                <transition mode='out-in' name='el-zoom-in-center' appear>
-                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '
-                                                         color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>
-                                                </transition>
-                                            </div>
+<!--                                            </div>-->
+<!--                                            <div v-else-if='p.name === "二级行业"'>-->
+<!--                                                <transition mode='out-in' name='el-zoom-in-center' appear>-->
+<!--                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '-->
+<!--                                                         color='#2A79EE' bg-color='rgba(42, 121, 238, 0.11)'></tag>-->
+<!--                                                </transition>-->
+<!--                                            </div>-->
+<!--                                            <div v-else>-->
+<!--                                                <transition mode='out-in' name='el-zoom-in-center' appear>-->
+<!--                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '-->
+<!--                                                         color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>-->
+<!--                                                </transition>-->
+<!--                                            </div>-->
                                             <!--                                            <el-tag size='small'-->
                                             <!--                                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'margin': '5px 5px'}"-->
                                             <!--                                                    @close='tagClose(c.id,1)' @click='handleClick(c)' closable>-->
@@ -305,7 +309,6 @@
                                 <!--                                </div>-->
                             </div>
                         </el-scrollbar>
-                    </div>
 
                     <div class='grid-content bg-purple' style='margin-top: 30px'>
                         <el-row :gutter='20'>
@@ -392,13 +395,13 @@
                         </div>
                         <div class='flex pointer flex-wrap' style='margin-top: 12px'>
                             <div v-for='c in tagList' :key='c.id' class=' preview-tag'>
-                                <tag v-if='c.bColor === "#FFCCCC"' :showClose='false' @del='tagClose(c.id,1)' type='tag'
-                                     :title='c.name ' color='#F56C6C' bg-color='rgba(245, 108, 108, 0.11)'></tag>
-                                <tag v-else-if='c.bColor === "#E8F0FD"' :showClose='false' @del='tagClose(c.id,1)'
-                                     type='tag' :title='c.name ' color='#2A79EE'
-                                     bg-color='rgba(42, 121, 238, 0.11)'></tag>
-                                <tag v-else :showClose='false' @del='tagClose(c.id,1)' type='tag' :title='c.name '
-                                     color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>
+                                <tag  :showClose='false' @del='tagClose(c.id,1)' type='tag'
+                                     :title='c.name ' :color='c.color' :bg-color='c.bColor'></tag>
+<!--                                <tag v-else-if='c.bColor === "#E8F0FD"' :showClose='false' @del='tagClose(c.id,1)'-->
+<!--                                     type='tag' :title='c.name ' color='#2A79EE'-->
+<!--                                     bg-color='rgba(42, 121, 238, 0.11)'></tag>-->
+<!--                                <tag v-else :showClose='false' @del='tagClose(c.id,1)' type='tag' :title='c.name '-->
+<!--                                     color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>-->
 
                             </div>
                         </div>
@@ -974,6 +977,7 @@ export default {
 </script>
 
 <style scoped>
+
 .el-row {
     margin-bottom: 20px;
 
@@ -1148,5 +1152,15 @@ export default {
     font-weight: 400;
     color: #3C4556;
     line-height: 16px;
+}
+.newWrite {
+    height: 100%;
+    background-color: #fff;
+}
+
+</style>
+<style>
+.context .el-form-item__content {
+    margin-top: -20px;
 }
 </style>

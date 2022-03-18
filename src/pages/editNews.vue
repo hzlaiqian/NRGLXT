@@ -1,96 +1,101 @@
 <template>
-    <div class='container editNews news'>
+    <div class='editNews news'>
         <div style='height: 100%; width: 100%;'>
             <el-row style='display: inline-flex;width: 100%;height: 100%'>
-                <el-col :span='16' style='margin-right: 60px'>
-                    <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
-                        <div class='bd3 flex-col'></div>
-                        <h3 style='margin-left: 5px'>基本信息</h3>
-                    </div>
-                    <!--                    表单-->
-                    <div>
-                        <el-form :rules='rules' ref='formData' label-position='left' :model='form' label-width='100px'>
-                            <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
-                                <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
-                                          v-model='form.newsTitle'></el-input>
-                            </el-form-item>
-                            <el-row type='flex' justify='space-between'>
-                                <el-col :span='10'>
-                                    <el-form-item label='来源：' prop='newsSource'>
-                                        <el-input style='width: 100%;' placeholder='请输入来源' show-word-limit clearable
-                                                  maxlength='20'
-                                                  v-model='form.newsSource'></el-input>
-                                    </el-form-item>
+                <el-col :span='16' style='height: 100%;padding: 20px 0 20px 20px'>
+                    <el-scrollbar style='height: 100%;margin-right: 60px;'>
+                        <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
+                            <div class='bd3 flex-col'></div>
+                            <h3 style='margin-left: 5px'>基本信息</h3>
+                        </div>
+                        <!--                    表单-->
+                        <div>
+                            <el-form :rules='rules' ref='formData' label-position='left' :model='article' label-width='77px'>
+                                <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
+                                    <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
+                                              v-model='article.newsTitle'></el-input>
+                                </el-form-item>
+                                <el-row type='flex' justify='space-between'>
+                                    <el-col :span='10'>
+                                        <el-form-item label='来源：' prop='newsSource'>
+                                            <el-input style='width: 100%;' placeholder='请输入来源' show-word-limit clearable
+                                                      maxlength='20'
+                                                      v-model='article.newsSource'></el-input>
+                                        </el-form-item>
 
-                                </el-col>
-                                <el-col :span='12'>
-                                    <el-form-item label='原网时间：'>
-                                        <el-date-picker
-                                            disabled
-                                            v-model='form.createTime'
-                                            prefix-icon=' '
-                                            type='datetime'
-                                            placeholder='选择日期时间'>
-                                        </el-date-picker>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-collapse-transition>
-                                <div v-show='isUnfold'>
-                                    <el-form-item label-width='89px' label='摘要：' style='margin-left: 11px'>
-                                        <el-input
+                                    </el-col>
+                                    <el-col :span='12'>
+                                        <el-form-item label-width='90px' label='发布时间：'>
+                                            <el-date-picker
+                                                style='width: 100%'
+                                                disabled
+                                                v-model='article.inputTime'
+                                                prefix-icon=' '
+                                                type='datetime'
+                                                placeholder='选择日期时间'>
+                                            </el-date-picker>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-collapse-transition>
+                                    <div v-show='isUnfold'>
+                                        <el-form-item label-width='67px' label='摘要：' style='margin-left: 11px'>
+                                            <el-input
 
-                                            type='textarea'
-                                            :rows='4'
-                                            maxlength='200'
-                                            show-word-limit
-                                            v-model='form.newsDesc'
-                                            placeholder='请输入摘要'>
-                                        </el-input>
-                                    </el-form-item>
+                                                type='textarea'
+                                                :rows='4'
+                                                maxlength='200'
+                                                show-word-limit
+                                                v-model='article.desc'
+                                                placeholder='请输入摘要'>
+                                            </el-input>
+                                        </el-form-item>
 
-                                    <el-row type='flex' justify='space-between'>
-                                        <el-col :span='10'>
-                                            <el-form-item label='作者：' label-width='89px' style='margin-left: 11px'>
-                                                <el-input style='width: 100%' placeholder='请输入作者'
-                                                          v-model='form.newsAuthor'
-                                                          clearable></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                        <el-col :span='12'>
-                                            <el-form-item label='来源地址：'>
-                                                <el-input placeholder='请输入来源地址' v-model='form.sourceAddress'
-                                                          clearable></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
+                                        <el-row type='flex' justify='space-between'>
+                                            <el-col :span='10'>
+                                                <el-form-item label='作者：' label-width='67px' style='margin-left: 11px'>
+                                                    <el-input style='width: 100%' placeholder='请输入作者'
+                                                              v-model='article.author'
+                                                              clearable></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span='12'>
+                                                <el-form-item label-width='90px' label='来源地址：'>
+                                                    <el-input placeholder='请输入来源地址' v-model='article.sourceAddress'
+                                                              clearable></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
 
-                                </div>
-                            </el-collapse-transition>
-
-                            <el-form-item label='正文：' prop='newsContext'>
-                                <div class='editor-box relative'>
-                                    <div class='absolute fold'>
-                                        <div class='flex space-between'>
-                                            <div class='pointer color-1683ff'>一键排版</div>
-                                            <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
-                                                <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
-                                                <!--                                        <i :class='{"is-active": isUnfold}'-->
-                                                <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
-                                                <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
-                                                   class='el-collapse-item__arrow  '></i>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <tinymce v-model='form.newsContext' :height='450' />
-                                </div>
-                            </el-form-item>
-                        </el-form>
-                    </div>
+                                </el-collapse-transition>
+
+                                <el-form-item class='context' label='正文：' prop='newsContext'>
+                                    <div class='flex' style='flex-direction: row-reverse'>
+                                        <div style='margin-left: 20px' class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
+                                            <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
+                                            <!--                                        <i :class='{"is-active": isUnfold}'-->
+                                            <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
+                                            <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
+                                               class='el-collapse-item__arrow  '></i>
+                                        </div>
+                                        <div class='pointer color-1683ff'>一键排版</div>
+
+                                    </div>
+                                    <div class='editor-box relative'>
+                                        <div class='absolute fold'>
+
+                                        </div>
+                                        <tinymce :value='article.newsContext' :height='450' />
+                                    </div>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </el-scrollbar>
+
                 </el-col>
-                <el-col :span='8' class='flex flex-column'>
-                    <div class='grid-content bg-purple' style='overflow-y: auto; max-height: calc(100% - 324px);'>
-                        <el-scrollbar style='width: 100%;height: auto;'>
+                <el-col :span='8' class='flex flex-column' style='height: 100%;padding: 20px 20px 20px 0'>
+                        <el-scrollbar class='grid-content bg-purple' style='width: 100%;height: auto;max-height: calc(100% - 255px);'>
                             <div class='grid-content bg-purple'>
                                 <div class='grid-content bg-purple'
                                      style='align-items: center;display: flex;'>
@@ -99,7 +104,7 @@
                                 </div>
                                 <el-radio-group class='mt-20' @change='radioGroupChange'
                                                 :text-color='radioGroupStyle.textColor'
-                                                :fill='radioGroupStyle.fill' v-model='form.value'>
+                                                :fill='radioGroupStyle.fill' v-model='article.value'>
                                     <el-radio-button v-for='item in moodList' :key='item.id'
                                                      :label='item.name'></el-radio-button>
                                 </el-radio-group>
@@ -122,7 +127,7 @@
                                     </el-row>
                                 </div>
                                 <div v-for='p in recommendList' :key='p.id' class='grid-content bg-purple'
-                                     style='width: 100%; display: flex;align-items: center;margin: 5px 0px;'>
+                                     style='width: 100%; display: flex;align-items: center;'>
                                     <div style='width:auto;text-align: center;min-width: 60px;margin-right: 5px'>
                                         <h5>{{ p.name }}:</h5>
                                     </div>
@@ -155,7 +160,7 @@
                                     </el-tooltip>
                                 </div>
                                 <div class='grid-content bg-purple'
-                                     style='align-items: center;margin: 5px 0px;display: flex;'>
+                                     style='align-items: center;display: flex;'>
                                     <el-autocomplete class='searcch' v-model='txtSearch'
                                                      :fetch-suggestions='showRecommend' placeholder='请输入内容'
                                                      @blur='inputFocus = false'
@@ -195,13 +200,9 @@
                                         </el-tag>
                                     </div>
                                 </div>
-                                <!--                                <div style='padding: 20px 0px; '>-->
-                                <!--                                    <div class='tableTitle'></div>-->
-                                <!--                                </div>-->
                             </div>
 
                         </el-scrollbar>
-                    </div>
                     <div class='flex flex-column' style='height: 234px'>
                         <div class='flex items-center' style='padding: 20px 0;'>
                             <div class='tableTitle'></div>
@@ -210,7 +211,7 @@
                         </div>
                         <div class='grid-content bg-purple'>
                             <div class='grid-content bg-purple'
-                                 style='align-items: center;margin: 5px 0px;display: flex;'>
+                                 style='align-items: center;display: flex;'>
                                 <div class='bd3 flex-col'></div>
                                 <h4 class='ml-5'>不通过理由：</h4>
                             </div>
@@ -218,10 +219,14 @@
                                 <div class='flex flex-wrap'>
                                     <div v-for='item in noPassList' :key='item.id'>
                                         <transition mode='out-in' name='el-zoom-in-center' appear>
-                                            <tag :showClose='false' bg-color='rgba(245, 108, 108, 0.11)'
+                                            <tag v-if='item.isLight' @click='item.isLight = !item.isLight' :showClose='false' bg-color='rgba(245, 108, 108, 0.11)'
                                                  color='rgba(245, 108, 108, 1)' @del='tagClose(item.id,0)'
-                                                 style='margin:12px 12px 0 0'
-                                                 type='tag' :title='item.name'></tag>
+                                                 style='margin:12px 12px 0 0;border: 1px solid rgba(255,255,255,0);'
+                                                 type='commonTag' :title='item.name'></tag>
+                                            <tag v-else @click='item.isLight = !item.isLight' bg-color='rgba(234, 237, 247, 0.1)'
+                                                 color='rgba(60, 69, 86, 1)' @del='tagClose(item.id,0)'
+                                                 style='margin:12px 12px 0 0;border: 1px solid #EAEDF7;'
+                                                 type='commonTag' :title='item.name'></tag>
                                         </transition>
                                     </div>
                                 </div>
@@ -292,13 +297,13 @@
                     </div>
                     <div class='preview-content'>
                         <div class='preview-title mt-20'>
-                            {{ form.newsTitle }}
+                            {{ article.newsTitle }}
                         </div>
                         <div class='flex preview-author' style='margin-top: 8px'>
-                            <div style='width: 73px;height: 14px;overflow: hidden'>{{ form.createTime }}</div>
-                            <div>{{ form.newsSource }}</div>
-                            <div style='margin: 0 5px' v-if='form.newsSource'>|</div>
-                            <div>{{ form.newsAuthor }}</div>
+                            <div style='width: 73px;height: 14px;overflow: hidden'>{{ article.inputTime }}</div>
+                            <div>{{ article.newsSource }}</div>
+                            <div style='margin: 0 5px' v-if='article.newsSource'>|</div>
+                            <div>{{ article.author }}</div>
                         </div>
                         <div class='flex pointer flex-wrap' style='margin-top: 12px'>
                             <div v-for='c in tagList' :key='c.id' class=' preview-tag'>
@@ -312,7 +317,7 @@
 
                             </div>
                         </div>
-                        <div class='preview-text' style='margin-top: 10px' v-html='form.newsContext'>
+                        <div class='preview-text' style='margin-top: 10px' v-html='article.newsContext'>
                         </div>
                     </div>
                 </div>
@@ -335,7 +340,7 @@ import {
     getLabelByList,
 
     getConceptByName,
-    getConceptByList
+    getConceptByList, getWaitByID
 
 } from '../api/getData.js';
 import Tinymce from '@/components/Tinymce';
@@ -353,22 +358,21 @@ export default {
             inputTime: '',
             show: [],
             isLightTagArr: [],
-            form: {
+            article: {
                 newsTitle: '',
                 newsContext: '',
                 newsSource: '',
-                createTime: dayjs(new Date).format('YYYY-MM-DD HH:mm:ss'),
-                value: ''
+                inputTime: '',
+                author: '',
+                desc: '',
+                sourceAddress: ''
             },
             isUnfold: false,
             moodList: [],
             recommendList: [],
             tagList: [],
             colList: [],
-            noPassList: [{
-                name: '合规敏感',
-                id: 1
-            }],
+            noPassList: [],
             rules: {
                 newsTitle: [{ required: true, message: '请输入标题', trigger: 'blur' }],
                 newsSource: [{ required: true, message: '请输入来源', trigger: 'blur' }],
@@ -378,28 +382,59 @@ export default {
             radioGroupStyle: {
                 textColor: '',
                 fill: ''
-            }
+            },
+            articleID: ''
         };
     },
     created() {
+        this.articleID = Number(this.$route.query.articleID);
         this.initData();
+
+
+        console.log(this.articleID)
     },
     components: {
         Tinymce, Tag
     },
     computed: {
-        editor() {
-            return this.$refs.myQuillEditor.quill;
-        }
+
     },
-    watch: {
-        content() {
-            // 富文本内容长度
-            let a = this.quill.getLength() - 1;
-            console.log(a);
-        }
+    activated() {
+        this.articleID = Number(this.$route.query.articleID);
+        this.getArticle()
+    },
+    beforeRouteUpdate(to, from, next) {
+        console.log(to)
+        this.articleID = Number(to.query.articleID)
+        this.getArticle()
+        next();
     },
     methods: {
+        async getArticle() {
+            // 获取文章详情
+            const data = await getWaitByID({
+                id: this.articleID
+            })
+            if (data.code === 200) {
+                this.$nextTick(() =>{
+                    this.article.newsTitle = data.data.title
+                    this.article.newsSource = data.data.source
+                    this.article.author = data.data.author
+                    this.article.desc = data.data.desc
+                    this.article.sourceAddress = data.data.sourceAddress
+                    this.article.inputTime = data.data.inputTime
+                    this.article.newsContext = data.data.context
+                    });
+
+            } else {
+                this.$notify.error({
+                    title: '错误',
+                    message: data.msg
+                });
+            }
+
+            console.log(data)
+        },
         openDialogPreview() {
             this.$refs['formData'].validate((valid) => {
                 if (!valid) return false;
@@ -429,19 +464,22 @@ export default {
         },
         async initData() {
             this.dialogVisible = false;
-
             this.newsTitle = '';
             this.newsContext = '';
             this.newsSource = '';
-
+            this.inputTime = '';
+            this.author = '';
+            this.desc = '';
+            this.sourceAddress = '';
             this.queryList = [];
             this.waitList = [];
-
             this.moodList = [];
             this.recommendList = [];
             this.colList = [];
             await this.getMood();
             await this.getColumn();
+            await this.gatPassList()
+            await this.getArticle()
         },
         onEditorChange(event) {
             this.editorTextLength = event.quill.getLength() - 1;
@@ -630,11 +668,22 @@ export default {
             console.log(this.colList);
         },
         async getMood() {
-            var res = await getChildList({
+            let res = await getChildList({
                 pid: 1
             });
+            console.log(res)
             if (res != null && res.code == 200) {
                 this.initList(res.data, this.moodList);
+            } else {
+                this.moodList = [];
+            }
+        },
+        async gatPassList () {
+            let res = await getChildList({
+                pid: 4
+            });
+            if (res != null && res.code == 200) {
+                this.initList(res.data, this.noPassList);
             } else {
                 this.moodList = [];
             }
@@ -750,7 +799,7 @@ export default {
                     });
                 }
             });
-
+console.log(this.article)
             this.dialogVisible = false;
         },
         async showDialog() {
@@ -817,8 +866,10 @@ export default {
 
 <style scoped lang='scss'>
 .editNews {
+    height: 100%;
+    background-color: #fff;
     .el-row {
-        margin-bottom: 20px;
+        //margin-bottom: 20px;
 
     }
 
@@ -1007,4 +1058,8 @@ export default {
         padding-left: 15px;
     }
 }
+
+ .context .el-form-item__content {
+     margin-top: -20px;
+ }
 </style>

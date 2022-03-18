@@ -84,10 +84,11 @@ export default {
     },
     watch: {
         value(val) {
-            if (!this.hasChange && this.hasInit) {
-                this.$nextTick(() =>
-                    window.tinymce.get(this.tinymceId).setContent(val || ''));
-            }
+            // if (!this.hasChange && this.hasInit) {
+            //
+            // }
+            this.$nextTick(() =>
+                window.tinymce.get(this.tinymceId).setContent(val || ''));
         },
         language() {
             this.destroyTinymce();
@@ -130,7 +131,7 @@ export default {
                 height: this.height,
                 body_class: 'panel-body ',
                 object_resizing: false,
-                toolbar: 'searchreplace bold italic underline strikethrough alignleft aligncenter alignright  undo redo  code codesample  fontsizeselect link image media table forecolor backcolor  fullscreen | hr removeformat subscript superscript outdent indent  blockquote  bullist numlist  charmap preview anchor pagebreak insertdatetime  emoticons ',
+                toolbar: 'searchreplace bold italic underline strikethrough alignleft aligncenter alignright  undo redo  code codesample  fontsizeselect | link image media table forecolor backcolor  fullscreen | hr removeformat subscript superscript outdent indent  blockquote  bullist numlist  charmap preview anchor pagebreak insertdatetime  emoticons ',
                 menubar: this.menubar,
                 plugins: plugins,
                 end_container_on_empty_block: true,

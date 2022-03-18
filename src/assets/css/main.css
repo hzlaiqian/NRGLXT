@@ -281,5 +281,8 @@ a {
     padding: 20px;
 }
 .el-textarea__inner,.el-input__inner {
-    font-family: Fangsong, PingFangSC-Regular, PingFang SC;
+    font-family: SimSun, Microsoft Yahei, PingFangSC-Regular, PingFang SC, serif;
+}
+.dialog .el-dialog__body {
+    padding-top: 0 ;
 }

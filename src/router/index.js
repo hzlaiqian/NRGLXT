@@ -30,13 +30,13 @@ export default new Router({
 						title: '新闻录入'
 					}
 				},
-				{
-					path: '/newsCheck',
-					component: () => import('../pages/newsCheck.vue'),
-					meta: {
-						title: '新闻审核'
-					}
-				},
+				// {
+				// 	path: '/newsCheck',
+				// 	component: () => import('../pages/newsCheck.vue'),
+				// 	meta: {
+				// 		title: '新闻审核'
+				// 	}
+				// },
 				{
 					path: '/newsEdit',
 					component: () => import('../pages/newsEdit.vue'),

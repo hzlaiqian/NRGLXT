@@ -13,7 +13,7 @@
                 {{ title }}
             </div>
             <div>
-                <span @click='del' class='close'>x</span>
+                <div @click='del' class='close'>x</div>
             </div>
         </div>
         <div v-if='type === "tag"' class='isClose-tag' :style='"background-color:" + bgColor '>
@@ -21,7 +21,12 @@
                 {{ title }}
             </div>
             <div v-if='showClose'>
-                <span :style='"color:" + color ' @click='del' class='close'>x</span>
+                <div :style='"color:" + color ' @click='del' class='close'>x</div>
+            </div>
+        </div>
+        <div v-if='type === "commonTag"' @click='click' class='common-tag' :style='"background-color:" + bgColor '>
+            <div class='title' :style='"color:" + color '>
+                {{ title }}
             </div>
         </div>
     </div>
@@ -62,6 +67,9 @@ export default {
         },
         del() {
             this.$emit('del');
+        },
+        click() {
+            this.$emit('click');
         }
     }
 };
@@ -111,10 +119,30 @@ export default {
         }
 
         .close {
-
+            font-family: SimSun, Microsoft Yahei, PingFangSC-Regular, PingFang SC, serif;
             color: #2A79EE;
-            font-family: STHeiti;
             font-size: 18px;
+            height: 16px;
+            line-height: 14px;
+        }
+    }
+    .common-tag {
+        height: 24px;
+        border-radius: 2px;
+        display: flex;
+        background-color: rgba(42, 121, 238, 0.11);
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        .title {
+            font-size: 12px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #2A79EE;
+            line-height: 12px;
+            padding: 6px 8px;
         }
     }
 }
