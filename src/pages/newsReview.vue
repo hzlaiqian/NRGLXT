@@ -229,10 +229,14 @@
                                 <div class='flex flex-wrap'>
                                     <div v-for='item in noPassList' :key='item.id'>
                                         <transition mode='out-in' name='el-zoom-in-center' appear>
-                                            <tag :showClose='false' bg-color='rgba(245, 108, 108, 0.11)'
+                                            <tag v-if='item.isLight' @click='item.isLight = !item.isLight' :showClose='false' bg-color='rgba(245, 108, 108, 0.11)'
                                                  color='rgba(245, 108, 108, 1)' @del='tagClose(item.id,0)'
-                                                 style='margin:12px 12px 0 0'
-                                                 type='tag' :title='item.name'></tag>
+                                                 style='margin:12px 12px 0 0;border: 1px solid rgba(255,255,255,0);'
+                                                 type='commonTag' :title='item.name'></tag>
+                                            <tag v-else @click='item.isLight = !item.isLight' bg-color='rgba(234, 237, 247, 0.1)'
+                                                 color='rgba(60, 69, 86, 1)' @del='tagClose(item.id,0)'
+                                                 style='margin:12px 12px 0 0;border: 1px solid #EAEDF7;'
+                                                 type='commonTag' :title='item.name'></tag>
                                         </transition>
                                     </div>
                                 </div>
@@ -377,10 +381,7 @@ export default {
             recommendList: [],
             tagList: [],
             colList: [],
-            noPassList: [{
-                name: '合规敏感',
-                id: 1
-            }],
+            noPassList: [],
             rules: {
                 newsTitle: [{ required: true, message: '请输入标题', trigger: 'blur' }],
                 newsSource: [{ required: true, message: '请输入来源', trigger: 'blur' }],
@@ -454,6 +455,17 @@ export default {
             this.colList = [];
             await this.getMood();
             await this.getColumn();
+            await this.gatPassList()
+        },
+        async gatPassList () {
+            let res = await getChildList({
+                pid: 4
+            });
+            if (res != null && res.code == 200) {
+                this.initList(res.data, this.noPassList);
+            } else {
+                this.moodList = [];
+            }
         },
         onEditorChange(event) {
             this.editorTextLength = event.quill.getLength() - 1;
@@ -1044,6 +1056,11 @@ export default {
 .editNews {
     .el-input--prefix .el-input__inner {
         padding-left: 15px;
+    }
+    .el-scrollbar .el-scrollbar__wrap {
+        overflow: auto;
+        padding-right: 17px;
+        padding-bottom: 17px;
     }
 }
 </style>

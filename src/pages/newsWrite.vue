@@ -292,7 +292,7 @@
                                         <div v-for='item in colList' :key='item.id'>
                                             <transition mode='out-in' name='el-zoom-in-center' appear>
                                                 <tag @del='tagClose(item.id,0)' style='margin:12px 12px 0 0'
-                                                     type='closeTag' :title='item.name'></tag>
+                                                     type='closeTag' color='#2A79EE' :title='item.name'></tag>
                                             </transition>
                                         </div>
 
@@ -335,7 +335,7 @@
                     <div class='flex flex-wrap'>
                         <div v-for='item in isLightTagArr' :key='item.id'>
                             <transition mode='out-in' name='el-zoom-in-center' appear>
-                                <tag @del='delHandleClick(item)' style='margin:12px 12px 0 0' type='closeTag'
+                                <tag @del='delHandleClick(item)' style='margin:12px 12px 0 0' type='closeTag' color='#2A79EE'
                                      :title='item.name'></tag>
                             </transition>
                         </div>
@@ -1160,7 +1160,12 @@ export default {
 
 </style>
 <style>
-.context .el-form-item__content {
+.newWrite .context .el-form-item__content {
     margin-top: -20px;
+}
+.newWrite .el-scrollbar .el-scrollbar__wrap {
+    overflow: auto;
+    padding-right: 17px;
+    padding-bottom: 17px;
 }
 </style>

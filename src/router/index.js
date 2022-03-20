@@ -115,6 +115,12 @@ export default new Router({
 					meta: {
 						title: 'demo'
 					}
+				},{
+					path: '/mediaConfiguration',
+					component: () => import('../pages/information/mediaConfiguration.vue'),
+					meta: {
+						title: '媒体配置'
+					}
 				}
 			]
 		},

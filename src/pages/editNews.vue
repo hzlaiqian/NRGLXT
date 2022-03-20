@@ -1057,6 +1057,11 @@ console.log(this.article)
     .el-input--prefix .el-input__inner {
         padding-left: 15px;
     }
+    .el-scrollbar .el-scrollbar__wrap {
+        overflow: auto;
+        padding-right: 17px;
+        padding-bottom: 17px;
+    }
 }
 
  .context .el-form-item__content {
