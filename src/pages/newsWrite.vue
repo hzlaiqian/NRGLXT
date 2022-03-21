@@ -99,7 +99,7 @@
                                             <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
                                                class='el-collapse-item__arrow  '></i>
                                         </div>
-                                        <div class='pointer color-1683ff'>一键排版</div>
+                                        <div class='pointer color-1683ff' @click='aKeyLayout'>一键排版</div>
 
                                     </div>
                                     <div class='editor-box relative'>
@@ -110,7 +110,7 @@
                                         <!--                                                  :options='editorOption'-->
                                         <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
                                         <!--                                    </quill-editor>-->
-                                        <tinymce v-model='form.newsContext' :height='450' />
+                                        <tinymce @input='tinymceChange' :value='form.newsContext' :height='450' />
                                         <!--                                    <span class='absolute'-->
                                         <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
                                         <!--                                        }}字</span>-->
@@ -429,7 +429,7 @@
 import {
     addCheck,
     getOnMark,
-
+    getArticleLayout,
     getChildList,
     getLabelByTree,
     getLabelByList,
@@ -467,6 +467,7 @@ export default {
             form: {
                 newsTitle: '',
                 newsContext: '',
+                context: '',
                 newsSource: '',
                 createTime: dayjs(new Date).format('YYYY-MM-DD HH:mm:ss'),
                 value: ''
@@ -485,60 +486,6 @@ export default {
             radioGroupStyle: {
                 textColor: '',
                 fill: ''
-            },
-            editorTextLength: 0,
-            editorOption: {
-                modules: {
-                    toolbar: [
-                        ['bold', 'italic', 'underline', 'strike'],
-                        ['blockquote', 'code-block'],
-                        [{
-                            'header': 1
-                        }, {
-                            'header': 2
-                        }],
-                        [{
-                            'list': 'ordered'
-                        }, {
-                            'list': 'bullet'
-                        }],
-                        [{
-                            'script': 'sub'
-                        }, {
-                            'script': 'super'
-                        }],
-                        [{
-                            'indent': '-1'
-                        }, {
-                            'indent': '+1'
-                        }],
-                        [{
-                            'direction': 'rtl'
-                        }],
-                        [{
-                            'size': ['small', false, 'large', 'huge']
-                        }],
-                        [{
-                            'header': [1, 2, 3, 4, 5, 6, false]
-                        }],
-                        [{
-                            'color': []
-                        }, {
-                            'background': []
-                        }],
-                        [{
-                            'font': []
-                        }],
-                        [{
-                            'align': []
-                        }],
-                        ['clean'],
-                        ['link', 'image']
-                    ]
-
-                },
-                theme: 'snow',
-                placeholder: '请输入正文'
             }
         };
     },
@@ -546,7 +493,7 @@ export default {
         this.initData();
     },
     components: {
-        quillEditor, Tinymce, Tag
+         Tinymce, Tag
     },
     computed: {
         editor() {
@@ -554,13 +501,29 @@ export default {
         }
     },
     watch: {
-        content() {
-            // 富文本内容长度
-            let a = this.quill.getLength() - 1;
-            console.log(a);
-        }
+
     },
     methods: {
+        tinymceChange(value) {
+            console.log(value)
+            this.form.context = value
+        },
+       async aKeyLayout () {
+            if (this.form.context.length !== 0) {
+               const data = await getArticleLayout({context: this.form.context})
+                console.log(data)
+                if (data.code === 200) {
+                    this.form.newsContext = data.data
+                } else {
+                    this.$message.error(data.msg);
+                }
+
+            } else {
+                this.$message.error('正文不能为空');
+            }
+
+        },
+
         openDialogPreview() {
             this.$refs['formData'].validate((valid) => {
                 if (!valid) return false;

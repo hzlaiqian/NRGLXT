@@ -16,7 +16,7 @@ import editorImage from './components/EditorImage';
 import plugins from './plugins';
 import toolbar from './toolbar';
 import load from './dynamicLoadScript';
-
+import request from '../../utils/request';
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
 const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all@5.4.2/tinymce.min.js';
 
@@ -146,6 +146,24 @@ export default {
                 toolbar_drawer: 'sliding',
 
                 nonbreaking_force_tab: true,
+                images_upload_handler:function(blobInfo,success,failure) {
+                    console.log(blobInfo,success,failure)
+                    let form = new FormData()
+                    form.append('MultipartFile',blobInfo.blob())
+                    form.append('filename',blobInfo.filename())
+                    request({
+                        url: 'http://47.96.18.55:8080/nrglxt/media/uploadimg',
+                        method: 'POST',
+                        data: form,
+                       success:function(data) {
+                           success(data.url)
+                            console.log(data)
+                       },
+                        error:function(err) {
+                            this.$message.error('上传失败');
+                        }
+                    })
+                },
                 init_instance_callback: editor => {
                     if (_this.value) {
                         editor.setContent(_this.value);
@@ -247,7 +265,7 @@ export default {
     position: absolute;
     right: 4px;
     top: 4px;
-    /*z-index: 2005;*/
+    z-index: 2005;
 }
 
 .fullscreen .editor-custom-btn-container {
