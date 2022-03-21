@@ -61,9 +61,6 @@ export default {
                     }, {
                         index: 'formalCheck',
                         title: '正式库'
-                    }, {
-                        index: 'labelList',
-                        title: '词典库'
                     }]
                 }, {
                     icon: 'el-icon-document-copy',
@@ -72,6 +69,12 @@ export default {
                     subs: [{
                         index: 'mediaConfiguration',
                         title: '媒体配置'
+                    },{
+                        index: '/mediaAudit',
+                        title: '审核维度配置'
+                    }, {
+                        index: 'labelList',
+                        title: '词典库'
                     }]
                 },
                 // {

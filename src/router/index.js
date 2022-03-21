@@ -117,9 +117,18 @@ export default new Router({
 					}
 				},{
 					path: '/mediaConfiguration',
+					name: 'mediaConfiguration',
 					component: () => import('../pages/information/mediaConfiguration.vue'),
 					meta: {
 						title: '媒体配置'
+					}
+				},
+				{
+					path: '/mediaAudit',
+					name: 'mediaAudit',
+					component: () => import('../pages/information/mediaAudit.vue'),
+					meta: {
+						title: '审核维度配置'
 					}
 				}
 			]
