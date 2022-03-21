@@ -73,7 +73,7 @@
 
 			<el-table-column align="center" label="操作" width="100" fixed="right">
 				<template #default="scope">
-					<router-link :to="{ path: '/newsEdit', query: { articleID: scope.row.articleID }}">修改
+					<router-link :to="{ path: '/editNews', query: { articleID: scope.row.articleID }}">修改
 					</router-link>
 					<el-popconfirm title="确定下线吗？" @confirm="handleClose(scope.row.checkID)">
 						<template #reference>
@@ -239,5 +239,5 @@
 		width: auto;
 		font-size: 14px;
 	}
-	
+
 </style>

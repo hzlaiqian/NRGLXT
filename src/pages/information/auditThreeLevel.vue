@@ -48,13 +48,13 @@
                         min-width='279'>
                     </el-table-column>
                     <el-table-column
-                        prop='mediaClass'
+                        prop='dataSize'
                         label='下级数据量'
                         align='center'
                         min-width='219'>
                     </el-table-column>
                     <el-table-column
-                        prop='mediaWeight'
+                        prop='create_time'
                         min-width='263'
                         align='center'
                         label='创建时间'>
@@ -97,7 +97,47 @@ export default {
                 name: ''
 
             },
-            mediaList: [],
+            mediaList: [{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            },{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            },{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            },{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            },{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            },{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            },{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            },{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            },{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            },{
+                create_time: '2021-02-03 12:12:12',
+                mediaName: '浦发银行保本收益',
+                dataSize: '3232'
+            }],
             currentPage3:1
         };
     },

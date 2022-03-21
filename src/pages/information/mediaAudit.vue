@@ -46,6 +46,28 @@
             </div>
 
         </div>
+        <el-dialog
+            title='批量添加至子页面'
+            :visible.sync='dialogVisible'
+            width='519px'>
+            <div>
+                <el-form :model='mediaForm' label-position='right' ref='mediaForm' label-width='80px'>
+                    <el-form-item label='数据名称'>
+                        <el-input
+                            type='textarea'
+                            :rows='2'
+                            placeholder='批量添加请用英文,隔开'
+                            v-model='mediaForm.mediaDomain'>
+                        </el-input>
+                    </el-form-item>
+                </el-form>
+
+            </div>
+            <span slot='footer' class='dialog-footer'>
+                <el-button class='cancel' @click='dialogVisible = false'>取 消</el-button>
+                <el-button type='primary' @click='dialogVisible = false'>确 定</el-button>
+              </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -73,12 +95,16 @@ export default {
             query: {
                 name: ''
             },
-            list: tagList
+            list: tagList,
+            mediaForm: {
+                mediaDomain: ''
+            },
+            dialogVisible: false
         };
     },
     methods: {
         addMedia() {
-
+this.dialogVisible = true
         },
         openNext(item) {
             this.$router.push({ path: '/auditSecondLevel' });
@@ -236,7 +262,7 @@ export default {
     }
 
     .el-dialog__header {
-        border-bottom: 1px solid #EAEDF7;;
+        border-bottom: 1px solid #EAEDF7;
     }
 
     .el-dialog__body {
@@ -246,7 +272,9 @@ export default {
     .el-checkbox__label {
         color: #2F343D;
     }
-
+    .el-dialog__footer {
+        border-top: 1px solid #EAEDF7;
+    }
     .el-checkbox__input.is-checked + .el-checkbox__label {
         color: #2F343D;
     }
