@@ -130,6 +130,22 @@ export default new Router({
 					meta: {
 						title: '审核维度配置'
 					}
+				},
+				{
+					path: '/auditSecondLevel',
+					name: 'auditSecondLevel',
+					component: () => import('../pages/information/auditSecondLevel.vue'),
+					meta: {
+						title: '栏目标签'
+					}
+				},
+				{
+					path: '/auditThreeLevel',
+					name: 'auditThreeLevel',
+					component: () => import('../pages/information/auditThreeLevel.vue'),
+					meta: {
+						title: '过滤标签'
+					}
 				}
 			]
 		},

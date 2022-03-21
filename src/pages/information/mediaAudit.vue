@@ -81,7 +81,7 @@ export default {
 
         },
         openNext(item) {
-
+            this.$router.push({ path: '/auditSecondLevel' });
         }
     }
 };
@@ -119,6 +119,7 @@ export default {
     .table-box {
         padding: 12px 20px 20px 20px;
         height: calc(100% - 42px);
+
         .list {
             width: 273px;
             color: #2F343D;
