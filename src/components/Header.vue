@@ -13,7 +13,7 @@
                     <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
                         <i class="el-icon-rank"></i>
                     </el-tooltip>
-                </div>               
+                </div>
                 <div class="user-avator">
                     <img src="../assets/img/img.jpg" />
                 </div>
@@ -39,13 +39,13 @@ export default {
     data() {
         return {
             collapse: false,
-            fullscreen: false,           
+            fullscreen: false,
         };
     },
     computed: {
         username() {
 			let username = localStorage.getItem('user_name');
-			return username ? username : this.name;         
+			return username ? username : this.name;
         }
     },
     methods: {
@@ -57,7 +57,7 @@ export default {
 				this.$router.push('/login');
 			}
 		},
-		
+
         // 侧边栏折叠
         collapseChage() {
             this.collapse = !this.collapse;

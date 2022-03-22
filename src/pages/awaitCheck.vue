@@ -27,12 +27,12 @@
 			<el-table-column prop="title" label="标题" width="500px" align="center">
 			</el-table-column>
 			<el-table-column prop="source" label="来源" width="180" align="center"></el-table-column>
-			<el-table-column prop="inputTime" label="入库时间" width="220" align="center"></el-table-column>				
+			<el-table-column prop="inputTime" label="入库时间" width="220" align="center"></el-table-column>
 			<el-table-column prop="checkState" label="状态" width="200" align="center" :formatter="setStatus">
 			</el-table-column>
 			<el-table-column label="操作" width="200" align="center" fixed="right">
 				<template #default="scope">
-					<router-link :to="{ path: '/newsEdit', query: { articleID : scope.row.id}}">修改
+					<router-link :to="{ path: '/editNews', query: { articleID : scope.row.id}}">修改
 					</router-link>
 				</template>
 			</el-table-column>
@@ -121,7 +121,7 @@
 						checkState: this.checkStatus == '' ? 0 : this.checkStatus,
 						stop: this.wordsStatus == '' ? -1 : this.wordsStatus
 					}
-					
+
 					if (this.dateRange != null && this.dateRange.length > 0) {
 						params.startTime = this.dateRange[0];
 						params.endTime = this.dateRange[1];
@@ -160,7 +160,7 @@
 	.handle-box {
 		margin-bottom: 20px;
 	}
-	
+
 	.table {
 		width: auto;
 		font-size: 14px;

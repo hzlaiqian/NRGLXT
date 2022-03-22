@@ -30,16 +30,32 @@ export default new Router({
 						title: '新闻录入'
 					}
 				},
+				// {
+				// 	path: '/newsCheck',
+				// 	component: () => import('../pages/newsCheck.vue'),
+				// 	meta: {
+				// 		title: '新闻审核'
+				// 	}
+				// },
 				{
-					path: '/newsCheck',
-					component: () => import('../pages/newsCheck.vue'),
+					path: '/newsEdit',
+					component: () => import('../pages/newsEdit.vue'),
+					meta: {
+						title: '新闻编辑'
+					}
+				},
+				{
+					path: '/newsReview',
+					name: 'newsReview',
+					component: () => import('../pages/newsReview.vue'),
 					meta: {
 						title: '新闻审核'
 					}
 				},
 				{
-					path: '/newsEdit',
-					component: () => import('../pages/newsEdit.vue'),
+					path: '/editNews',
+					name: 'editNews',
+					component: () => import('../pages/editNews.vue'),
 					meta: {
 						title: '新闻编辑'
 					}
@@ -98,6 +114,12 @@ export default new Router({
 					component: () => import('../pages/demo.vue'),
 					meta: {
 						title: 'demo'
+					}
+				},{
+					path: '/mediaConfiguration',
+					component: () => import('../pages/information/mediaConfiguration.vue'),
+					meta: {
+						title: '媒体配置'
 					}
 				}
 			]
