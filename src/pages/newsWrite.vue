@@ -2,7 +2,7 @@
     <div class=' newWrite news'>
         <div  style='height: 100%; width: 100%;'>
             <el-row style='display: inline-flex;width: 100%;height: 100%'>
-                <el-col :span='16' style='height: 100%;padding: 20px 0 20px 20px'>
+                <el-col class='box-sizing' :span='16' style='height: 100%;padding: 20px 0 20px 20px'>
                     <el-scrollbar style='height: 100%;margin-right: 60px;'>
                         <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
                             <div class='bd3 flex-col'></div>
@@ -110,7 +110,7 @@
                                         <!--                                                  :options='editorOption'-->
                                         <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
                                         <!--                                    </quill-editor>-->
-                                        <tinymce @input='tinymceChange' :value='form.newsContext' :height='450' />
+                                        <tinymce @input='tinymceChange' :value='form.newsContext' :height='430' />
                                         <!--                                    <span class='absolute'-->
                                         <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
                                         <!--                                        }}字</span>-->

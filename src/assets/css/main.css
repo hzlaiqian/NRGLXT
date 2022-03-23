@@ -38,7 +38,7 @@ a {
 .content {
     width: 100%;
     height: calc(100% - 70px);
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
 }
 .content-collapse {

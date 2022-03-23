@@ -30,7 +30,7 @@
 			</el-button>
 		</div>
 		<el-table :data="tableData" highlight-current-row>
-			<el-table-column align="center" label="标题" width="500">
+			<el-table-column align="center" label="标题" min-width="500">
 				<template slot-scope="scope">
 					<span class="span-text" v-if="scope.row.sourceAddress!= undefined && scope.row.sourceAddress!=null">
 						<a link :href="scope.row.sourceAddress" target="_blank">
@@ -43,35 +43,35 @@
 					</span>
 				</template>
 			</el-table-column>
-			<el-table-column property="source" align="center" label="来源" width="100px">
+			<el-table-column property="source" align="center" label="来源" min-width="100px">
 
 			</el-table-column>
-			<el-table-column property="checkTime" align="center" label="发布时间" width="200px"></el-table-column>
-			<el-table-column property="mood" align="center" label="情绪标签" width="200px">
+			<el-table-column property="checkTime" align="center" label="发布时间" min-width="200px"></el-table-column>
+			<el-table-column property="mood" align="center" label="情绪标签" min-width="200px">
 				<template slot-scope="scope">
 					<el-tag v-for="i in scope.row.moodList" :key="i.id"
-						:style="{'color':i.color,'background-color':i.bColor,'border-color':i.color}">{{i.name}}
+						:style="{'color':i.color,'background-color':i.bColor,'border-color':i.color,'margin': '0 5px 5px 0'}">{{i.name}}
 					</el-tag>
 				</template>
 			</el-table-column>
 
-			<el-table-column property="recommend" align="center" label="推荐标签" width="200px">
+			<el-table-column property="recommend" align="center" label="推荐标签" min-width="200px">
 				<template slot-scope="scope">
 					<el-tag v-for="i in scope.row.recommendList" :key="i.id"
-						v-bind:style="{'color':i.color,'background-color':i.bColor,'border-color':i.color}">{{i.name}}
+						v-bind:style="{'color':i.color,'background-color':i.bColor,'border-color':i.color,'margin': '0 5px 5px 0'}">{{i.name}}
 					</el-tag>
 				</template>
 			</el-table-column>
 
-			<el-table-column property="column" align="center" label="栏目标签" width="200px">
+			<el-table-column property="column" align="center" label="栏目标签" min-width="200px">
 				<template slot-scope="scope">
 					<el-tag v-for="i in scope.row.columnList" :key="i.id"
-						:style="{'color':i.color,'background-color':i.bColor,'border-color':i.color}">{{i.name}}
+						:style="{'color':i.color,'background-color':i.bColor,'border-color':i.color,'margin-right': '0 5px 5px 0'}">{{i.name}}
 					</el-tag>
 				</template>
 			</el-table-column>
 
-			<el-table-column align="center" label="操作" width="100" fixed="right">
+			<el-table-column align="center" label="操作" min-width="100" fixed="right">
 				<template #default="scope">
 					<router-link :to="{ path: '/editNews', query: { articleID: scope.row.articleID }}">修改
 					</router-link>

@@ -93,7 +93,7 @@
                                         <div class='absolute fold'>
 
                                         </div>
-                                        <tinymce v-model='form.newsContext' :height='450' />
+                                        <tinymce v-model='form.newsContext' :height='370' />
                                     </div>
                                 </el-form-item>
                             </el-form>
@@ -1062,5 +1062,8 @@ export default {
         padding-right: 17px;
         padding-bottom: 17px;
     }
+}
+.context .el-form-item__content {
+    margin-top: -20px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class='sidebar'>
-        <el-menu class='sidebar-el-menu' :collapse='collapse' background-color='#324157'
-                 text-color='#bfcbd9' active-text-color='#20a0ff' unique-opened router>
+        <el-menu class='sidebar-el-menu' :collapse='collapse' background-color='#FFFFFF'
+                 text-color='#2F343D' active-text-color='#2A79EE' unique-opened router>
             <template v-for='item in items'>
                 <template v-if='item.subs'>
                     <el-submenu :index='item.index' :key='item.index'>
