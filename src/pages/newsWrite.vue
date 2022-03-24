@@ -208,14 +208,14 @@
                                         </el-col>
                                     </el-row>
                                 </div>
-                                <div v-for='p in recommendList' :key='p.id' class='grid-content bg-purple'
+                                <div v-for='p in recommendList' :key='p.id' class='grid-content bg-purple flex flex-wrap'
                                      style='width: 100%; display: flex;align-items: center;'>
-                                    <div style='width:auto;text-align: center;min-width: 60px;margin-right: 5px'>
+                                    <div style='width:auto;text-align: center;min-width: 60px;margin-right: 5px;'>
                                         <h5>{{ p.name }}:</h5>
                                     </div>
 
-                                    <el-tooltip style='margin-right: 5px' v-for='c in p.child' :key='c.id'
-                                                class=' pointer' effect='dark'
+                                    <el-tooltip style='margin-right: 5px;margin-bottom: 5px' v-for='c in p.child' :key='c.id'
+                                                class='pointer ' effect='dark'
                                                 placement='top'>
                                         <div slot='content'> {{ c.name }}</div>
                                         <div>

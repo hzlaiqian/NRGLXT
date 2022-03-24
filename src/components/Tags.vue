@@ -137,29 +137,33 @@
 
 	.tags-li {
 		float: left;
-		margin: 0 6px;
-		border-radius: 3px;
-		font-size: 12px;
+		margin-right: 6px;
 		overflow: hidden;
 		cursor: pointer;
-		height: 23px;
-		line-height: 23px;
-		border: 1px solid #e9eaec;
-		background: #fff;
+		height: 32px;
+        border-radius: 2px 2px 0 0;
+        border: 1px solid #EAEDF7;
 		padding: 0 5px 0 12px;
 		vertical-align: middle;
-		color: #666;
 		-webkit-transition: all .3s ease-in;
 		-moz-transition: all .3s ease-in;
 		transition: all .3s ease-in;
+        font-size: 14px;
+        font-weight: 400;
+        color: #2F343D;
+        line-height: 32px;
 	}
 
 	.tags-li:not(.active):hover {
-		background: #f8f8f8;
+        background: rgba(42, 121, 238, 0.1);
+        color: rgba(42, 121, 238, 1);
+        border:1px solid transparent;
 	}
 
 	.tags-li.active {
-		color: #fff;
+        background: rgba(42, 121, 238, 0.1);
+        color: rgba(42, 121, 238, 1);
+        border: 1px solid transparent;
 	}
 
 	.tags-li-title {
@@ -169,11 +173,11 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		margin-right: 5px;
-		color: #666;
+        color: rgba(47, 52, 61, 1);
 	}
 
 	.tags-li.active .tags-li-title {
-		color: #fff;
+        color: rgba(42, 121, 238, 1);
 	}
 
 	.tags-close-box {
