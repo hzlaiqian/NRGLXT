@@ -2,15 +2,15 @@
     <div class=' newWrite news'>
         <div  style='height: 100%; width: 100%;'>
             <el-row style='display: inline-flex;width: 100%;height: 100%'>
-                <el-col class='box-sizing' :span='16' style='height: 100%;padding: 20px 0 20px 20px'>
-                    <el-scrollbar style='height: 100%;margin-right: 60px;'>
+                <el-col class='box-sizing' :span='16' style='height: 100%;padding: 20px 0 20px 20px;margin-right: 64px;overflow-y: auto'>
+
                         <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
                             <div class='bd3 flex-col'></div>
                             <h3 style='margin-left: 5px'>基本信息</h3>
                         </div>
                         <!--                    表单-->
-                        <div>
-                            <el-form :rules='rules' ref='formData' label-position='left' :model='form' label-width='77px'>
+                        <div style='height: calc(100% - 60px)'>
+                            <el-form :rules='rules' ref='formData' label-position='left' style='height: 100%' :model='form' label-width='77px'>
                                 <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
                                     <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
                                               v-model='form.newsTitle'></el-input>
@@ -90,7 +90,7 @@
                                     </div>
                                 </el-collapse-transition>
 
-                                <el-form-item class='context' label='正文：' prop='newsContext'>
+                                <el-form-item class='context' label='正文：'  :style=' isUnfold ? "height: calc(100% - 280px)" :"height: calc(100% - 120px)"' prop='newsContext'>
                                     <div class='flex' style='flex-direction: row-reverse'>
                                         <div style='margin-left: 20px;color: #20A0FF' class='pointer' @click='isUnfold = !isUnfold'>
                                             <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
@@ -102,7 +102,7 @@
                                         <div class='pointer' style='color: #20A0FF' @click='aKeyLayout'>一键排版</div>
 
                                     </div>
-                                    <div class='editor-box relative'>
+                                    <div class='editor-box relative' style='height: 100%'>
                                         <div class='absolute fold'>
 
                                         </div>
@@ -110,7 +110,7 @@
                                         <!--                                                  :options='editorOption'-->
                                         <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
                                         <!--                                    </quill-editor>-->
-                                        <tinymce @input='tinymceChange' :value='form.newsContext' :height='430' />
+                                        <tinymce @input='tinymceChange' :value='form.newsContext' height='100%' />
                                         <!--                                    <span class='absolute'-->
                                         <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
                                         <!--                                        }}字</span>-->
@@ -118,7 +118,6 @@
                                 </el-form-item>
                             </el-form>
                         </div>
-                    </el-scrollbar>
 
                     <!--                    <div class='grid-content bg-purple'-->
                     <!--                         style='width: 100%; display: flex;align-items: center;margin: 5px 0px;'>-->
@@ -1125,6 +1124,7 @@ export default {
 <style>
 .newWrite .context .el-form-item__content {
     margin-top: -20px;
+    height: 100%;
 }
 .newWrite .el-scrollbar .el-scrollbar__wrap {
     overflow: auto;

@@ -10,15 +10,15 @@
         </div>
         <div class='box-sizing' style='height: 100%; width: 100%;padding: 20px'>
             <el-row style='display: inline-flex;width: 100%;height: calc(100% - 51px)'>
-                <el-col :span='16' style='padding-bottom: 20px;height: 100%'>
-                    <el-scrollbar style='height: 100%;margin-right: 60px;'>
+                <el-col :span='16' style='padding-bottom: 20px;height: 100%;margin-right: 60px;'>
+
                         <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
                             <div class='bd3 flex-col'></div>
                             <h3 style='margin-left: 5px'>基本信息</h3>
                         </div>
                         <!--                    表单-->
-                        <div>
-                            <el-form :rules='rules' ref='formData' label-position='left' :model='form' label-width='77px'>
+                        <div style='height: calc(100% - 60px)'>
+                            <el-form :rules='rules' ref='formData' style='height: 100%' label-position='left' :model='form' label-width='77px'>
                                 <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
                                     <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
                                               v-model='form.newsTitle'></el-input>
@@ -77,7 +77,7 @@
                                     </div>
                                 </el-collapse-transition>
 
-                                <el-form-item class='context' label='正文：' prop='newsContext'>
+                                <el-form-item  :style=' isUnfold ? "height: calc(100% - 280px)" :"height: calc(100% - 120px)"' class='context' label='正文：' prop='newsContext'>
                                     <div class='flex' style='flex-direction: row-reverse'>
                                         <div style='margin-left: 20px' class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
                                             <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
@@ -89,16 +89,15 @@
                                         <div class='pointer color-1683ff'>一键排版</div>
 
                                     </div>
-                                    <div class='editor-box relative'>
+                                    <div class='editor-box relative' style='height: 100%'>
                                         <div class='absolute fold'>
 
                                         </div>
-                                        <tinymce v-model='form.newsContext' :height='370' />
+                                        <tinymce v-model='form.newsContext' height='100%' />
                                     </div>
                                 </el-form-item>
                             </el-form>
                         </div>
-                    </el-scrollbar>
 
                 </el-col>
                 <el-col :span='8' style='height: 100%' class='flex flex-column'>
@@ -1067,5 +1066,6 @@ export default {
 }
 .context .el-form-item__content {
     margin-top: -20px;
+    height: 100%;
 }
 </style>
