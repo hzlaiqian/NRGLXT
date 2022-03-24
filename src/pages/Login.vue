@@ -7,7 +7,7 @@
                 </div>
                 <div class='tab flex space-between'>
                     <div @click='tabIndex = 0 ' class='text pointer'>账号登录</div>
-                    <div @click='tabIndex = 1 ' class='text pointer'>短信登录</div>
+<!--                    <div @click='tabIndex = 1 ' class='text pointer'>短信登录</div>-->
                 </div>
                 <div :class='tabIndex === 0 ? "sliding-box-index" : "sliding-box-active"' class='sliding-box'></div>
                 <div class='form'>
@@ -39,40 +39,40 @@
 
                     </el-form>
                 </div>
-                <div class='flex space-between'>
-                    <div class='checkbox-box'>
-                        <transition name='el-zoom-in-center'>
-                            <div class='pointer checkbox' @click='isRememberPassword = !isRememberPassword'>
-                                <img v-if='isRememberPassword' style='width: 20px;height: 20px'
-                                     src='../assets/img/check2@2x.png' />
-                                <img v-else style='width: 20px;height: 20px' src='../assets/img/check1@2x.png' />
-                                <span style='margin-left: 8px'>记住密码</span>
-                            </div>
-                        </transition>
-                    </div>
-                    <div class='checkbox-box'>
-                        <transition name='el-zoom-in-center'>
-                            <div class='pointer checkbox' @click='autoLogin = !autoLogin'>
-                                <img v-if='autoLogin' style='width: 20px;height: 20px'
-                                     src='../assets/img/check2@2x.png' />
-                                <img v-else style='width: 20px;height: 20px' src='../assets/img/check1@2x.png' />
-                                <span style='margin-left: 8px'>自动登录</span>
-                            </div>
-                        </transition>
-                    </div>
-                </div>
+<!--                <div class='flex space-between'>-->
+<!--                    <div class='checkbox-box'>-->
+<!--                        <transition name='el-zoom-in-center'>-->
+<!--                            <div class='pointer checkbox' @click='isRememberPassword = !isRememberPassword'>-->
+<!--                                <img v-if='isRememberPassword' style='width: 20px;height: 20px'-->
+<!--                                     src='../assets/img/check2@2x.png' />-->
+<!--                                <img v-else style='width: 20px;height: 20px' src='../assets/img/check1@2x.png' />-->
+<!--                                <span style='margin-left: 8px'>记住密码</span>-->
+<!--                            </div>-->
+<!--                        </transition>-->
+<!--                    </div>-->
+<!--                    <div class='checkbox-box'>-->
+<!--                        <transition name='el-zoom-in-center'>-->
+<!--                            <div class='pointer checkbox' @click='autoLogin = !autoLogin'>-->
+<!--                                <img v-if='autoLogin' style='width: 20px;height: 20px'-->
+<!--                                     src='../assets/img/check2@2x.png' />-->
+<!--                                <img v-else style='width: 20px;height: 20px' src='../assets/img/check1@2x.png' />-->
+<!--                                <span style='margin-left: 8px'>自动登录</span>-->
+<!--                            </div>-->
+<!--                        </transition>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class='login-btn'>
                     <el-button type='primary' @click='submitForm()'>登录</el-button>
                 </div>
 
             </div>
-            <div class='flex row-center forget absolute'>
-                <div style='width: 158px' class='flex space-between'>
-                    <div class='pointer'>忘记密码</div>
-                    <div>|</div>
-                    <div class='pointer'>申请试用</div>
-                </div>
-            </div>
+<!--            <div class='flex row-center forget absolute'>-->
+<!--                <div style='width: 158px' class='flex space-between'>-->
+<!--                    <div class='pointer'>忘记密码</div>-->
+<!--                    <div>|</div>-->
+<!--                    <div class='pointer'>申请试用</div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </div>
 </template>

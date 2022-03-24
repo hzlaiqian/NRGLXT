@@ -5,7 +5,7 @@
                 <span style='color: #F56C6C;padding: 0 5px'>30</span>条
             </div>
             <div class='mr-20'>
-                <el-button class='review-button'>开始审核</el-button>
+                <button class='review-button'>开始审核</button>
             </div>
         </div>
         <div class='box-sizing' style='height: 100%; width: 100%;padding: 20px'>
@@ -865,6 +865,8 @@ export default {
             font-family: PingFangSC-Medium, PingFang SC;
             font-weight: 500;
             color: #F56C6C;
+            text-align: center;
+            background-color: #fff;
         }
     }
 

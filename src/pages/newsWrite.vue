@@ -92,14 +92,14 @@
 
                                 <el-form-item class='context' label='正文：' prop='newsContext'>
                                     <div class='flex' style='flex-direction: row-reverse'>
-                                        <div style='margin-left: 20px' class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
+                                        <div style='margin-left: 20px;color: #20A0FF' class='pointer' @click='isUnfold = !isUnfold'>
                                             <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
                                             <!--                                        <i :class='{"is-active": isUnfold}'-->
                                             <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
                                             <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
                                                class='el-collapse-item__arrow  '></i>
                                         </div>
-                                        <div class='pointer color-1683ff' @click='aKeyLayout'>一键排版</div>
+                                        <div class='pointer' style='color: #20A0FF' @click='aKeyLayout'>一键排版</div>
 
                                     </div>
                                     <div class='editor-box relative'>
