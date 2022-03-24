@@ -181,5 +181,9 @@
 	}
 </script>
 
-<style>
+<style scoped>
+.fillcontain {
+    background-color: #fff;
+    height: 100%;
+}
 </style>

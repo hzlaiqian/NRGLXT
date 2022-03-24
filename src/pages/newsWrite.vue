@@ -2,7 +2,7 @@
     <div class=' newWrite news'>
         <div  style='height: 100%; width: 100%;'>
             <el-row style='display: inline-flex;width: 100%;height: 100%'>
-                <el-col :span='16' style='height: 100%;padding: 20px 0 20px 20px'>
+                <el-col class='box-sizing' :span='16' style='height: 100%;padding: 20px 0 20px 20px'>
                     <el-scrollbar style='height: 100%;margin-right: 60px;'>
                         <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
                             <div class='bd3 flex-col'></div>
@@ -92,14 +92,14 @@
 
                                 <el-form-item class='context' label='正文：' prop='newsContext'>
                                     <div class='flex' style='flex-direction: row-reverse'>
-                                        <div style='margin-left: 20px' class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
+                                        <div style='margin-left: 20px;color: #20A0FF' class='pointer' @click='isUnfold = !isUnfold'>
                                             <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
                                             <!--                                        <i :class='{"is-active": isUnfold}'-->
                                             <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
                                             <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
                                                class='el-collapse-item__arrow  '></i>
                                         </div>
-                                        <div class='pointer color-1683ff'>一键排版</div>
+                                        <div class='pointer' style='color: #20A0FF' @click='aKeyLayout'>一键排版</div>
 
                                     </div>
                                     <div class='editor-box relative'>
@@ -110,7 +110,7 @@
                                         <!--                                                  :options='editorOption'-->
                                         <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
                                         <!--                                    </quill-editor>-->
-                                        <tinymce v-model='form.newsContext' :height='450' />
+                                        <tinymce @input='tinymceChange' :value='form.newsContext' :height='430' />
                                         <!--                                    <span class='absolute'-->
                                         <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
                                         <!--                                        }}字</span>-->
@@ -208,14 +208,14 @@
                                         </el-col>
                                     </el-row>
                                 </div>
-                                <div v-for='p in recommendList' :key='p.id' class='grid-content bg-purple'
+                                <div v-for='p in recommendList' :key='p.id' class='grid-content bg-purple flex flex-wrap'
                                      style='width: 100%; display: flex;align-items: center;'>
-                                    <div style='width:auto;text-align: center;min-width: 60px;margin-right: 5px'>
+                                    <div style='width:auto;text-align: center;min-width: 60px;margin-right: 5px;'>
                                         <h5>{{ p.name }}:</h5>
                                     </div>
 
-                                    <el-tooltip style='margin-right: 5px' v-for='c in p.child' :key='c.id'
-                                                class=' pointer' effect='dark'
+                                    <el-tooltip style='margin-right: 5px;margin-bottom: 5px' v-for='c in p.child' :key='c.id'
+                                                class='pointer ' effect='dark'
                                                 placement='top'>
                                         <div slot='content'> {{ c.name }}</div>
                                         <div>
@@ -429,7 +429,7 @@
 import {
     addCheck,
     getOnMark,
-
+    getArticleLayout,
     getChildList,
     getLabelByTree,
     getLabelByList,
@@ -467,6 +467,7 @@ export default {
             form: {
                 newsTitle: '',
                 newsContext: '',
+                context: '',
                 newsSource: '',
                 createTime: dayjs(new Date).format('YYYY-MM-DD HH:mm:ss'),
                 value: ''
@@ -485,60 +486,6 @@ export default {
             radioGroupStyle: {
                 textColor: '',
                 fill: ''
-            },
-            editorTextLength: 0,
-            editorOption: {
-                modules: {
-                    toolbar: [
-                        ['bold', 'italic', 'underline', 'strike'],
-                        ['blockquote', 'code-block'],
-                        [{
-                            'header': 1
-                        }, {
-                            'header': 2
-                        }],
-                        [{
-                            'list': 'ordered'
-                        }, {
-                            'list': 'bullet'
-                        }],
-                        [{
-                            'script': 'sub'
-                        }, {
-                            'script': 'super'
-                        }],
-                        [{
-                            'indent': '-1'
-                        }, {
-                            'indent': '+1'
-                        }],
-                        [{
-                            'direction': 'rtl'
-                        }],
-                        [{
-                            'size': ['small', false, 'large', 'huge']
-                        }],
-                        [{
-                            'header': [1, 2, 3, 4, 5, 6, false]
-                        }],
-                        [{
-                            'color': []
-                        }, {
-                            'background': []
-                        }],
-                        [{
-                            'font': []
-                        }],
-                        [{
-                            'align': []
-                        }],
-                        ['clean'],
-                        ['link', 'image']
-                    ]
-
-                },
-                theme: 'snow',
-                placeholder: '请输入正文'
             }
         };
     },
@@ -546,7 +493,7 @@ export default {
         this.initData();
     },
     components: {
-        quillEditor, Tinymce, Tag
+         Tinymce, Tag
     },
     computed: {
         editor() {
@@ -554,13 +501,29 @@ export default {
         }
     },
     watch: {
-        content() {
-            // 富文本内容长度
-            let a = this.quill.getLength() - 1;
-            console.log(a);
-        }
+
     },
     methods: {
+        tinymceChange(value) {
+            console.log(value)
+            this.form.context = value
+        },
+       async aKeyLayout () {
+            if (this.form.context.length !== 0) {
+               const data = await getArticleLayout({context: this.form.context})
+                console.log(data)
+                if (data.code === 200) {
+                    this.form.newsContext = data.data
+                } else {
+                    this.$message.error(data.msg);
+                }
+
+            } else {
+                this.$message.error('正文不能为空');
+            }
+
+        },
+
         openDialogPreview() {
             this.$refs['formData'].validate((valid) => {
                 if (!valid) return false;

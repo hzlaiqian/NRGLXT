@@ -245,3 +245,9 @@ export const getConceptTree = data => post('/concept/getConceptTree', data)
 
 
 export const getIdeaByTree = data => post('/idea/getIdeaByTree', data)
+
+/**
+ * 一键排版
+ */
+
+export const getArticleLayout = data => post('/article/getArticleLayout', data)

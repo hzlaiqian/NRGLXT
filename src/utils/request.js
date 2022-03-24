@@ -7,7 +7,7 @@ const service = axios.create({
 	// 	baseURL = 'http://47.96.18.55:8080/admin_master';
 	// }
 	// baseURL : 'http://localhost:8091/admin_master'
-	baseURL: 'http://47.96.18.55:8080/admin_master'
+	baseURL: 'http://47.96.18.55:8080/nrglxt'
 	// timeout: 5000,
 });
 

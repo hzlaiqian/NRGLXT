@@ -5,7 +5,7 @@
                 <span style='color: #F56C6C;padding: 0 5px'>30</span>条
             </div>
             <div class='mr-20'>
-                <el-button class='review-button'>开始审核</el-button>
+                <button class='review-button'>开始审核</button>
             </div>
         </div>
         <div class='box-sizing' style='height: 100%; width: 100%;padding: 20px'>
@@ -93,7 +93,7 @@
                                         <div class='absolute fold'>
 
                                         </div>
-                                        <tinymce v-model='form.newsContext' :height='450' />
+                                        <tinymce v-model='form.newsContext' :height='370' />
                                     </div>
                                 </el-form-item>
                             </el-form>
@@ -865,6 +865,8 @@ export default {
             font-family: PingFangSC-Medium, PingFang SC;
             font-weight: 500;
             color: #F56C6C;
+            text-align: center;
+            background-color: #fff;
         }
     }
 
@@ -1062,5 +1064,8 @@ export default {
         padding-right: 17px;
         padding-bottom: 17px;
     }
+}
+.context .el-form-item__content {
+    margin-top: -20px;
 }
 </style>

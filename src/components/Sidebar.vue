@@ -1,7 +1,7 @@
 <template>
     <div class='sidebar'>
-        <el-menu class='sidebar-el-menu' :collapse='collapse' background-color='#324157'
-                 text-color='#bfcbd9' active-text-color='#20a0ff' unique-opened router>
+        <el-menu class='sidebar-el-menu' :collapse='collapse'
+                 text-color='#2F343D' active-text-color='#2A79EE' unique-opened router>
             <template v-for='item in items'>
                 <template v-if='item.subs'>
                     <el-submenu :index='item.index' :key='item.index'>
@@ -61,9 +61,6 @@ export default {
                     }, {
                         index: 'formalCheck',
                         title: '正式库'
-                    }, {
-                        index: 'labelList',
-                        title: '词典库'
                     }]
                 }, {
                     icon: 'el-icon-document-copy',
@@ -72,6 +69,12 @@ export default {
                     subs: [{
                         index: 'mediaConfiguration',
                         title: '媒体配置'
+                    },{
+                        index: '/mediaAudit',
+                        title: '审核维度配置'
+                    }, {
+                        index: 'labelList',
+                        title: '词典库'
                     }]
                 },
                 // {
@@ -89,11 +92,6 @@ export default {
                 // 	index: 'userList',
                 // 	title: '系统用户'
                 // },
-                {
-                    icon: 'el-icon-lx-emoji',
-                    index: 'demo',
-                    title: 'demo'
-                }
             ]
         };
     },
@@ -133,5 +131,19 @@ export default {
 
 .sidebar > ul {
     height: 100%;
+}
+.el-menu-item:focus, .el-menu-item:hover {
+    background: rgba(42, 121, 238, 0.1) !important;
+    box-shadow: inset -2px 0 0 0 #2A79EE;
+}
+.el-submenu__title:hover {
+    background: rgba(42, 121, 238, 0.1) !important;
+    box-shadow: inset -2px 0 0 0 #2A79EE;
+}
+.el-menu-item {
+    padding-left: 48px !important;
+    padding-right: 0;
+    box-sizing: border-box;
+    min-width: 0;
 }
 </style>

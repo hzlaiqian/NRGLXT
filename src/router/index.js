@@ -117,9 +117,34 @@ export default new Router({
 					}
 				},{
 					path: '/mediaConfiguration',
+					name: 'mediaConfiguration',
 					component: () => import('../pages/information/mediaConfiguration.vue'),
 					meta: {
 						title: '媒体配置'
+					}
+				},
+				{
+					path: '/mediaAudit',
+					name: 'mediaAudit',
+					component: () => import('../pages/information/mediaAudit.vue'),
+					meta: {
+						title: '审核维度配置'
+					}
+				},
+				{
+					path: '/auditSecondLevel',
+					name: 'auditSecondLevel',
+					component: () => import('../pages/information/auditSecondLevel.vue'),
+					meta: {
+						title: '栏目标签'
+					}
+				},
+				{
+					path: '/auditThreeLevel',
+					name: 'auditThreeLevel',
+					component: () => import('../pages/information/auditThreeLevel.vue'),
+					meta: {
+						title: '过滤标签'
 					}
 				}
 			]

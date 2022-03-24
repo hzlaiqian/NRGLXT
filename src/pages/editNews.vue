@@ -86,7 +86,7 @@
                                         <div class='absolute fold'>
 
                                         </div>
-                                        <tinymce :value='article.newsContext' :height='450' />
+                                        <tinymce :value='article.newsContext' :height='430' />
                                     </div>
                                 </el-form-item>
                             </el-form>

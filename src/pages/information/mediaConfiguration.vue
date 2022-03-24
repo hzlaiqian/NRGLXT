@@ -64,53 +64,57 @@
                         prop='mediaName'
                         label='媒体名称'
                         align='center'
-                        width='96'>
+                        min-width='96'>
                     </el-table-column>
                     <el-table-column
                         prop='mediaClass'
                         label='媒体类型'
                         align='center'
-                        width='79'>
+                        min-width='79'>
                     </el-table-column>
                     <el-table-column
                         prop='mediaWeight'
-                        width='87'
+                        min-width='87'
                         align='center'
                         label='媒体权重'>
                     </el-table-column>
                     <el-table-column
                         prop='client'
-                        width='77'
+                        min-width='77'
                         align='center'
                         label='所属客户'>
                     </el-table-column>
                     <el-table-column
+                        min-width='255'
                         prop='mediaDomain'
                         label='媒体域名'>
                     </el-table-column>
                     <el-table-column
                         prop='auto'
-                        width='249'
+                        min-width='249'
                         label='自动化审核'>
                     </el-table-column>
                     <el-table-column
                         prop='state'
-                        width='107'
+                        min-width='107'
                         align='center'
                         label='状态'>
                         <template slot-scope='{row}'>
-                            <div v-if='row.state' class='switch flex items-center'>
-                                <div class='open'></div>
-                                <div>已开启</div>
-                            </div>
-                            <div v-else class='switch flex items-center'>
-                                <div class='close'></div>
-                                <div>已关闭</div>
+                            <div class='flex row-center'>
+                                <div v-if='row.state' class='switch flex items-center'>
+                                    <div class='open'></div>
+                                    <div>已开启</div>
+                                </div>
+                                <div v-else class='switch flex items-center'>
+                                    <div class='close'></div>
+                                    <div>已关闭</div>
+                                </div>
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column
-                        width='221'
+                        min-width='221'
+                        align='center'
                         label='操作'>
                         <template slot-scope='{row}'>
                             <div class='flex space-between'>

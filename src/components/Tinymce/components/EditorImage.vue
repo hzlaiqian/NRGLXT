@@ -1,29 +1,32 @@
 <template>
   <div class="upload-container">
-    <!--    <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary" @click=" dialogVisible=true">-->
-    <!--      upload-->
-    <!--    </el-button>-->
-    <el-dialog :visible.sync="dialogVisible">
+<!--        <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary" @click=" dialog=true">-->
+<!--          图片上传-->
+<!--        </el-button>-->
+    <el-dialog :visible.sync="dialog">
       <el-upload
         :multiple="true"
         :file-list="fileList"
         :show-file-list="true"
+        :append-to-body='true'
         :on-remove="handleRemove"
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
+        name='MultipartFile'
+        :data='{filename: fileName}'
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
+        action="http://47.96.18.55:8080/nrglxt/media/uploadimg"
         list-type="picture-card"
       >
         <el-button size="small" type="primary">
-          Click upload
+          点击上传
         </el-button>
       </el-upload>
-      <el-button @click="dialogVisible = false">
-        Cancel
+      <el-button @click="dialog = false">
+        取消
       </el-button>
       <el-button type="primary" @click="handleSubmit">
-        Confirm
+        确定
       </el-button>
     </el-dialog>
   </div>
@@ -42,9 +45,10 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
+        dialog: false,
       listObj: {},
-      fileList: []
+      fileList: [],
+        fileName: ''
     }
   },
   methods: {
@@ -85,6 +89,7 @@ export default {
     },
     beforeUpload(file) {
       const _self = this
+        _self.fileName = file.name
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid
       this.listObj[fileName] = {}
@@ -92,6 +97,8 @@ export default {
         const img = new Image()
         img.src = _URL.createObjectURL(file)
         img.onload = function() {
+            console.log(file)
+
           _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }
         }
         resolve(true)
