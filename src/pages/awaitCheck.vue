@@ -24,7 +24,7 @@
 			</el-button>
 		</div>
 		<el-table :data="tableData" style="width: 100%">
-			<el-table-column prop="title" label="标题" min-width="500px" align="center">
+			<el-table-column prop="title" label="标题" min-width="500px" align="left">
 			</el-table-column>
 			<el-table-column prop="source" label="来源" min-width="180" align="center"></el-table-column>
 			<el-table-column prop="inputTime" label="入库时间" min-width="220" align="center"></el-table-column>

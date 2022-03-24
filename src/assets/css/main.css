@@ -23,11 +23,11 @@ a {
 
 .content-box {
     position: absolute;
-    left: 150px;
+    left: 200px;
     right: 0;
     top: 70px;
     bottom: 0;
-    width: calc(100% - 150px);
+    width: calc(100% - 200px);
     height: calc(100% - 36px);
     -webkit-transition: left .3s ease-in-out;
     transition: left .3s ease-in-out;

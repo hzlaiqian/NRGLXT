@@ -116,6 +116,7 @@ export default {
     position: absolute;
     left: 0;
     top: 70px;
+    width: 200px;
     bottom: 0;
     overflow-y: scroll;
     height: 100%;
@@ -126,7 +127,7 @@ export default {
 }
 
 .sidebar-el-menu:not(.el-menu--collapse) {
-    width: 150px;
+    width: 200px;
 }
 
 .sidebar > ul {
