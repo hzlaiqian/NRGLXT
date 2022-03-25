@@ -25,7 +25,7 @@ export default new Router({
 				{
 					path: '/newsWrite',
 					name: 'newsWrite',
-					component: () => import('../pages/newsWrite.vue'),
+					component: () => import('../pages/content/newsWrite.vue'),
 					meta: {
 						title: '新闻录入'
 					}
@@ -47,7 +47,7 @@ export default new Router({
 				{
 					path: '/newsReview',
 					name: 'newsReview',
-					component: () => import('../pages/newsReview.vue'),
+					component: () => import('../pages/content/newsReview.vue'),
 					meta: {
 						title: '新闻审核'
 					}
@@ -55,7 +55,7 @@ export default new Router({
 				{
 					path: '/editNews',
 					name: 'editNews',
-					component: () => import('../pages/editNews.vue'),
+					component: () => import('../pages/content/editNews.vue'),
 					meta: {
 						title: '新闻编辑'
 					}

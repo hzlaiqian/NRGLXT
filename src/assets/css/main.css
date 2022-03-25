@@ -262,6 +262,12 @@ a {
 .mt-20 {
     margin-top: 20px;
 }
+.mb-20 {
+    margin-bottom: 20px;
+}
+.my-20 {
+    margin: 20px 0;
+}
 .mt-10 {
     margin-top: 10px;
 }

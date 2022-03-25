@@ -94,95 +94,24 @@
                 </el-col>
                 <el-col :span='8' class='flex flex-column' style='height: 100%;padding: 20px 20px 20px 0'>
                         <el-scrollbar class='grid-content bg-purple' style='width: 100%;height: auto;max-height: calc(100% - 255px);'>
-                            <div class='grid-content bg-purple'>
-                                <div class='grid-content bg-purple'
-                                     style='align-items: center;display: flex;'>
-                                    <div class='bd3 flex-col'></div>
-                                    <h4 class='ml-5'>情绪标签：</h4>
-                                </div>
-                                <el-radio-group class='mt-20' @change='radioGroupChange'
-                                                :text-color='radioGroupStyle.textColor'
-                                                :fill='radioGroupStyle.fill' v-model='article.value'>
-                                    <el-radio-button v-for='item in moodList' :key='item.id'
-                                                     :label='item.name'></el-radio-button>
-                                </el-radio-group>
-                                <div style='padding: 20px 0; '>
+                            <div class='grid-content bg-purple mt-10'>
+                                <emotion-tag></emotion-tag>
+                                <div style='padding-bottom: 10px'>
                                     <div class='tableTitle'></div>
                                 </div>
                             </div>
                             <div class='grid-content bg-purple'>
-                                <div>
-                                    <el-row type='flex' :span='24'>
-                                        <el-col style='display:flex;align-items: center;'>
-                                            <div class='bd3 flex-col'></div>
-                                            <h4 class='ml-5'>推荐标签：</h4>
-                                        </el-col>
-                                        <el-col>
-                                            <el-button type='text' size='medium' style='float: right;color: #20A0FF;'
-                                                       @click='onMark'>一键打标
-                                            </el-button>
-                                        </el-col>
-                                    </el-row>
+                                <recommend-tag @marking='onMark'></recommend-tag>
+                                <div style='padding: 10px 0; '>
+                                    <div class='tableTitle'></div>
                                 </div>
-                                <div v-for='p in recommendList' :key='p.id' class='grid-content bg-purple'
-                                     style='width: 100%; display: flex;align-items: center;'>
-                                    <div style='width:auto;text-align: center;min-width: 60px;margin-right: 5px'>
-                                        <h5>{{ p.name }}:</h5>
+                            </div>
+                            <div class='grid-content bg-purple'>
+                                <div class='flex items-center'>
+                                    <div class='flex items-center'>
+                                        <img style='width: 22px;height: 21px' src='../../assets/img/mark.png'>
                                     </div>
-
-                                    <el-tooltip style='margin-right: 5px' v-for='c in p.child' :key='c.id'
-                                                class=' pointer' effect='dark'
-                                                placement='top'>
-                                        <div slot='content'> {{ c.name }}</div>
-                                        <div>
-
-                                            <div v-if='p.name === "A股公司"'>
-                                                <transition mode='out-in' name='el-zoom-in-center' appear>
-                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '
-                                                         color='#F56C6C' bg-color='rgba(245, 108, 108, 0.11)'></tag>
-                                                </transition>
-                                            </div>
-                                            <div v-else-if='p.name === "二级行业"'>
-                                                <transition mode='out-in' name='el-zoom-in-center' appear>
-                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '
-                                                         color='#2A79EE' bg-color='rgba(42, 121, 238, 0.11)'></tag>
-                                                </transition>
-                                            </div>
-                                            <div v-else>
-                                                <transition mode='out-in' name='el-zoom-in-center' appear>
-                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '
-                                                         color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>
-                                                </transition>
-                                            </div>
-                                        </div>
-                                    </el-tooltip>
-                                </div>
-                                <div class='grid-content bg-purple'
-                                     style='align-items: center;display: flex;'>
-                                    <el-autocomplete class='searcch' v-model='txtSearch'
-                                                     :fetch-suggestions='showRecommend' placeholder='请输入内容'
-                                                     @blur='inputFocus = false'
-                                                     @focus='inputFocus = true'
-                                                     value-key='name'
-                                                     :trigger-on-focus='false' @select='handleSelect' size='small'
-                                    >
-                                        <i slot='suffix' :style=' inputFocus?"color: rgba(42, 121, 238, 1)" : ""'
-                                           class='el-input__icon el-icon-search'></i>
-                                        <template slot-scope='scope'>
-                                            <span>{{ scope.item.name }}</span>
-                                            <span style='float: right;color: #919AAD;'>{{ scope.item.ideaName }}</span>
-                                        </template>
-                                    </el-autocomplete>
-                                </div>
-                                <div style='padding: 20px 0; '>
-                                    <div class='tableTitle'></div>
-                                </div>
-                            </div>
-                            <div class='grid-content bg-purple'>
-                                <div class='grid-content bg-purple'
-                                     style='align-items: center;margin: 5px 0px;display: flex;'>
-                                    <div class='bd3 flex-col'></div>
-                                    <h4 class='ml-5'>栏目标签：</h4>
+                                    <h3 class='ml-5'>栏目标签：</h3>
                                 </div>
                                 <div style='margin: 10px 0 10px 0;display: inline-block;'>
                                     <div class='flex flex-wrap'>
@@ -203,15 +132,16 @@
                         </el-scrollbar>
                     <div class='flex flex-column' style='height: 234px'>
                         <div class='flex items-center' style='padding: 20px 0;'>
-                            <div class='tableTitle'></div>
+                            <div class='tableTitle-left'></div>
                             <div class='audit-result'>审核结果</div>
-                            <div class='tableTitle'></div>
+                            <div class='tableTitle-right'></div>
                         </div>
                         <div class='grid-content bg-purple'>
-                            <div class='grid-content bg-purple'
-                                 style='align-items: center;display: flex;'>
-                                <div class='bd3 flex-col'></div>
-                                <h4 class='ml-5'>不通过理由：</h4>
+                            <div class='flex items-center'>
+                                <div class='flex items-center'>
+                                    <img style='width: 22px;height: 21px' src='../../assets/img/mark.png'>
+                                </div>
+                                <h3 class='ml-5'>不通过理由：</h3>
                             </div>
                             <div style='margin-bottom:10px;display: inline-block;'>
                                 <div class='flex flex-wrap'>
@@ -315,12 +245,12 @@
 
                             </div>
                         </div>
-                        <div class='preview-text' style='margin-top: 10px' v-html='article.newsContext'>
+                        <div class='preview-text' style='margin-top: 10px' v-html='article.newsContext + "<style>img {width: 100%}</style>"'>
                         </div>
                     </div>
                 </div>
                 <div class='close absolute pointer' @click='dialogPreviewVisible = false'>
-                    <img style='width: 30px;height: 30px' src='../assets/img/close2x.png'>
+                    <img style='width: 30px;height: 30px' src='../../assets/img/close2x.png'>
                 </div>
             </div>
         </el-dialog>
@@ -340,11 +270,12 @@ import {
     getConceptByName,
     getConceptByList, getWaitByID
 
-} from '../api/getData.js';
+} from '../../api/getData.js';
 import Tinymce from '@/components/Tinymce';
 import Tag from '@/components/Tag';
 import dayjs from '@/plugins/dayjs';
-
+import EmotionTag from '@/pages/content/components/EmotionTag';
+import RecommendTag from '@/pages/content/components/RecommendTag';
 export default {
     name: 'editNews',
     data() {
@@ -392,7 +323,7 @@ export default {
         console.log(this.articleID)
     },
     components: {
-        Tinymce, Tag
+        Tinymce, Tag,EmotionTag,RecommendTag
     },
     computed: {
 
@@ -489,9 +420,9 @@ export default {
             if (data.articleID !== null) {
                 this.articleID = data.articleID;
             }
-            this.form.newsTitle = data.title;
-            this.form.newsContext = data.context;
-            this.form.newsSource = data.source;
+            this.article.newsTitle = data.title;
+            this.article.newsContext = data.context;
+            this.article.newsSource = data.source;
             this.sourceAddress = data.sourceAddress;
             this.sourceTime = data.sourceTime;
             this.inputTime = data.inputTime;
@@ -564,9 +495,9 @@ export default {
             //
             // })
             let res = await getOnMark({
-                title: this.form.newsTitle,
-                context: this.form.newsContext,
-                source: this.form.newsSource
+                title: this.article.newsTitle,
+                context: this.article.newsContext,
+                source: this.article.newsSource
             });
             console.log(res);
             if (res !== null && res.code === 200) {
@@ -907,12 +838,12 @@ console.log(this.article)
     .bd3 {
         width: 14px;
         height: 12px;
-        background: url(../assets/img/mark.png) -2px -5px no-repeat;
+        background: url(../../assets/img/mark.png) -2px -5px no-repeat;
         margin-top: 2px;
     }
 
     .searcch {
-        background: url(../assets/img/mark.png) -2px -5px no-repeat;
+        background: url(../../assets/img/mark.png) -2px -5px no-repeat;
     }
 
     .tableTitle {
@@ -937,7 +868,7 @@ console.log(this.article)
         height: 526px;
 
         transform: translate(-50%, 0);
-        background-image: url("../assets/img/phone2x.png");
+        background-image: url("../../assets/img/phone2x.png");
         background-repeat: no-repeat;
         background-size: 100% 100%;
         background-color: #fff;
@@ -989,7 +920,9 @@ console.log(this.article)
         color: #3C4556;
         line-height: 20px;
     }
-
+    .preview-text p img {
+        width: 100%;
+    }
     .fold {
         width: 160px;
         top: 0;
@@ -1048,7 +981,16 @@ console.log(this.article)
         text-align: center;
     }
 }
-
+.tableTitle-left {
+    width: 100%;
+    border: 2px solid;
+    border-image: linear-gradient(270deg,rgba(42, 121, 238, 1), rgba(42, 121, 238, 0)) 1 1;
+}
+.tableTitle-right {
+    width: 100%;
+    border: 2px solid;
+    border-image: linear-gradient(270deg,rgba(42, 121, 238, 0) ,rgba(42, 121, 238, 1)) 1 1;
+}
 </style>
 <style lang='scss'>
 .editNews {
