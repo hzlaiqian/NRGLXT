@@ -3,133 +3,139 @@
         <div style='height: 100%; width: 100%;'>
             <el-row style='display: inline-flex;width: 100%;height: 100%'>
                 <el-col :span='16' style='height: 100%;padding: 20px 0 20px 20px;margin-right: 60px;'>
-                        <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
-                            <div class='bd3 flex-col'></div>
-                            <h3 style='margin-left: 5px'>基本信息</h3>
-                        </div>
-                        <!--                    表单-->
-                        <div style='height: calc(100% - 60px)'>
-                            <el-form style='height: 100%' :rules='rules' ref='formData' label-position='left' :model='article' label-width='77px'>
-                                <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
-                                    <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
-                                              v-model='article.newsTitle'></el-input>
-                                </el-form-item>
-                                <el-row type='flex' justify='space-between'>
-                                    <el-col :span='10'>
-                                        <el-form-item label='来源：' prop='newsSource'>
-                                            <el-input style='width: 100%;' placeholder='请输入来源' show-word-limit clearable
-                                                      maxlength='20'
-                                                      v-model='article.newsSource'></el-input>
-                                        </el-form-item>
+                    <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
+                        <div class='bd3 flex-col'></div>
+                        <h3 style='margin-left: 5px'>基本信息</h3>
+                    </div>
+                    <!--                    表单-->
+                    <div style='height: calc(100% - 60px)'>
+                        <el-form style='height: 100%' :rules='rules' ref='formData' label-position='left'
+                                 :model='article' label-width='77px'>
+                            <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
+                                <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
+                                          v-model='article.newsTitle'></el-input>
+                            </el-form-item>
+                            <el-row type='flex' justify='space-between'>
+                                <el-col :span='10'>
+                                    <el-form-item label='来源：' prop='newsSource'>
+                                        <el-input style='width: 100%;' placeholder='请输入来源' show-word-limit clearable
+                                                  maxlength='20'
+                                                  v-model='article.newsSource'></el-input>
+                                    </el-form-item>
 
-                                    </el-col>
-                                    <el-col :span='12'>
-                                        <el-form-item label-width='90px' label='发布时间：'>
-                                            <el-date-picker
-                                                style='width: 100%'
-                                                disabled
-                                                v-model='article.inputTime'
-                                                prefix-icon=' '
-                                                type='datetime'
-                                                placeholder='选择日期时间'>
-                                            </el-date-picker>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-collapse-transition>
-                                    <div v-show='isUnfold'>
-                                        <el-form-item label-width='67px' label='摘要：' style='margin-left: 11px'>
-                                            <el-input
+                                </el-col>
+                                <el-col :span='12'>
+                                    <el-form-item label-width='90px' label='发布时间：'>
+                                        <el-date-picker
+                                            style='width: 100%'
+                                            disabled
+                                            v-model='article.inputTime'
+                                            prefix-icon=' '
+                                            type='datetime'
+                                            placeholder='选择日期时间'>
+                                        </el-date-picker>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-collapse-transition>
+                                <div v-show='isUnfold'>
+                                    <el-form-item label-width='67px' label='摘要：' style='margin-left: 11px'>
+                                        <el-input
 
-                                                type='textarea'
-                                                :rows='4'
-                                                maxlength='200'
-                                                show-word-limit
-                                                v-model='article.desc'
-                                                placeholder='请输入摘要'>
-                                            </el-input>
-                                        </el-form-item>
+                                            type='textarea'
+                                            :rows='4'
+                                            maxlength='200'
+                                            show-word-limit
+                                            v-model='article.desc'
+                                            placeholder='请输入摘要'>
+                                        </el-input>
+                                    </el-form-item>
 
-                                        <el-row type='flex' justify='space-between'>
-                                            <el-col :span='10'>
-                                                <el-form-item label='作者：' label-width='67px' style='margin-left: 11px'>
-                                                    <el-input style='width: 100%' placeholder='请输入作者'
-                                                              v-model='article.author'
-                                                              clearable></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :span='12'>
-                                                <el-form-item label-width='90px' label='来源地址：'>
-                                                    <el-input placeholder='请输入来源地址' v-model='article.sourceAddress'
-                                                              clearable></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                        </el-row>
+                                    <el-row type='flex' justify='space-between'>
+                                        <el-col :span='10'>
+                                            <el-form-item label='作者：' label-width='67px' style='margin-left: 11px'>
+                                                <el-input style='width: 100%' placeholder='请输入作者'
+                                                          v-model='article.author'
+                                                          clearable></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span='12'>
+                                            <el-form-item label-width='90px' label='来源地址：'>
+                                                <el-input placeholder='请输入来源地址' v-model='article.sourceAddress'
+                                                          clearable></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+
+                                </div>
+                            </el-collapse-transition>
+
+                            <el-form-item class='context'
+                                          :style=' isUnfold ? "height: calc(100% - 280px)" :"height: calc(100% - 120px)"'
+                                          label='正文：' prop='newsContext'>
+                                <div class='flex' style='flex-direction: row-reverse'>
+                                    <div style='margin-left: 20px' class='pointer color-1683ff'
+                                         @click='isUnfold = !isUnfold'>
+                                        <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
+                                        <!--                                        <i :class='{"is-active": isUnfold}'-->
+                                        <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
+                                        <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
+                                           class='el-collapse-item__arrow  '></i>
+                                    </div>
+                                    <div class='pointer color-1683ff'>一键排版</div>
+
+                                </div>
+                                <div class='editor-box relative' style='height:100%'>
+                                    <div class='absolute fold'>
 
                                     </div>
-                                </el-collapse-transition>
-
-                                <el-form-item class='context' :style=' isUnfold ? "height: calc(100% - 280px)" :"height: calc(100% - 120px)"' label='正文：' prop='newsContext'>
-                                    <div class='flex' style='flex-direction: row-reverse'>
-                                        <div style='margin-left: 20px' class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
-                                            <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
-                                            <!--                                        <i :class='{"is-active": isUnfold}'-->
-                                            <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
-                                            <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
-                                               class='el-collapse-item__arrow  '></i>
-                                        </div>
-                                        <div class='pointer color-1683ff'>一键排版</div>
-
-                                    </div>
-                                    <div class='editor-box relative' style='height:100%'>
-                                        <div class='absolute fold'>
-
-                                        </div>
-                                        <tinymce :value='article.newsContext' height='100%' />
-                                    </div>
-                                </el-form-item>
-                            </el-form>
-                        </div>
+                                    <tinymce @input='tinymceChange' :value='article.newsContext' height='100%' />
+                                </div>
+                            </el-form-item>
+                        </el-form>
+                    </div>
 
                 </el-col>
                 <el-col :span='8' class='flex flex-column' style='height: 100%;padding: 20px 20px 20px 0'>
-                        <el-scrollbar class='grid-content bg-purple' style='width: 100%;height: auto;max-height: calc(100% - 255px);'>
-                            <div class='grid-content bg-purple mt-10'>
-                                <emotion-tag></emotion-tag>
-                                <div style='padding-bottom: 10px'>
-                                    <div class='tableTitle'></div>
-                                </div>
+                    <el-scrollbar class='grid-content bg-purple'
+                                  style='width: 100%;height: auto;max-height: calc(100% - 255px);'>
+                        <div class='grid-content bg-purple mt-10'>
+                            <emotion-tag :activeName='emotionActiveName' @click='emotionClick'
+                                         :list='moodList'></emotion-tag>
+                            <div style='padding-bottom: 10px'>
+                                <div class='tableTitle'></div>
                             </div>
-                            <div class='grid-content bg-purple'>
-                                <recommend-tag @marking='onMark'></recommend-tag>
-                                <div style='padding: 10px 0; '>
-                                    <div class='tableTitle'></div>
-                                </div>
+                        </div>
+                        <div class='grid-content bg-purple'>
+                            <recommend-tag :list='recommendList' @recommendChange='recommendChange' @marking='onMark'></recommend-tag>
+                            <div style='padding: 10px 0; '>
+                                <div class='tableTitle'></div>
                             </div>
-                            <div class='grid-content bg-purple'>
+                        </div>
+                        <div class='grid-content bg-purple'>
+                            <div class='flex items-center'>
                                 <div class='flex items-center'>
-                                    <div class='flex items-center'>
-                                        <img style='width: 22px;height: 21px' src='../../assets/img/mark.png'>
-                                    </div>
-                                    <h3 class='ml-5'>栏目标签：</h3>
+                                    <img style='width: 22px;height: 21px' src='../../assets/img/mark.png'>
                                 </div>
-                                <div style='margin: 10px 0 10px 0;display: inline-block;'>
-                                    <div class='flex flex-wrap'>
-                                        <div v-for='item in colList' :key='item.id'>
-                                            <transition mode='out-in' name='el-zoom-in-center' appear>
-                                                <tag @del='tagClose(item.id,0)' style='margin:12px 12px 0 0'
-                                                     type='closeTag' :title='item.name'></tag>
-                                            </transition>
-                                        </div>
-
-                                        <el-tag class='new-tag pointer' style='margin:12px 12px 0 0' size='small'
-                                                @click='showDialog()'>+添加标签
-                                        </el-tag>
+                                <h3 class='ml-5'>栏目标签：</h3>
+                            </div>
+                            <div style='margin: 10px 0 10px 0;display: inline-block;'>
+                                <div class='flex flex-wrap'>
+                                    <div v-for='item in colList' :key='item.id'>
+                                        <transition mode='out-in' name='el-zoom-in-center' appear>
+                                            <tag @del='tagClose(item.id,0)' style='margin:12px 12px 0 0'
+                                                 type='closeTag' :title='item.name'></tag>
+                                        </transition>
                                     </div>
+
+                                    <el-tag class='new-tag pointer' style='margin:12px 12px 0 0' size='small'
+                                            @click='showDialog()'>+添加标签
+                                    </el-tag>
                                 </div>
                             </div>
+                        </div>
 
-                        </el-scrollbar>
+                    </el-scrollbar>
                     <div class='flex flex-column' style='height: 234px'>
                         <div class='flex items-center' style='padding: 20px 0;'>
                             <div class='tableTitle-left'></div>
@@ -147,11 +153,13 @@
                                 <div class='flex flex-wrap'>
                                     <div v-for='item in noPassList' :key='item.id'>
                                         <transition mode='out-in' name='el-zoom-in-center' appear>
-                                            <tag v-if='item.isLight' @click='item.isLight = !item.isLight' :showClose='false' bg-color='rgba(245, 108, 108, 0.11)'
+                                            <tag v-if='item.isLight' @click='item.isLight = !item.isLight'
+                                                 :showClose='false' bg-color='rgba(245, 108, 108, 0.11)'
                                                  color='rgba(245, 108, 108, 1)' @del='tagClose(item.id,0)'
                                                  style='margin:12px 12px 0 0;border: 1px solid rgba(255,255,255,0);'
                                                  type='commonTag' :title='item.name'></tag>
-                                            <tag v-else @click='item.isLight = !item.isLight' bg-color='rgba(234, 237, 247, 0.1)'
+                                            <tag v-else @click='item.isLight = !item.isLight'
+                                                 bg-color='rgba(234, 237, 247, 0.1)'
                                                  color='rgba(60, 69, 86, 1)' @del='tagClose(item.id,0)'
                                                  style='margin:12px 12px 0 0;border: 1px solid #EAEDF7;'
                                                  type='commonTag' :title='item.name'></tag>
@@ -165,11 +173,12 @@
                                 <el-col :span='12'>
                                     <el-button type='primary'
                                                style='float: right;width: 100%;letter-spacing: 2px;height: 38px;font-size: 14px'
-                                               @click='submitTag()'>提交
+                                               @click='submit()'>提交
                                     </el-button>
                                 </el-col>
                                 <el-col :span='12'>
-                                    <el-button class='previewBut' @click='openDialogPreview' style='width: 100%' plain>预览
+                                    <el-button class='previewBut' @click='openDialogPreview' style='width: 100%' plain>
+                                        预览
                                     </el-button>
                                 </el-col>
                             </el-row>
@@ -245,7 +254,8 @@
 
                             </div>
                         </div>
-                        <div class='preview-text' style='margin-top: 10px' v-html='article.newsContext + "<style>img {width: 100%}</style>"'>
+                        <div class='preview-text' style='margin-top: 10px'
+                             v-html='article.newsContext + "<style>img {width: 100%}</style>"'>
                         </div>
                     </div>
                 </div>
@@ -266,9 +276,8 @@ import {
     getChildList,
     getLabelByTree,
     getLabelByList,
-
     getConceptByName,
-    getConceptByList, getWaitByID
+    getConceptByList, getWaitByID, getUnPassList, updateCheck
 
 } from '../../api/getData.js';
 import Tinymce from '@/components/Tinymce';
@@ -276,6 +285,7 @@ import Tag from '@/components/Tag';
 import dayjs from '@/plugins/dayjs';
 import EmotionTag from '@/pages/content/components/EmotionTag';
 import RecommendTag from '@/pages/content/components/RecommendTag';
+
 export default {
     name: 'editNews',
     data() {
@@ -312,48 +322,61 @@ export default {
                 textColor: '',
                 fill: ''
             },
-            articleID: ''
+            articleID: '',
+            checkID: '',
+            emotionActiveName: '',
+            articleData: null
         };
     },
     created() {
-        this.articleID = Number(this.$route.query.articleID);
+        this.checkID = Number(this.$route.query.checkID);
         this.initData();
 
 
-        console.log(this.articleID)
+        console.log(this.checkID);
     },
     components: {
-        Tinymce, Tag,EmotionTag,RecommendTag
+        Tinymce, Tag, EmotionTag, RecommendTag
     },
-    computed: {
-
-    },
+    computed: {},
     activated() {
-        this.articleID = Number(this.$route.query.articleID);
-        this.getArticle()
+        this.checkID = Number(this.$route.query.checkID);
+        this.getArticle();
     },
     beforeRouteUpdate(to, from, next) {
-        console.log(to)
-        this.articleID = Number(to.query.articleID)
-        this.getArticle()
+        console.log(to);
+        this.checkID = Number(to.query.checkID);
+        this.getArticle();
         next();
     },
     methods: {
+        recommendChange(value) {
+            this.recommendList = value;
+        },
+        emotionClick(value) {
+            this.emotionId = value.map(q => q.id);
+        },
+        tinymceChange(value) {
+            this.article.context = value;
+        },
         async getArticle() {
             // 获取文章详情
             const data = await getWaitByID({
-                id: this.articleID
-            })
+                checkID: this.checkID
+            });
             if (data.code === 200) {
-                this.$nextTick(() =>{
-                    this.article.newsTitle = data.data.title
-                    this.article.newsSource = data.data.source
-                    this.article.author = data.data.author
-                    this.article.desc = data.data.desc
-                    this.article.sourceAddress = data.data.sourceAddress
-                    this.article.inputTime = data.data.inputTime
-                    this.article.newsContext = data.data.context
-                    });
+                this.articleData = data.data
+                this.loadData(data.data);
+                if (data.data.moodList !== null ) this.emotionId = data.data.moodList.map(q => q.id);
+                this.$nextTick(() => {
+                    this.article.newsTitle = data.data.title;
+                    this.article.newsSource = data.data.source;
+                    this.article.author = data.data.author;
+                    this.article.desc = data.data.desc;
+                    this.article.sourceAddress = data.data.sourceAddress;
+                    this.article.inputTime = data.data.inputTime;
+                    this.article.newsContext = data.data.context;
+                });
 
             } else {
                 this.$notify.error({
@@ -361,8 +384,6 @@ export default {
                     message: data.msg
                 });
             }
-
-            console.log(data)
         },
         openDialogPreview() {
             this.$refs['formData'].validate((valid) => {
@@ -407,8 +428,8 @@ export default {
             this.colList = [];
             await this.getMood();
             await this.getColumn();
-            await this.gatPassList()
-            await this.getArticle()
+            await this.gatPassList();
+            await this.getArticle();
         },
         onEditorChange(event) {
             this.editorTextLength = event.quill.getLength() - 1;
@@ -417,30 +438,38 @@ export default {
 
         },
         async loadData(data) {
-            if (data.articleID !== null) {
-                this.articleID = data.articleID;
-            }
-            this.article.newsTitle = data.title;
-            this.article.newsContext = data.context;
-            this.article.newsSource = data.source;
-            this.sourceAddress = data.sourceAddress;
-            this.sourceTime = data.sourceTime;
-            this.inputTime = data.inputTime;
-
             await this.initMood(data.mood);
             await this.initRecommend(data.recommend);
             await this.initColumn(data.column);
+            await this.initPass(data.unPass);
+        },
+        initPass(val) {
+            console.log(val)
+            if (val != null) {
+                let ids = JSON.parse(val);
+                ids.forEach(s => {
+                    this.noPassList.map(item => {
+                        if (item.id === s) {
+                            item.isLight = true;
+                        }
+                    });
+                });
+            }
         },
         async initMood(val) {
 
             if (val != null) {
-                var ids = JSON.parse(val);
+                let ids = JSON.parse(val);
                 console.log(ids, this.moodList);
                 ids.forEach(s => {
-                    var index = this.moodList.findIndex((m) => m.id == s);
-                    if (index != -1) {
-                        this.moodList[index].isLight = true;
-                    }
+                    this.moodList.map(item => {
+                        if (item.id === s) {
+                            item.isLight = true;
+
+                            this.emotionActiveName = item.name;
+                            console.log(this.emotionActiveName)
+                        }
+                    });
                 });
             }
             console.log(val, this.moodList);
@@ -459,7 +488,7 @@ export default {
         },
         async initColumn(val) {
             console.log(val);
-
+            this.lightTree(JSON.parse(val), this.waitList);
             this.colList = [];
             this.isLightTagArr = [];
             let res = await getLabelByList({
@@ -467,26 +496,21 @@ export default {
             });
             if (res !== null && res.code === 200) {
                 this.colList = [];
-                console.log(this.waitList);
                 this.waitList.forEach(i => {
                     if (i.child != null) {
                         i.child.forEach(j => {
                             if (j.isLight) {
-
+                                const c = {};
+                                c.id = j.id;
+                                c.color = j.color;
+                                c.name = j.name;
+                                this.colList.push(c);
+                                this.isLightTagArr.push(c);
                             }
-                            const c = {};
-                            c.id = j.id;
-                            c.color = j.color;
-                            c.name = j.name;
-                            this.colList.push(c);
-                            this.isLightTagArr.push(c);
-                            console.log(j);
-
                         });
                     }
                 });
-                console.log(this.colList);
-                this.lightTree(JSON.parse(val), this.waitList);
+
             }
         },
         async onMark() {
@@ -580,37 +604,33 @@ export default {
             });
         },
         lightTree(data, list) {
-            console.log(data, list);
-
-            data.forEach(i => {
-                if (list != null && list.length > 0) {
-                    list.forEach(p => {
-                        if (p.child != null && p.child.length > 0) {
-                            var index = p.child.findIndex((c) => c.id == i);
-                            if (index != -1) {
-                                p.child[index].isLight = true;
+            if (data !== null) {
+                data.forEach(i => {
+                    if (list != null && list.length > 0) {
+                        list.forEach(p => {
+                            if (p.child != null && p.child.length > 0) {
+                                p.child.map(item => {
+                                    if (item.id === i) item.isLight = true;
+                                });
                             }
-                        }
-                    });
-                }
-            });
-            console.log(this.colList);
+                        });
+                    }
+                });
+            }
         },
         async getMood() {
             let res = await getChildList({
                 pid: 1
             });
-            console.log(res)
+            console.log(res);
             if (res != null && res.code == 200) {
                 this.initList(res.data, this.moodList);
             } else {
                 this.moodList = [];
             }
         },
-        async gatPassList () {
-            let res = await getChildList({
-                pid: 4
-            });
+        async gatPassList() {
+            let res = await getUnPassList();
             if (res != null && res.code == 200) {
                 this.initList(res.data, this.noPassList);
             } else {
@@ -728,7 +748,7 @@ export default {
                     });
                 }
             });
-console.log(this.article)
+            console.log(this.article);
             this.dialogVisible = false;
         },
         async showDialog() {
@@ -762,32 +782,39 @@ console.log(this.article)
             return arr;
         },
         async submit() {
-            var moodArr = this.getList(this.moodList);
-            var recommendArr = this.getTreeList(this.recommendList);
-            var colArr = this.getList(this.colList);
-
-            var article = {
-                title: this.newsTitle,
-                context: this.newsContext.toString(),
-                source: this.newsSource,
-                mood: moodArr,
-                recommend: recommendArr,
-                column: colArr
-            };
-
-            const res = await addCheck(article);
-            if (res != null && res.code == 200) {
-                this.$message({
-                    type: 'success',
-                    message: '录入成功'
-                });
-                this.initData();
-            } else {
-                this.$message({
-                    type: 'error',
-                    message: '录入失败'
-                });
-            }
+            this.$refs['formData'].validate(async (valid) => {
+                if (!valid) return false;
+                let recommendArr = this.getTreeList(this.recommendList);
+                let colArr = this.colList.map(item => item.id);
+                let article = {
+                    articleID: this.articleData.articleID,
+                    title: this.article.newsTitle,
+                    context: this.article.context,
+                    author:this.article.author,
+                    desc:this.article.desc,
+                    source: this.article.newsSource,
+                    sourceTime: this.articleData.sourceTime,
+                    sourceAddress: this.article.sourceAddress,
+                    inputTime: this.article.inputTime,
+                    checkID: this.articleData.checkID,
+                    mood: this.emotionId,
+                    recommend: recommendArr,
+                    column: colArr,
+                    unPass: this.noPassList.filter(q => q.isLight).map(q => q.id)
+                };
+                const res = await updateCheck(article)
+                if (res != null && res.code === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: '修改成功！'
+                    });
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: '录入失败！'
+                    });
+                }
+            })
         }
     }
 };
@@ -797,6 +824,7 @@ console.log(this.article)
 .editNews {
     height: 100%;
     background-color: #fff;
+
     .el-row {
         //margin-bottom: 20px;
 
@@ -920,9 +948,11 @@ console.log(this.article)
         color: #3C4556;
         line-height: 20px;
     }
+
     .preview-text p img {
         width: 100%;
     }
+
     .fold {
         width: 160px;
         top: 0;
@@ -981,15 +1011,17 @@ console.log(this.article)
         text-align: center;
     }
 }
+
 .tableTitle-left {
     width: 100%;
     border: 2px solid;
-    border-image: linear-gradient(270deg,rgba(42, 121, 238, 1), rgba(42, 121, 238, 0)) 1 1;
+    border-image: linear-gradient(270deg, rgba(42, 121, 238, 1), rgba(42, 121, 238, 0)) 1 1;
 }
+
 .tableTitle-right {
     width: 100%;
     border: 2px solid;
-    border-image: linear-gradient(270deg,rgba(42, 121, 238, 0) ,rgba(42, 121, 238, 1)) 1 1;
+    border-image: linear-gradient(270deg, rgba(42, 121, 238, 0), rgba(42, 121, 238, 1)) 1 1;
 }
 </style>
 <style lang='scss'>
@@ -997,6 +1029,7 @@ console.log(this.article)
     .el-input--prefix .el-input__inner {
         padding-left: 15px;
     }
+
     .el-scrollbar .el-scrollbar__wrap {
         overflow: auto;
         padding-right: 17px;
@@ -1004,8 +1037,8 @@ console.log(this.article)
     }
 }
 
- .context .el-form-item__content {
-     margin-top: -20px;
-     height: 100%;
- }
+.context .el-form-item__content {
+    margin-top: -20px;
+    height: 100%;
+}
 </style>

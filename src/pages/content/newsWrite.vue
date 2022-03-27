@@ -67,7 +67,7 @@
                                             :rows='4'
                                             maxlength='200'
                                             show-word-limit
-                                            v-model='form.newsDesc'
+                                            v-model='form.desc'
                                             placeholder='请输入摘要'>
                                         </el-input>
                                     </el-form-item>
@@ -77,7 +77,7 @@
                                             <el-form-item label='作者：' label-width='67px'
                                                           style='margin-left: 11px;margin-bottom: 0'>
                                                 <el-input style='width: 100%' placeholder='请输入作者'
-                                                          v-model='form.newsAuthor'
+                                                          v-model='form.author'
                                                           clearable></el-input>
                                             </el-form-item>
                                         </el-col>
@@ -94,7 +94,7 @@
 
                             <el-form-item class='context' label='正文：'
                                           :style=' isUnfold ? "height: calc(100% - 280px)" :"height: calc(100% - 120px)"'
-                                          prop='newsContext'>
+                                          prop='context'>
                                 <div class='flex' style='flex-direction: row-reverse'>
                                     <div style='margin-left: 20px;color: #20A0FF' class='pointer'
                                          @click='isUnfold = !isUnfold'>
@@ -115,7 +115,7 @@
                                     <!--                                                  :options='editorOption'-->
                                     <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
                                     <!--                                    </quill-editor>-->
-                                    <tinymce @input='tinymceChange' :value='form.newsContext' height='100%' />
+                                    <tinymce ref='tinymce' @input='tinymceChange' :value='form.newsContext' height='100%' />
                                     <!--                                    <span class='absolute'-->
                                     <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
                                     <!--                                        }}字</span>-->
@@ -169,13 +169,14 @@
                 <el-col :span='8' style='height: 100%;padding: 20px 20px 20px 0' class='flex flex-column'>
                     <el-scrollbar class='grid-content bg-purple' style='width: 100%;height: auto;'>
                         <div class='grid-content bg-purple mt-10'>
-                            <emotion-tag></emotion-tag>
+                            <emotion-tag @click='emotionClick' :list='moodList'></emotion-tag>
                             <div style='padding-bottom: 10px'>
                                 <div class='tableTitle'></div>
                             </div>
                         </div>
                         <div class='grid-content bg-purple'>
-                            <recommend-tag @marking='onMark'></recommend-tag>
+                            <recommend-tag :list='recommendList' @recommendChange='recommendChange'
+                                           @marking='onMark'></recommend-tag>
                             <div style='padding: 10px 0; '>
                                 <div class='tableTitle'></div>
                             </div>
@@ -209,7 +210,7 @@
                             <el-col :span='12'>
                                 <el-button type='primary'
                                            style='float: right;letter-spacing: 2px;width: 100%;height: 38px;font-size: 14px'
-                                           @click='submitTag()'>提交
+                                           @click='submit()'>提交
                                 </el-button>
                             </el-col>
                             <el-col :span='12'>
@@ -309,7 +310,8 @@
                         <!--                                {{ c.name }}-->
                         <!--                            </el-tag>-->
                         <!--                        </div>-->
-                        <div class='preview-text' style='margin-top: 10px' v-html='form.newsContext  + "<style>img {width: 100%}</style>"'>
+                        <div class='preview-text' style='margin-top: 10px'
+                             v-html='form.newsContext  + "<style>img {width: 100%}</style>"'>
                         </div>
                     </div>
                 </div>
@@ -367,8 +369,10 @@ export default {
                 newsContext: '',
                 context: '',
                 newsSource: '',
-                createTime: dayjs(new Date).format('YYYY-MM-DD HH:mm:ss'),
-                value: ''
+                value: '',
+                sourceAddress: '',
+                author: '',
+                desc: ''
             },
             isUnfold: false,
             moodList: [],
@@ -378,20 +382,21 @@ export default {
             rules: {
                 newsTitle: [{ required: true, message: '请输入标题', trigger: 'blur' }],
                 newsSource: [{ required: true, message: '请输入来源', trigger: 'blur' }],
-                newsContext: [{ required: true, message: '请输入正文' }]
+                context: [{ required: true, message: '请输入正文' }]
             },
             waitList: [],
             radioGroupStyle: {
                 textColor: '',
                 fill: ''
-            }
+            },
+            emotionId: []
         };
     },
     created() {
         this.initData();
     },
     components: {
-        Tinymce, Tag, EmotionTag,RecommendTag
+        Tinymce, Tag, EmotionTag, RecommendTag
     },
     computed: {
         editor() {
@@ -400,8 +405,13 @@ export default {
     },
     watch: {},
     methods: {
+        recommendChange(value) {
+            this.recommendList = value;
+        },
+        emotionClick(value) {
+            this.emotionId = value.map(q => q.id);
+        },
         tinymceChange(value) {
-            console.log(value);
             this.form.context = value;
         },
         async aKeyLayout() {
@@ -409,7 +419,8 @@ export default {
                 const data = await getArticleLayout({ context: this.form.context });
                 console.log(data);
                 if (data.code === 200) {
-                    this.form.newsContext = data.data;
+                    // this.form.newsContext = data.data;
+                    this.form.context = data.data;
                 } else {
                     this.$message.error(data.msg);
                 }
@@ -447,21 +458,37 @@ export default {
                 this.radioGroupStyle.textColor = 'rgba(230, 162, 60, 1)';
             }
         },
-        async initData() {
+        initData() {
             this.dialogVisible = false;
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
 
-            this.newsTitle = '';
-            this.newsContext = '';
-            this.newsSource = '';
 
-            this.queryList = [];
-            this.waitList = [];
+            this.$nextTick(() => {
+                this.$refs.tinymce.setContent('')
+                this.form.newsTitle = '';
+                this.form.newsContext = null;
+                this.form.newsSource = '';
+                this.form.sourceAddress = '';
+                this.form.author = '';
+                this.form.desc = '';
+                this.queryList = [];
+                this.waitList = [];
+                this.form.context = null;
+                console.log(this.form.newsContext)
+                loading.close();
+            });
+
 
             this.moodList = [];
             this.recommendList = [];
             this.colList = [];
-            await this.getMood();
-            await this.getColumn();
+            this.getMood();
+            this.getColumn();
         },
         onEditorChange(event) {
             this.editorTextLength = event.quill.getLength() - 1;
@@ -470,9 +497,6 @@ export default {
 
         },
         async loadData(data) {
-            if (data.articleID !== null) {
-                this.articleID = data.articleID;
-            }
             this.form.newsTitle = data.title;
             this.form.newsContext = data.context;
             this.form.newsSource = data.source;
@@ -512,35 +536,34 @@ export default {
         },
         async initColumn(val) {
             console.log(val);
-
+            if (!val) {
+                this.colList = [];
+                return;
+            }
             this.colList = [];
             this.isLightTagArr = [];
+            this.lightTree(JSON.parse(val), this.waitList);7
             let res = await getLabelByList({
                 ids: JSON.parse(val)
             });
             if (res !== null && res.code === 200) {
                 this.colList = [];
-                console.log(this.waitList);
                 this.waitList.forEach(i => {
                     if (i.child != null) {
                         i.child.forEach(j => {
                             if (j.isLight) {
-
+                                const c = {};
+                                c.id = j.id;
+                                c.color = j.color;
+                                c.name = j.name;
+                                this.colList.push(c);
+                                this.isLightTagArr.push(c);
                             }
-                            const c = {};
-                            c.id = j.id;
-                            c.color = j.color;
-                            c.name = j.name;
-                            this.colList.push(c);
-                            this.isLightTagArr.push(c);
-                            console.log(j);
-
                         });
                     }
                 });
-                console.log(this.colList);
-                this.lightTree(JSON.parse(val), this.waitList);
             }
+
         },
         async onMark() {
             // this.$refs['formData'].validate(async (valid) => {
@@ -549,7 +572,7 @@ export default {
             // })
             let res = await getOnMark({
                 title: this.form.newsTitle,
-                context: this.form.newsContext,
+                context: this.form.context,
                 source: this.form.newsSource
             });
             console.log(res);
@@ -803,33 +826,38 @@ export default {
             });
             return arr;
         },
-        async submit() {
-            var moodArr = this.getList(this.moodList);
-            var recommendArr = this.getTreeList(this.recommendList);
-            var colArr = this.getList(this.colList);
-
-            var article = {
-                title: this.newsTitle,
-                context: this.newsContext.toString(),
-                source: this.newsSource,
-                mood: moodArr,
-                recommend: recommendArr,
-                column: colArr
-            };
-
-            const res = await addCheck(article);
-            if (res != null && res.code == 200) {
-                this.$message({
-                    type: 'success',
-                    message: '录入成功'
-                });
-                this.initData();
-            } else {
-                this.$message({
-                    type: 'error',
-                    message: '录入失败'
-                });
-            }
+        submit() {
+            this.$refs['formData'].validate(async (valid) => {
+                if (!valid) return false;
+                let recommendArr = this.getTreeList(this.recommendList);
+                let colArr = this.colList.map(item => item.id);
+                let article = {
+                    title: this.form.newsTitle,
+                    context: this.form.context,
+                    source: this.form.newsSource,
+                    mood: this.emotionId,
+                    sourceAddress: this.form.sourceAddress,
+                    author: this.form.author,
+                    desc: this.form.desc,
+                    sourceTime: dayjs(new Date).format('YYYY-MM-DD HH:mm:ss'),
+                    recommend: recommendArr,
+                    column: colArr
+                };
+                console.log(article);
+                const res = await addCheck(article);
+                if (res != null && res.code === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: '录入成功'
+                    });
+                    this.initData();
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: '录入失败'
+                    });
+                }
+            });
         }
     }
 };
@@ -921,9 +949,11 @@ export default {
     padding: 20px;
     box-sizing: border-box;
 }
+
 .preview .preview-content img {
     width: 100%;
 }
+
 .preview-header {
     height: 26px;
     line-height: 26px;
@@ -1032,6 +1062,7 @@ export default {
     padding-right: 17px;
     padding-bottom: 17px;
 }
+
 .ql-align-center img {
     width: 100%;
 }

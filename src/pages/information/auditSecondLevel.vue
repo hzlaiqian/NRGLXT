@@ -13,7 +13,7 @@
     <div class='table-box box-sizing'>
         <el-row :gutter='20'>
             <el-col style='width: 340px'>
-                <el-input style='width: 100%' v-model='query.name' placeholder='请输入名称'></el-input>
+                <el-input style='width: 100%' v-model='query.names' placeholder='请输入名称'></el-input>
             </el-col>
             <el-col style='width: 200px'>
                 <el-button class='select'>查询</el-button>
@@ -27,18 +27,18 @@
                         <div class='box box-sizing'>
                             <div class='tag-content box-sizing'>
                                 <div class='flex space-between items-center' style='margin-top: 12px'>
-                                    <div class='emotion-tag'>情绪标签</div>
+                                    <div class='emotion-tag'>{{item.name}}</div>
                                     <div class='emotion-right-tag flex space-between'>
                                         <span>批量添加</span>
                                         <span>查看数据</span>
                                     </div>
                                 </div>
                                 <div style='margin-top: 16px' class='data-size'>下级数据量：<span
-                                    style='color: #2F343D'>{{ item.dataSize }}</span></div>
+                                    style='color: #2F343D'>{{ item.count }}</span></div>
                                 <div class='flex space-between' style='margin-top: 26px'>
                                     <div class='create-time'>创建时间：<span
-                                        style='color: #2F343D'>{{ item.create_time }}</span></div>
-                                    <div class='del-tag'>
+                                        style='color: #2F343D'>{{ item.cdate.substring(0,16) }}</span></div>
+                                    <div class='del-tag' @click.stop='del(item.id)'>
                                         <i class='el-icon-delete' style='margin-right: 6px'></i>
                                         <span>删除</span>
                                     </div>
@@ -55,36 +55,69 @@
 </template>
 
 <script>
+import { delAuditLabel, getAuditLabelList } from '@/api/getData';
+
 export default {
     name: 'auditSecondLevel',
     data() {
-        const tagList = [{ dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }];
         return {
             query: {
-                name: ''
+                names: '',
+                pid: 0,
+                id: 0,
+                page:1,
+                size:100
             },
-            list: tagList
+            list: [],
+            pid: ''
         }
     },
     created() {
         this.$route.meta.title = '栏目标签'
+        this.query.pid = Number(this.$route.query.id);
+        this.getData()
+    },
+    activated() {
+        this.query.pid = Number(this.$route.query.id);
+    },
+    beforeRouteUpdate(to, from, next) {
+        this.query.pid = Number(to.query.id);
+        next();
     },
     methods: {
+        del(id) {
+            this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                let data = await delAuditLabel({ ids: [id] });
+                if (data.code === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    this.getData()
+                } else {
+                    this.$message.error(data.msg);
+                }
+
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+        },
+       async getData() {
+            const data = await getAuditLabelList(this.query)
+            if (data.code === 200) {
+                console.log(data)
+                this.list = data.data
+            } else {
+                this.$message.error(data.msg);
+            }
+        },
         back() {
             this.$router.go(-1)
         },

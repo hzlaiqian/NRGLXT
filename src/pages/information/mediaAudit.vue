@@ -22,18 +22,18 @@
                             <div class='box box-sizing'>
                                 <div class='tag-content box-sizing'>
                                     <div class='flex space-between items-center' style='margin-top: 12px'>
-                                        <div class='emotion-tag'>情绪标签</div>
+                                        <div class='emotion-tag'>{{item.name}}</div>
                                         <div class='emotion-right-tag flex space-between'>
                                             <span>批量添加</span>
                                             <span>查看数据</span>
                                         </div>
                                     </div>
                                     <div style='margin-top: 16px' class='data-size'>下级数据量：<span
-                                        style='color: #2F343D'>{{ item.dataSize }}</span></div>
+                                        style='color: #2F343D'>{{ item.count }}</span></div>
                                     <div class='flex space-between' style='margin-top: 26px'>
                                         <div class='create-time'>创建时间：<span
-                                            style='color: #2F343D'>{{ item.create_time }}</span></div>
-                                        <div class='del-tag'>
+                                            style='color: #2F343D'>{{ item.cdate.substring(0,16) }}</span></div>
+                                        <div class='del-tag' @click.stop='del(item.id)'>
                                             <i class='el-icon-delete' style='margin-right: 6px'></i>
                                             <span>删除</span>
                                         </div>
@@ -47,7 +47,7 @@
 
         </div>
         <el-dialog
-            title='批量添加至子页面'
+            title='批量添加'
             :visible.sync='dialogVisible'
             width='519px'>
             <div>
@@ -57,7 +57,7 @@
                             type='textarea'
                             :rows='2'
                             placeholder='批量添加请用英文,隔开'
-                            v-model='mediaForm.mediaDomain'>
+                            v-model='mediaForm.names'>
                         </el-input>
                     </el-form-item>
                 </el-form>
@@ -65,49 +65,95 @@
             </div>
             <span slot='footer' class='dialog-footer'>
                 <el-button class='cancel' @click='dialogVisible = false'>取 消</el-button>
-                <el-button type='primary' @click='dialogVisible = false'>确 定</el-button>
+                <el-button type='primary' @click='save'>确 定</el-button>
               </span>
         </el-dialog>
     </div>
 </template>
 
 <script>
+import { addAuditLabel, delAuditLabel, getAuditLabelList } from '@/api/getData';
+
 export default {
     name: 'mediaAudit',
     data() {
-        const tagList = [{ dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }, {
-            dataSize: 133,
-            create_time: '2022-02-28 12:22'
-        }, { dataSize: 133, create_time: '2022-02-28 12:22' }];
         return {
             query: {
-                name: ''
+                names: '',
+                pid: 0,
+                id: 0,
+                page:1,
+                size:100
             },
-            list: tagList,
+            list: [],
             mediaForm: {
-                mediaDomain: ''
+                names: '',
+                pid: 0
             },
             dialogVisible: false
         };
     },
+    created() {
+        this.getData()
+    },
     methods: {
+        del(id) {
+            this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                let data = await delAuditLabel({ ids: [id] });
+                if (data.code === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    this.getData()
+                } else {
+                    this.$message.error(data.msg);
+                }
+
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+        },
         addMedia() {
-this.dialogVisible = true
+            this.mediaForm.labels = '';
+            this.dialogVisible = true;
         },
         openNext(item) {
-            this.$router.push({ path: '/auditSecondLevel' });
+            this.$router.push({ path: '/auditSecondLevel',query: {id: item.id} });
+        },
+       async getData() {
+          const data = await getAuditLabelList(this.query)
+           if (data.code === 200) {
+               console.log(data)
+               this.list = data.data
+           } else {
+               this.$message.error(data.msg);
+           }
+        },
+        async save() {
+            this.dialogVisible = false
+            if (this.mediaForm.names.length !== 0) {
+                const data = await addAuditLabel(this.mediaForm);
+                if (data.code === 200) {
+                    this.$message({
+                        message: '添加成功',
+                        type: 'success'
+                    });
+                    this.getData();
+                } else {
+                    this.$message.error(data.msg);
+                }
+            } else {
+                this.$message.error('请填写标签');
+            }
+
         }
     }
 };
@@ -272,9 +318,11 @@ this.dialogVisible = true
     .el-checkbox__label {
         color: #2F343D;
     }
+
     .el-dialog__footer {
         border-top: 1px solid #EAEDF7;
     }
+
     .el-checkbox__input.is-checked + .el-checkbox__label {
         color: #2F343D;
     }

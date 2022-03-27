@@ -53,12 +53,12 @@ export const getLabelByList = data => post('/label/getLabelByList', data);
 /**
  * 标签树结构
  */
-export const getLabelByTree = data => post('/label/getLabelByTree', data);
+export const getLabelByTree = data => get('/label/getColumnTree', data);
 
 /**
  * 查询二级标签
  */
-export const getChildList = data => post('/label/getChildList', data);
+export const getChildList = data => get('/label/getMoodList', data);
 
 /**
  * 查询用户列表
@@ -98,7 +98,7 @@ export const addArticle = data => post('/article/addArticle', data)
 /**
  * 根据ID获取待审核库中的文章
  */
-export const getWaitByID = data => post('/article/getArticleByID', data)
+export const getWaitByID = data => post('/check/getCheckByID', data)
 
 /**
  * 根据ID正式库中的文章
@@ -118,12 +118,12 @@ export const countUnCheck = data => post('/article/countUnCheck')
 /**
  * 获取一个文档开始审核
  */
-export const getOneArticle = data => post('/article/getOneArticle',data,'POST')
+export const getOneArticle = data => post('/check/getOneCheck',data,'POST')
 
 /**
  * 对一个文章重新打标,参数为文章对象
  */
-export const getOnMark = data => post('/article/getOnMark',data,'POST')
+export const getOnMark = data => post('/check/getOnMark',data,'POST')
 
 /**
  * 对一个文章重新打标,参数为文章ID
@@ -138,19 +138,19 @@ export const getOnMarkByCheckID = data => post('/article/getOnMarkByCheckID',dat
 /**
  * 根据ID过去待审核库中的文档
  */
-export const getWaitList = data => post('/Check/getWaitList', data)
+export const getWaitList = data => post('/check/getWaitList', data)
 
 /**
  * 保存文档
  */
-export const addCheck = data => post('/Check/addCheck', data)
+export const addCheck = data => post('/check/addCheck', data)
 
-export const updateCheck = data => post('/Check/updateCheck', data)
+export const updateCheck = data => post('/check/updateCheck', data)
 
 /**
  * 查询正式库中的文档
  */
-export const getCheckList = data => post('/Check/getCheckList', data)
+export const getCheckList = data => post('/check/getCheckList', data)
 
 /**
  * 删除已上线的文章
@@ -250,4 +250,31 @@ export const getIdeaByTree = data => post('/idea/getIdeaByTree', data)
  * 一键排版
  */
 
-export const getArticleLayout = data => post('/article/getArticleLayout', data)
+export const getArticleLayout = data => post('/check/getArticleLayout', data)
+// 查询不通过理由
+
+export const getUnPassList = data => get('/label/getUnPassList', data)
+// 查询待审核数量
+export const getCountWaitCheck = data => get('/check/countWaitCheck', data)
+// 文件上传
+export const uploadFile = data => post('/media/uploadfile', data)
+// 客户列表查询
+export const getUsers = data => get('/mediaConfig/getUsers', data)
+// 媒体配置列表
+export const getMediaConfigList = data => post('/mediaConfig/getList', data)
+// 删除媒体配置
+export const deleteMediaConfigList = data => post('/mediaConfig/delete', data)
+// 新增媒体配置
+export const addMediaConfigList = data => post('/mediaConfig/add', data)
+// 修改媒体配置
+export const updateMediaConfigList = data => post('/mediaConfig/update', data)
+// 根据配置id查询
+export const getMediaConfigByID = data => post('/mediaConfig/getMediaConfigByID', data)
+// 添加审核维度标签
+export const addAuditLabel = data => post('/label/add', data)
+// 查询审核维度标签列表
+export const getAuditLabelList = data => post('/label/getLabelList', data)
+// 删除审核维度标签
+export const delAuditLabel = data => post('/label/delLabel', data)
+// 根据pid查询标签
+export const getAuditLabelListByPID = data => post('/label/getLabelListByPID', data)

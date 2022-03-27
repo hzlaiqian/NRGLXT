@@ -2,10 +2,10 @@
     <div class='editNews news'>
         <div class='flex items-center space-between review'>
             <div class='left ml-20'>待审核新闻量：
-                <span style='color: #F56C6C;padding: 0 5px'>30</span>条
+                <span style='color: #F56C6C;padding: 0 5px'>{{count}}</span>条
             </div>
             <div class='mr-20'>
-                <button class='review-button'>开始审核</button>
+                <button class='review-button' @click='startCheck'>开始审核</button>
             </div>
         </div>
         <div class='box-sizing' style='height: 100%; width: 100%;padding: 20px'>
@@ -18,17 +18,17 @@
                         </div>
                         <!--                    表单-->
                         <div style='height: calc(100% - 60px)'>
-                            <el-form :rules='rules' ref='formData' style='height: 100%' label-position='left' :model='form' label-width='77px'>
+                            <el-form :rules='rules' ref='formData' style='height: 100%' label-position='left' :model='article' label-width='77px'>
                                 <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
                                     <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
-                                              v-model='form.newsTitle'></el-input>
+                                              v-model='article.newsTitle'></el-input>
                                 </el-form-item>
                                 <el-row type='flex' justify='space-between'>
                                     <el-col :span='10'>
                                         <el-form-item label='来源：' prop='newsSource'>
                                             <el-input style='width: 100%;' placeholder='请输入来源' show-word-limit clearable
                                                       maxlength='20'
-                                                      v-model='form.newsSource'></el-input>
+                                                      v-model='article.newsSource'></el-input>
                                         </el-form-item>
 
                                     </el-col>
@@ -36,7 +36,8 @@
                                         <el-form-item label-width='90px' label='原网时间：'>
                                             <el-date-picker
                                                 disabled
-                                                v-model='form.createTime'
+                                                style='width: 100%'
+                                                v-model='article.inputTime'
                                                 prefix-icon=' '
                                                 type='datetime'
                                                 placeholder='选择日期时间'>
@@ -53,7 +54,7 @@
                                                 :rows='4'
                                                 maxlength='200'
                                                 show-word-limit
-                                                v-model='form.newsDesc'
+                                                v-model='article.desc'
                                                 placeholder='请输入摘要'>
                                             </el-input>
                                         </el-form-item>
@@ -62,13 +63,13 @@
                                             <el-col :span='10'>
                                                 <el-form-item label='作者：' label-width='67px' style='margin-left: 11px'>
                                                     <el-input style='width: 100%' placeholder='请输入作者'
-                                                              v-model='form.newsAuthor'
+                                                              v-model='article.author'
                                                               clearable></el-input>
                                                 </el-form-item>
                                             </el-col>
                                             <el-col :span='12'>
                                                 <el-form-item label-width='90px' label='来源地址：'>
-                                                    <el-input placeholder='请输入来源地址' v-model='form.sourceAddress'
+                                                    <el-input placeholder='请输入来源地址' v-model='article.sourceAddress'
                                                               clearable></el-input>
                                                 </el-form-item>
                                             </el-col>
@@ -77,7 +78,7 @@
                                     </div>
                                 </el-collapse-transition>
 
-                                <el-form-item  :style=' isUnfold ? "height: calc(100% - 280px)" :"height: calc(100% - 120px)"' class='context' label='正文：' prop='newsContext'>
+                                <el-form-item  :style=' isUnfold ? "height: calc(100% - 280px)" :"height: calc(100% - 120px)"' class='context' label='正文：' prop='context'>
                                     <div class='flex' style='flex-direction: row-reverse'>
                                         <div style='margin-left: 20px' class='pointer color-1683ff' @click='isUnfold = !isUnfold'>
                                             <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
@@ -93,7 +94,7 @@
                                         <div class='absolute fold'>
 
                                         </div>
-                                        <tinymce @input='tinymceChange' :value='form.newsContext' height='100%' />
+                                        <tinymce @input='tinymceChange' :value='article.newsContext' height='100%' />
                                     </div>
                                 </el-form-item>
                             </el-form>
@@ -103,13 +104,14 @@
                 <el-col :span='8' style='height: 100%' class='flex flex-column'>
                         <el-scrollbar class='grid-content bg-purple' style='width: 100%;height: auto;max-height: calc(100% - 255px);'>
                             <div class='grid-content bg-purple mt-10'>
-                                <emotion-tag></emotion-tag>
+                                <emotion-tag :activeName='emotionActiveName' @click='emotionClick'
+                                             :list='moodList'></emotion-tag>
                                 <div style='padding-bottom: 10px'>
                                     <div class='tableTitle'></div>
                                 </div>
                             </div>
                             <div class='grid-content bg-purple'>
-                                <recommend-tag @marking='onMark'></recommend-tag>
+                                <recommend-tag :list='recommendList' @recommendChange='recommendChange' @marking='onMark'></recommend-tag>
                                 <div style='padding: 10px 0; '>
                                     <div class='tableTitle'></div>
                                 </div>
@@ -176,7 +178,7 @@
                                 <el-col :span='12'>
                                     <el-button type='primary'
                                                style='float: right;width: 100%;letter-spacing: 2px;height: 38px;font-size: 14px'
-                                               @click='submitTag()'>提交
+                                               @click='submit()'>提交
                                     </el-button>
                                 </el-col>
                                 <el-col :span='12'>
@@ -237,13 +239,13 @@
                     </div>
                     <div class='preview-content'>
                         <div class='preview-title mt-20'>
-                            {{ form.newsTitle }}
+                            {{ article.newsTitle }}
                         </div>
                         <div class='flex preview-author' style='margin-top: 8px'>
-                            <div style='width: 73px;height: 14px;overflow: hidden'>{{ form.createTime }}</div>
-                            <div>{{ form.newsSource }}</div>
-                            <div style='margin: 0 5px' v-if='form.newsSource'>|</div>
-                            <div>{{ form.newsAuthor }}</div>
+                            <div style='width: 73px;height: 14px;overflow: hidden'>{{ article.createTime }}</div>
+                            <div>{{ article.newsSource }}</div>
+                            <div style='margin: 0 5px' v-if='article.newsSource'>|</div>
+                            <div>{{ article.newsAuthor }}</div>
                         </div>
                         <div class='flex pointer flex-wrap' style='margin-top: 12px'>
                             <div v-for='c in tagList' :key='c.id' class=' preview-tag'>
@@ -257,7 +259,7 @@
 
                             </div>
                         </div>
-                        <div class='preview-text' style='margin-top: 10px' v-html='form.newsContext  + "<style>img {width: 100%}</style>"'>
+                        <div class='preview-text' style='margin-top: 10px' v-html='article.newsContext  + "<style>img {width: 100%}</style>"'>
                         </div>
                     </div>
                 </div>
@@ -280,7 +282,7 @@ import {
     getLabelByList,
 
     getConceptByName,
-    getConceptByList
+    getConceptByList, getUnPassList, getCountWaitCheck, getOneArticle, updateCheck
 
 } from '../../api/getData.js';
 import Tinymce from '@/components/Tinymce';
@@ -299,13 +301,16 @@ export default {
             inputTime: '',
             show: [],
             isLightTagArr: [],
-            form: {
+            article: {
                 newsTitle: '',
                 newsContext: '',
                 newsSource: '',
-                createTime: dayjs(new Date).format('YYYY-MM-DD HH:mm:ss'),
-                value: '',
-                context: ''
+                inputTime: '',
+                author: '',
+                desc: '',
+                context: '',
+                sourceAddress: ''
+
             },
             isUnfold: false,
             moodList: [],
@@ -316,13 +321,17 @@ export default {
             rules: {
                 newsTitle: [{ required: true, message: '请输入标题', trigger: 'blur' }],
                 newsSource: [{ required: true, message: '请输入来源', trigger: 'blur' }],
-                newsContext: [{ required: true, message: '请输入正文' }]
+                context: [{ required: true, message: '请输入正文' }]
             },
             waitList: [],
             radioGroupStyle: {
                 textColor: '',
                 fill: ''
-            }
+            },
+            emotionId: [],
+            emotionActiveName: '',
+            count: 0,
+            articleData: null
         };
     },
     created() {
@@ -344,9 +353,54 @@ export default {
         }
     },
     methods: {
+       async startCheck() {
+            // 开始审核
+           const loading = this.$loading({
+               lock: true,
+               text: 'Loading',
+               spinner: 'el-icon-loading',
+               background: 'rgba(0, 0, 0, 0.7)'
+           });
+            try {
+
+                let data = await getOneArticle();
+                if (data.code === 200) {
+                    console.log(data)
+                    this.articleData = data.data
+                    this.loadData(data.data);
+                    if (data.data.moodList !== null ) this.emotionId = data.data.moodList.map(q => q.id);
+                    this.$nextTick(() => {
+                        this.article.newsTitle = data.data.title;
+                        this.article.newsSource = data.data.source;
+                        this.article.author = data.data.author;
+                        this.article.desc = data.data.desc;
+                        this.article.sourceAddress = data.data.sourceAddress;
+                        this.article.inputTime = data.data.inputTime;
+                        this.article.newsContext = data.data.context;
+                    });
+
+                } else {
+                    this.$notify.error({
+                        title: '错误',
+                        message: data.msg
+                    });
+                }
+                loading.close();
+            } catch(err) {
+                console.log(11)
+                loading.close();
+                console.error(err)
+            }
+
+        },
+        recommendChange(value) {
+            this.recommendList = value;
+        },
+        emotionClick(value) {
+            this.emotionId = value.map(q => q.id);
+        },
         tinymceChange(value) {
-            console.log(value);
-            this.form.context = value;
+            this.article.context = value;
         },
         openDialogPreview() {
             this.$refs['formData'].validate((valid) => {
@@ -378,25 +432,35 @@ export default {
         async initData() {
             this.dialogVisible = false;
 
-            this.newsTitle = '';
-            this.newsContext = '';
-            this.newsSource = '';
-
+            this.article.newsTitle = '';
+            this.article.newsContext = '';
+            this.article.newsSource = '';
+            this.article.inputTime = '';
+            this.article.author = '';
+            this.article.desc = '';
+            this.article.sourceAddress = '';
             this.queryList = [];
             this.waitList = [];
 
             this.moodList = [];
             this.recommendList = [];
             this.colList = [];
+            this.noPassList = []
+            await this.getCount()
             await this.getMood();
             await this.getColumn();
             await this.gatPassList()
         },
+        async getCount() {
+           let data = await getCountWaitCheck()
+            if (data.code === 200) {
+                this.count = data.data
+            }
+            console.log(data)
+        },
         async gatPassList () {
-            let res = await getChildList({
-                pid: 4
-            });
-            if (res != null && res.code == 200) {
+            let res = await getUnPassList();
+            if (res != null && res.code === 200) {
                 this.initList(res.data, this.noPassList);
             } else {
                 this.moodList = [];
@@ -409,33 +473,35 @@ export default {
 
         },
         async loadData(data) {
-            if (data.articleID !== null) {
-                this.articleID = data.articleID;
-            }
-            this.form.newsTitle = data.title;
-            this.form.newsContext = data.context;
-            this.form.newsSource = data.source;
-            this.sourceAddress = data.sourceAddress;
-            this.sourceTime = data.sourceTime;
-            this.inputTime = data.inputTime;
-
             await this.initMood(data.mood);
             await this.initRecommend(data.recommend);
             await this.initColumn(data.column);
+            await this.initPass(data.unPass);
         },
-        async initMood(val) {
-
+        initPass(val) {
             if (val != null) {
-                var ids = JSON.parse(val);
-                console.log(ids, this.moodList);
+                let ids = JSON.parse(val);
                 ids.forEach(s => {
-                    var index = this.moodList.findIndex((m) => m.id == s);
-                    if (index != -1) {
-                        this.moodList[index].isLight = true;
-                    }
+                    this.noPassList.map(item => {
+                        if (item.id === s) {
+                            item.isLight = true;
+                        }
+                    });
                 });
             }
-            console.log(val, this.moodList);
+        },
+        async initMood(val) {
+            if (val != null) {
+                let ids = JSON.parse(val);
+                ids.forEach(s => {
+                    this.moodList.map(item => {
+                        if (item.id === s) {
+                            item.isLight = true;
+                            this.emotionActiveName = item.name;
+                        }
+                    });
+                });
+            }
         },
         async initRecommend(val) {
             console.log(val);
@@ -450,8 +516,7 @@ export default {
             }
         },
         async initColumn(val) {
-            console.log(val);
-
+            this.lightTree(JSON.parse(val), this.waitList);
             this.colList = [];
             this.isLightTagArr = [];
             let res = await getLabelByList({
@@ -459,26 +524,21 @@ export default {
             });
             if (res !== null && res.code === 200) {
                 this.colList = [];
-                console.log(this.waitList);
                 this.waitList.forEach(i => {
                     if (i.child != null) {
                         i.child.forEach(j => {
                             if (j.isLight) {
-
+                                const c = {};
+                                c.id = j.id;
+                                c.color = j.color;
+                                c.name = j.name;
+                                this.colList.push(c);
+                                this.isLightTagArr.push(c);
                             }
-                            const c = {};
-                            c.id = j.id;
-                            c.color = j.color;
-                            c.name = j.name;
-                            this.colList.push(c);
-                            this.isLightTagArr.push(c);
-                            console.log(j);
-
                         });
                     }
                 });
-                console.log(this.colList);
-                this.lightTree(JSON.parse(val), this.waitList);
+
             }
         },
         async onMark() {
@@ -487,9 +547,9 @@ export default {
             //
             // })
             let res = await getOnMark({
-                title: this.form.newsTitle,
-                context: this.form.newsContext,
-                source: this.form.newsSource
+                title: this.article.newsTitle,
+                context: this.article.newsContext,
+                source: this.article.newsSource
             });
             console.log(res);
             if (res !== null && res.code === 200) {
@@ -572,21 +632,20 @@ export default {
             });
         },
         lightTree(data, list) {
-            console.log(data, list);
+           if (data !== null) {
+               data.forEach(i => {
+                   if (list != null && list.length > 0) {
+                       list.forEach(p => {
+                           if (p.child != null && p.child.length > 0) {
+                               p.child.map(item => {
+                                   if (item.id === i) item.isLight = true;
+                               });
+                           }
+                       });
+                   }
+               });
+           }
 
-            data.forEach(i => {
-                if (list != null && list.length > 0) {
-                    list.forEach(p => {
-                        if (p.child != null && p.child.length > 0) {
-                            var index = p.child.findIndex((c) => c.id == i);
-                            if (index != -1) {
-                                p.child[index].isLight = true;
-                            }
-                        }
-                    });
-                }
-            });
-            console.log(this.colList);
         },
         async getMood() {
             var res = await getChildList({
@@ -743,32 +802,41 @@ export default {
             return arr;
         },
         async submit() {
-            var moodArr = this.getList(this.moodList);
-            var recommendArr = this.getTreeList(this.recommendList);
-            var colArr = this.getList(this.colList);
-
-            var article = {
-                title: this.newsTitle,
-                context: this.newsContext.toString(),
-                source: this.newsSource,
-                mood: moodArr,
-                recommend: recommendArr,
-                column: colArr
-            };
-
-            const res = await addCheck(article);
-            if (res != null && res.code == 200) {
-                this.$message({
-                    type: 'success',
-                    message: '录入成功'
-                });
-                this.initData();
-            } else {
-                this.$message({
-                    type: 'error',
-                    message: '录入失败'
-                });
-            }
+            this.$refs['formData'].validate(async (valid) => {
+                if (!valid) return false;
+                let recommendArr = this.getTreeList(this.recommendList);
+                let colArr = this.colList.map(item => item.id);
+                let article = {
+                    articleID: this.articleData.articleID,
+                    title: this.article.newsTitle,
+                    context: this.article.context,
+                    author:this.article.author,
+                    desc:this.article.desc,
+                    source: this.article.newsSource,
+                    sourceTime: this.articleData.sourceTime,
+                    sourceAddress: this.article.sourceAddress,
+                    inputTime: this.article.inputTime,
+                    checkID: this.articleData.checkID,
+                    mood: this.emotionId,
+                    recommend: recommendArr,
+                    column: colArr,
+                    unPass: this.noPassList.filter(q => q.isLight).map(q => q.id)
+                };
+                const res = await updateCheck(article)
+                if (res != null && res.code === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: '审核成功！'
+                    });
+                    this.initData()
+                    this.startCheck()
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: '审核失败！'
+                    });
+                }
+            })
         }
     }
 };
@@ -1013,4 +1081,5 @@ export default {
     margin-top: -20px;
     height: 100%;
 }
+
 </style>

@@ -77,7 +77,8 @@
 
             <el-table-column align='center' label='操作' min-width='100' fixed='right'>
                 <template #default='scope'>
-                    <router-link :to="{ path: '/editNews', query: { articleID: scope.row.articleID }}">修改
+                    <span class='mr-20 pointer' @click='openPreview(scope.row)'>预览</span>
+                    <router-link :to="{ path: '/editNews', query: { checkID: scope.row.checkID }}">修改
                     </router-link>
                     <el-popconfirm title='确定下线吗？' @confirm='handleClose(scope.row.checkID)'>
                         <template #reference>
@@ -87,12 +88,50 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-row class='Pagination'>
+        <el-row class='Pagination mt-20'>
             <el-pagination background layout='prev, pager, next' :total='total' :page-size='pageSize'
                            :current-page='currentPage' @current-change='changePage'>
             </el-pagination>
         </el-row>
+        <el-dialog width='0' :show-close='false' :visible.sync='dialogPreviewVisible'>
+            <!--            <div slot="footer" class="dialog-footer">-->
+            <!--                <el-button @click="dialogPreviewVisible = false">取 消</el-button>-->
+            <!--                <el-button type="primary" @click="dialogPreviewVisible = false">确 定</el-button>-->
+            <!--            </div>-->
+            <div class=' relative'>
+                <div class='preview absolute'>
+                    <div class='preview-header flex space-between'>
+                        <div><i class='el-icon-arrow-left'></i></div>
+                        <div class='font-500'>文章详情</div>
+                        <div><i class='el-icon-more'></i></div>
+                    </div>
+                    <div class='preview-content'>
+                        <div class='preview-title mt-20'>
+                            {{ previewData.newsTitle }}
+                        </div>
+                        <div class='flex preview-author' style='margin-top: 8px'>
+                            <div style='width: 73px;height: 14px;overflow: hidden'>{{ previewData.createTime }}</div>
+                            <div>{{ previewData.newsSource }}</div>
+                            <div style='margin: 0 5px' v-if='previewData.newsAuthor'>|</div>
+                            <div>{{ previewData.newsAuthor }}</div>
+                        </div>
+                        <div class='flex pointer flex-wrap' style='margin-top: 12px'>
+                            <div v-for='c in previewData.tagList' :key='c.id' class=' preview-tag'>
+                                <tag :showClose='false' type='tag'
+                                     :title='c.name ' :color='c.color' :bg-color='c.bColor'></tag>
 
+                            </div>
+                        </div>
+                        <div class='preview-text' style='margin-top: 10px'
+                             v-html='previewData.newsContext  + "<style>img {width: 100%}</style>"'>
+                        </div>
+                    </div>
+                </div>
+                <div class='close absolute pointer' @click='dialogPreviewVisible = false'>
+                    <img style='width: 30px;height: 30px' src='../assets/img/close2x.png'>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -101,10 +140,13 @@ import {
     getCheckList,
     deleteCheckByID,
     getConceptByName,
-    getChildList
+    getChildList, getWaitByID, getConceptByList
 } from '@/api/getData';
-
+import Tag from '@/components/Tag';
 export default {
+    components: {
+        Tag
+    },
     data() {
         return {
             newsTitle: '',
@@ -113,12 +155,20 @@ export default {
             newsRecommend: '',
             newsRecommendID: -1,
             newsColumn: '',
-
+            dialogPreviewVisible: false,
             checkMood: '',
             moodList: [],
-
+            previewData: {
+                newsContext: '',
+                tagList: [],
+                newsAuthor: '',
+                newsSource: '',
+                createTime: '',
+                newsTitle: ''
+            },
             dateRange: [],
             tableData: [],
+            recommendList: [],
             total: 0, // 总条数
             currentPage: 1, // 当前页
             pageSize: 10 // 分页大小
@@ -127,9 +177,56 @@ export default {
     created() {
         this.initData();
         this.initMood();
-        this.setTime();
+        // this.setTime();
     },
     methods: {
+        async openPreview(row) {
+            const data = await getWaitByID({
+                checkID: row.checkID
+            });
+            if (data.code === 200) {
+                this.previewData.newsContext = data.data.context
+                this.previewData.newsAuthor = data.data.author
+                this.previewData.newsSource = data.data.source
+                this.previewData.createTime = data.data.inputTime
+                this.previewData.newsTitle = data.data.title
+                this.initRecommend(data.data.recommend)
+            }
+            this.dialogPreviewVisible = true
+        },
+        async initRecommend(val) {
+            if (val != null) {
+                this.previewData.tagList = [];
+                let res = await getConceptByList({
+                    ids: JSON.parse(val)
+                });
+                if (res != null && res.code === 200) {
+                    this.initTree(res.data, this.previewData.tagList);
+                }
+            }
+        },
+        initTree(data, list) {
+            data.forEach(i => {
+                const p = {};
+                p.id = i.id;
+                p.name = i.name;
+                p.color = i.color;
+                p.bColor = i.bColor;
+                p.isLight = false;
+                var child = [];
+                i.child.forEach(j => {
+                    const c = {};
+                    c.id = j.id;
+                    c.name = j.name;
+                    c.color = j.color;
+                    c.bColor = j.bColor;
+                    c.isLight = false;
+                    child.push(c);
+                });
+                p.child = child;
+                list.push(p);
+            });
+        },
         setTime() {
             const end = new Date();
             const start = new Date();
@@ -207,7 +304,7 @@ export default {
         },
         async getArctileList() {
             try {
-                var params = {
+                let params = {
                     page: this.currentPage,
                     size: this.pageSize,
                     title: this.newsTitle,
@@ -216,6 +313,7 @@ export default {
                     recommend: this.newsRecommendID,
                     column: this.newsColumn
                 };
+                console.log(this.dateRange)
                 if (this.dateRange != null && this.dateRange.length > 0) {
                     params.startTime = this.dateRange[0];
                     params.endTime = this.dateRange[1];
@@ -249,4 +347,104 @@ export default {
     font-size: 14px;
 }
 
+.preview {
+    width: 258px;
+    height: 526px;
+
+    transform: translate(-50%, 0);
+    background-image: url("../assets/img/phone2x.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: #fff;
+    border-radius: 30px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.preview .preview-content img {
+    width: 100%;
+}
+
+.preview-header {
+    height: 26px;
+    line-height: 26px;
+}
+
+.preview-title {
+    color: rgba(60, 69, 86, 1);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.preview-content {
+    height: 450px;
+    overflow-y: auto;
+}
+
+.preview-author {
+    font-size: 10px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #919AAD;
+    line-height: 14px;
+}
+
+.close {
+    right: -160px;
+    top: -30px;
+}
+
+.preview-tag {
+    zoom: 0.7;
+    margin-bottom: 6px;
+    margin-right: 6px;
+}
+
+.preview-text {
+    font-size: 12px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #3C4556;
+    line-height: 20px;
+}
+
+.fold {
+    width: 160px;
+    top: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.new-tag {
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #2A79EE;
+}
+
+.el-dialog__body {
+    padding-top: 12px;
+}
+
+.el-dialog__body h5 {
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #3C4556;
+    line-height: 16px;
+}
+
+
+.previewBut {
+    width: 202px;
+    height: 38px;
+    border-radius: 4px;
+    border: 1px solid #2A79EE;
+    text-align: center;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #2A79EE;
+    letter-spacing: 2px;
+}
 </style>

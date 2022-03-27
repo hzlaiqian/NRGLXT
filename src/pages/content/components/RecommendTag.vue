@@ -26,7 +26,7 @@
                 <h5>{{ p.name }}:</h5>
             </div>
 
-            <el-tooltip style='margin-right: 5px;' v-for='c in p.child'
+            <el-tooltip style='margin-right: 5px;margin-bottom: 5px' v-for='c in p.child'
                         :key='c.id'
                         class='pointer ' effect='dark'
                         placement='top'>
@@ -62,25 +62,41 @@
 
 <script>
 import { getConceptByName } from '@/api/getData';
-import tag from '@/components/Tag.vue'
+import tag from '@/components/Tag.vue';
+
 export default {
     name: 'RecommendTag',
     components: {
         tag
     },
     props: {
-
+        list: {
+            type: Array,
+            default: []
+        }
     },
     data() {
         return {
             txtSearch: '',
             inputFocus: false,
-            recommendList: []
+            recommendList: this.list
         };
+    },
+    created() {
+        console.log(this.list)
+    },
+    watch: {
+        recommendList() {
+            console.log(this.recommendList);
+            this.$emit('recommendChange', this.recommendList);
+        },
+        list(newVal,oldVal) {
+            this.recommendList = newVal
+        }
     },
     methods: {
         marking() {
-            this.$emit('marking')
+            this.$emit('marking');
         },
         async showRecommend(str, cb) {
             if (str == null || str === '') return;
@@ -138,8 +154,8 @@ export default {
                 p.child = child;
                 this.recommendList.push(p);
             }
-            console.log(this.recommendList)
-        },
+            console.log(this.recommendList);
+        }
     }
 };
 </script>
