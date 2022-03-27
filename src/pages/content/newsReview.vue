@@ -87,14 +87,14 @@
                                             <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
                                                class='el-collapse-item__arrow  '></i>
                                         </div>
-                                        <div class='pointer color-1683ff'>一键排版</div>
+                                        <div class='pointer color-1683ff' @click='aKeyLayout'>一键排版</div>
 
                                     </div>
                                     <div class='editor-box relative' style='height: 100%'>
                                         <div class='absolute fold'>
 
                                         </div>
-                                        <tinymce @input='tinymceChange' :value='article.newsContext' height='100%' />
+                                        <tinymce ref='tinymce' @input='tinymceChange' :value='article.newsContext' height='100%' />
                                     </div>
                                 </el-form-item>
                             </el-form>
@@ -282,7 +282,7 @@ import {
     getLabelByList,
 
     getConceptByName,
-    getConceptByList, getUnPassList, getCountWaitCheck, getOneArticle, updateCheck
+    getConceptByList, getUnPassList, getCountWaitCheck, getOneArticle, updateCheck, getArticleLayout
 
 } from '../../api/getData.js';
 import Tinymce from '@/components/Tinymce';
@@ -353,6 +353,25 @@ export default {
         }
     },
     methods: {
+        async aKeyLayout() {
+            if (this.article.context.length !== 0) {
+                const data = await getArticleLayout({ context: this.article.context });
+                if (data.code === 200) {
+                    // this.form.newsContext = data.data;
+                    // this.article.context = data.data;
+                    this.$nextTick(() => {
+                        this.article.context = data.data;
+                        this.$refs.tinymce.setContent(data.data)
+                    });
+                } else {
+                    this.$message.error(data.msg);
+                }
+
+            } else {
+                this.$message.error('正文不能为空');
+            }
+
+        },
        async startCheck() {
             // 开始审核
            const loading = this.$loading({
@@ -479,7 +498,7 @@ export default {
             await this.initPass(data.unPass);
         },
         initPass(val) {
-            if (val != null) {
+            if (val) {
                 let ids = JSON.parse(val);
                 ids.forEach(s => {
                     this.noPassList.map(item => {
@@ -491,7 +510,8 @@ export default {
             }
         },
         async initMood(val) {
-            if (val != null) {
+            console.log(val)
+            if (val) {
                 let ids = JSON.parse(val);
                 ids.forEach(s => {
                     this.moodList.map(item => {
@@ -505,7 +525,7 @@ export default {
         },
         async initRecommend(val) {
             console.log(val);
-            if (val != null) {
+            if (val) {
                 this.recommendList = [];
                 var res = await getConceptByList({
                     ids: JSON.parse(val)
@@ -516,30 +536,33 @@ export default {
             }
         },
         async initColumn(val) {
-            this.lightTree(JSON.parse(val), this.waitList);
-            this.colList = [];
-            this.isLightTagArr = [];
-            let res = await getLabelByList({
-                ids: JSON.parse(val)
-            });
-            if (res !== null && res.code === 200) {
+            if (val) {
+                this.lightTree(JSON.parse(val), this.waitList);
                 this.colList = [];
-                this.waitList.forEach(i => {
-                    if (i.child != null) {
-                        i.child.forEach(j => {
-                            if (j.isLight) {
-                                const c = {};
-                                c.id = j.id;
-                                c.color = j.color;
-                                c.name = j.name;
-                                this.colList.push(c);
-                                this.isLightTagArr.push(c);
-                            }
-                        });
-                    }
+                this.isLightTagArr = [];
+                let res = await getLabelByList({
+                    ids: JSON.parse(val)
                 });
+                if (res !== null && res.code === 200) {
+                    this.colList = [];
+                    this.waitList.forEach(i => {
+                        if (i.child != null) {
+                            i.child.forEach(j => {
+                                if (j.isLight) {
+                                    const c = {};
+                                    c.id = j.id;
+                                    c.color = j.color;
+                                    c.name = j.name;
+                                    this.colList.push(c);
+                                    this.isLightTagArr.push(c);
+                                }
+                            });
+                        }
+                    });
 
+                }
             }
+
         },
         async onMark() {
             // this.$refs['formData'].validate(async (valid) => {

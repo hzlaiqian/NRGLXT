@@ -421,6 +421,10 @@ export default {
                 if (data.code === 200) {
                     // this.form.newsContext = data.data;
                     this.form.context = data.data;
+                    this.$nextTick(() => {
+                        this.form.context = data.data;
+                        this.$refs.tinymce.setContent(data.data)
+                    });
                 } else {
                     this.$message.error(data.msg);
                 }
