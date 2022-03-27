@@ -155,7 +155,7 @@ export const getCheckList = data => post('/check/getCheckList', data)
 /**
  * 删除已上线的文章
  */
-export const deleteCheckByID = data => post('/Check/deleteCheckByID', data)
+export const deleteCheckByID = data => post('/check/deleteCheckByID', data)
 
 /**
  * 添加理念树节点
