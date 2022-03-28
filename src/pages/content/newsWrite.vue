@@ -374,7 +374,7 @@ export default {
                 author: '',
                 desc: ''
             },
-            isUnfold: false,
+            isUnfold: true,
             moodList: [],
             recommendList: [],
             tagList: [],
@@ -970,7 +970,6 @@ export default {
 
 .preview-author {
     font-size: 10px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #919AAD;
     line-height: 14px;
@@ -989,7 +988,6 @@ export default {
 
 .preview-text {
     font-size: 12px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #3C4556;
     line-height: 20px;
@@ -1014,7 +1012,6 @@ export default {
 
 .el-dialog__body h5 {
     font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #3C4556;
     line-height: 16px;
@@ -1028,7 +1025,6 @@ export default {
     border: 1px solid #2A79EE;
     text-align: center;
     font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #2A79EE;
     letter-spacing: 2px;
@@ -1036,7 +1032,6 @@ export default {
 
 .dialog-title h5 {
     font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #3C4556;
     line-height: 16px;
@@ -1062,5 +1057,8 @@ export default {
 
 .ql-align-center img {
     width: 100%;
+}
+.el-form-item__label {
+    font-weight: 600;
 }
 </style>

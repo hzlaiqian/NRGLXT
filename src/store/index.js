@@ -7,7 +7,7 @@ const store = new Vuex.Store({
    },
     mutations: {
         setMediaBreadcrumbList(state,data) {
-            state.mediaBreadcrumbList.push(data)
+            state.mediaBreadcrumbList = data
         }
     }
 })

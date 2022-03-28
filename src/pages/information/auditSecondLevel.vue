@@ -2,11 +2,13 @@
 <div class='audit-second-level box-sizing'>
     <div class='header flex items-center box-sizing'>
         <img class='pointer' @click='back' src='../../assets/img/back@2x.png'>
-        <el-breadcrumb separator="/">
-            <el-breadcrumb-item class='flex items-center' :to="{ path: '/mediaAudit' }">首页
+        <el-breadcrumb separator='/'>
+            <el-breadcrumb-item style='color: #919AAD' class='flex items-center' :to="{ path: '/mediaAudit' }">首页
             </el-breadcrumb-item>
 
-            <el-breadcrumb-item :to='item.path' v-for='(item,i) in mediaBreadcrumbList' :key='i'>{{item.name}}</el-breadcrumb-item>
+            <el-breadcrumb-item  @click='click' :to='item.path' v-for='(item,i) in mediaBreadcrumbList' :key='i'>
+                <span :class='item.name === activeName ? "activeColor" : ""'>{{ item.name }}</span>
+            </el-breadcrumb-item>
         </el-breadcrumb>
 <!--       <div class='flex items-center'>-->
 <!--           <img class='pointer' @click='back' src='../../assets/img/back@2x.png'>-->
@@ -34,10 +36,13 @@
                         <div class='box box-sizing'>
                             <div class='tag-content box-sizing'>
                                 <div class='flex space-between items-center' style='margin-top: 12px'>
-                                    <div class='emotion-tag'>{{item.name}}</div>
+                                    <div  v-if='item.count !== 0' class='emotion-tag'>{{ item.name }}</div>
+                                    <div  v-else class='emotion-tag' style='color: #919AAD'>{{ item.name }}</div>
                                     <div class='emotion-right-tag flex space-between'>
                                         <span @click.stop='addMedia(item.id)'>批量添加</span>
-                                        <span @click.stop='openAuditThree(item)' v-if='item.count !== 0'>查看数据</span>
+                                        <span class='pointer' @click.stop='openAuditThree(item)'
+                                              v-if='item.count !== 0'>查看数据</span>
+                                        <span v-else class='pointer' style='color: #919AAD'>查看数据</span>
                                     </div>
                                 </div>
                                 <div style='margin-top: 16px' class='data-size'>下级数据量：<span
@@ -103,30 +108,55 @@ export default {
                 pid: 0
             },
             dialogVisible: false,
-            mediaBreadcrumbList: this.$store.state.mediaBreadcrumbList
+            mediaBreadcrumbList: this.$store.state.mediaBreadcrumbList,
+            activeName: ''
+        }
+    },
+    watch: {
+        activeName(newVal,oldVale) {
+
+
         }
     },
     created() {
-        this.query.pid = Number(this.$route.query.id);
-        this.mediaForm.pid = Number(this.$route.query.id);
-        console.log(this.$route.query.id)
-        this.getData()
+        this.getRouterQuery()
+        this.getData();
     },
     activated() {
-        console.log(this.$route.query.id)
-        this.query.pid = Number(this.$route.query.id);
-        this.mediaForm.pid = Number(this.$route.query.id);
-        this.getData()
+        this.getRouterQuery()
+        this.getData();
     },
     beforeRouteUpdate(to, from, next) {
         console.log(to)
         this.query.pid = Number(to.query.id);
         this.mediaForm.pid = Number(to.query.id);
+        this.activeName = to.query.name
+        let index = this.mediaBreadcrumbList.findIndex(q => q.name === to.query.name)
+        if (index !== -1) {
+            console.log(index)
+            this.mediaBreadcrumbList =  this.mediaBreadcrumbList.slice(0,index + 1 )
+            this.$store.commit('setMediaBreadcrumbList', this.mediaBreadcrumbList);
+        }
+        this.mediaBreadcrumbList = this.$store.state.mediaBreadcrumbList
         this.getData()
         next();
     },
 
     methods: {
+        click(item) {
+
+        },
+        getRouterQuery() {
+            this.query.pid = Number(this.$route.query.id);
+            this.activeName = this.$route.query.name
+            this.mediaForm.pid = Number(this.$route.query.id);
+            let index = this.mediaBreadcrumbList.findIndex(q => q.name === this.$route.query.name)
+            if (index !== -1) {
+                this.mediaBreadcrumbList =  this.mediaBreadcrumbList.slice(0,index + 1 )
+                this.$store.commit('setMediaBreadcrumbList', this.mediaBreadcrumbList);
+            }
+            this.mediaBreadcrumbList = this.$store.state.mediaBreadcrumbList
+        },
         async save() {
             this.dialogVisible = false
             if (this.mediaForm.names.length !== 0) {
@@ -174,26 +204,40 @@ export default {
                 path: {
                     path: '/auditThreeLevel',
                     query: {
-                        id: item.id
+                        id: item.id,
+                        name: item.name
                     }
                 },
                 type: 2,
                 name: item.name
             };
-            this.$store.commit('setMediaBreadcrumbList', router);
-            this.$router.push({ path: '/auditThreeLevel', query: { id: item.id } });
+            this.deWeight(this.mediaBreadcrumbList)
+            this.mediaBreadcrumbList.push(router)
+            this.$store.commit('setMediaBreadcrumbList', this.mediaBreadcrumbList);
+            this.$router.push({ path: '/auditThreeLevel', query: { id: item.id,name: item.name } });
+        },
+        deWeight (a) {
+            let re=[],b ={}
+            for (let i in a) {
+                if (!b[a[i]]) {
+                    re.push(a[i])
+                    b[a[i]] = 1
+                }
+            }
+            return re
         },
        async getData() {
             const data = await getAuditLabelList(this.query)
             if (data.code === 200) {
-                console.log(data)
                 this.list = data.data
             } else {
                 this.$message.error(data.msg);
             }
         },
         back() {
-            this.$router.go(-1)
+            this.$router.go(-1);
+            this.mediaBreadcrumbList.pop()
+            this.$store.commit('setMediaBreadcrumbList', this.mediaBreadcrumbList);
         },
         addMedia(id) {
             this.mediaForm.names = '';
@@ -202,7 +246,21 @@ export default {
         },
         openNext(item) {
             if (item.count !== 0) {
-                this.$router.push({ path: '/auditSecondLevel', query: { id: item.id } });
+                const router = {
+                    path: {
+                        path: '/auditSecondLevel',
+                        query: {
+                            id: item.id,
+                            name: item.name
+                        }
+                    },
+                    type: 1,
+                    name: item.name
+                };
+                this.deWeight(this.mediaBreadcrumbList)
+                this.mediaBreadcrumbList.push(router)
+                this.$store.commit('setMediaBreadcrumbList', this.mediaBreadcrumbList);
+                this.$router.push({ path: '/auditSecondLevel', query: { id: item.id,name: item.name } });
             }
         }
     }
@@ -309,11 +367,36 @@ export default {
                     }
                 }
             }
+
         }
 
-        .list:hover {
-            box-shadow: 0 10px 20px 0 rgba(42, 121, 238, 0.1);
-            color: #2A79EE;
+
+        .list:nth-child(5n - 4) .box {
+            background: rgba(42, 121, 238, 0.03);
+            border: 1px solid rgba(42, 121, 238, 0.2);
+        }
+        .list:nth-child(5n - 3) .box {
+            background: rgba(255, 176, 58, 0.03);
+            border: 1px solid rgba(255, 176, 58, 0.2);
+        }
+        .list:nth-child(5n - 2) .box {
+            background: rgba(247, 78, 78, 0.03);
+            border: 1px solid rgba(247, 78, 78, 0.2);
+        }
+        .list:nth-child(5n - 1) .box {
+            background: rgba(103, 194, 58, 0.03);
+            border: 1px solid rgba(103, 194, 58, 0.2);
+        }
+        .list:nth-child(5n) .box {
+            background: rgba(138, 97, 236, 0.03);
+            border: 1px solid rgba(123, 105, 255, 0.2);
+        }
+        .list .box:hover{
+            //box-shadow: 0 10px 20px 0 rgba(42, 121, 238, 0.1);
+            //color: #2A79EE;
+            border-radius: 4px;
+            transition-duration: 0.5s;
+            border: 1px solid #2A79EE;
         }
     }
 }
@@ -373,5 +456,18 @@ export default {
         border: 1px solid #2A79EE;
         color: #2A79EE;
     }
+}
+.activeColor {
+    color: #2F343D !important;
+    font-weight: 700;
+}
+</style>
+<style>
+.audit-second-level .el-breadcrumb__inner {
+    color: #919AAD;
+}
+.audit-second-level .el-breadcrumb__item:last-child  .el-breadcrumb__inner{
+    color: #919AAD !important;
+    font-weight: 700;
 }
 </style>

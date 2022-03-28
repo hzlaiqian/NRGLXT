@@ -2,11 +2,13 @@
     <div class='audit-three-level'>
         <div class='header flex items-center box-sizing'>
             <img class='pointer' @click='back' src='../../assets/img/back@2x.png'>
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item class='flex items-center' :to="{ path: '/mediaAudit' }">首页
+            <el-breadcrumb separator='/'>
+                <el-breadcrumb-item style='color: #919AAD' class='flex items-center' :to="{ path: '/mediaAudit' }">首页
                 </el-breadcrumb-item>
 
-                <el-breadcrumb-item :to='item.path' v-for='(item,i) in mediaBreadcrumbList' :key='i'>{{item.name}}</el-breadcrumb-item>
+                <el-breadcrumb-item  :to='item.path' v-for='(item,i) in mediaBreadcrumbList' :key='i'>
+                    <span :class='item.name === activeName ? "activeColor" : ""'>{{ item.name }}</span>
+                </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class='table-box box-sizing'>
@@ -20,7 +22,9 @@
                 </el-col>
             </el-row>
             <div class='flex selected-box' style='margin-top: 12px'>
-                <div style='margin-right: 12px'>已选<span style='margin: 0 4px' class='color'>{{selection.length}}</span>项</div>
+                <div style='margin-right: 12px'>已选<span style='margin: 0 4px'
+                                                        class='color'>{{ selection.length }}</span>项
+                </div>
                 <div class='color pointer' @click='del(0)'>
                     <i class='el-icon-delete' style='margin-right: 6px'></i>
                     <span>删除</span>
@@ -63,7 +67,9 @@
                         <template slot-scope='{row}'>
                             <div class='flex space-between'>
                                 <span class='pointer but' @click='addMedia(row.id)'>批量添加</span>
-                                <span class='pointer but' @click='openAuditThree(row)'  v-if='row.count !== 0'>查看数据</span>
+                                <span class='pointer but' @click='openAuditThree(row)'
+                                      v-if='row.count !== 0'>查看数据</span>
+                                <span v-else class='pointer but' style='color: #919AAD'>查看数据</span>
                                 <span class='pointer but' @click='del(1,row.id)'>删除</span>
                             </div>
                         </template>
@@ -116,8 +122,8 @@ export default {
                 names: '',
                 pid: 0,
                 id: 0,
-                page:1,
-                size:10
+                page: 1,
+                size: 10
             },
             list: [],
             currentPage3: 1,
@@ -127,27 +133,50 @@ export default {
             },
             selection: [],
             dialogVisible: false,
-            mediaBreadcrumbList: this.$store.state.mediaBreadcrumbList
+            mediaBreadcrumbList: [],
+            activeName: ''
         };
     },
     created() {
-        this.$route.meta.title = '栏目标签';
-        this.query.pid = Number(this.$route.query.id);
-        this.mediaForm.pid = Number(this.$route.query.id);
+        this.getRouterQuery()
         this.getData();
     },
     activated() {
-        this.query.pid = Number(this.$route.query.id);
-        this.mediaForm.pid = Number(this.$route.query.id);
+        this.getRouterQuery()
         this.getData();
+    },
+    watch: {
+        activeName(newVal,oldVale) {
+
+
+        }
     },
     beforeRouteUpdate(to, from, next) {
         this.query.pid = Number(to.query.id);
         this.mediaForm.pid = Number(to.query.id);
-        this.getData()
+        this.activeName = to.query.name
+
+        let index = this.mediaBreadcrumbList.findIndex(q => q.name === to.query.name)
+        if (index !== -1) {
+            this.mediaBreadcrumbList =  this.mediaBreadcrumbList.slice(0,index + 1 )
+            this.$store.commit('setMediaBreadcrumbList', this.mediaBreadcrumbList);
+        }
+        this.mediaBreadcrumbList = this.$store.state.mediaBreadcrumbList
+        this.getData();
         next();
     },
     methods: {
+        getRouterQuery() {
+            this.query.pid = Number(this.$route.query.id);
+            this.activeName = this.$route.query.name
+            let index = this.mediaBreadcrumbList.findIndex(q => q.name === this.$route.query.name)
+            if (index !== -1) {
+                this.mediaBreadcrumbList =  this.mediaBreadcrumbList.slice(0,index + 1 )
+                this.$store.commit('setMediaBreadcrumbList', this.mediaBreadcrumbList);
+            }
+            this.mediaForm.pid = Number(this.$route.query.id);
+            this.mediaBreadcrumbList = this.$store.state.mediaBreadcrumbList
+        },
         async save() {
             this.dialogVisible = false;
             if (this.mediaForm.names.length !== 0) {
@@ -167,28 +196,27 @@ export default {
 
         },
         selectAll(selection) {
-            console.log(selection)
-            this.selection = selection
+            this.selection = selection;
         },
         select(selection, row) {
-            this.selection = selection
-            console.log(selection, row)
+            this.selection = selection;
         },
         back() {
             this.$router.go(-1);
+            this.mediaBreadcrumbList.pop()
+            this.$store.commit('setMediaBreadcrumbList', this.mediaBreadcrumbList);
         },
         async getData() {
-            const data = await getAuditLabelList(this.query)
+            const data = await getAuditLabelList(this.query);
             if (data.code === 200) {
-                console.log(data)
-                this.list = data.data
+                this.list = data.data;
             } else {
                 this.$message.error(data.msg);
             }
         },
         addMedia(id) {
             this.mediaForm.names = '';
-            if (id) this.mediaForm.pid = id
+            if (id) this.mediaForm.pid = id;
             this.dialogVisible = true;
         },
         handleSizeChange() {
@@ -200,29 +228,41 @@ export default {
                 path: {
                     path: '/auditThreeLevel',
                     query: {
-                        id: item.id
+                        id: item.id,
+                        name: item.name
                     }
                 },
                 type: 2,
                 name: item.name
             };
-            this.$store.commit('setMediaBreadcrumbList', router);
-            this.$router.push({ path: '/auditThreeLevel', query: { id: item.id } });
+            this.deWeight(this.mediaBreadcrumbList)
+            this.mediaBreadcrumbList.push(router)
+            this.$store.commit('setMediaBreadcrumbList', this.mediaBreadcrumbList);
+            this.$router.push({ path: '/auditThreeLevel', query: { id: item.id,name: item.name } });
         },
-        del(type,id) {
+        deWeight (a) {
+            let re=[],b ={}
+            for (let i in a) {
+                if (!b[a[i]]) {
+                    re.push(a[i])
+                    b[a[i]] = 1
+                }
+            }
+            return re
+        },
+        del(type, id) {
             this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(async () => {
-                let ids = []
+                let ids = [];
                 if (type === 1) {
-                    ids.push(id)
+                    ids.push(id);
                 } else {
-                    console.log(this.selection)
                     if (this.selection.length !== 0) {
 
-                        ids = this.selection.map(q => q.id)
+                        ids = this.selection.map(q => q.id);
                     } else {
                         this.$message.error('请勾选数据！');
                     }
@@ -233,7 +273,7 @@ export default {
                         type: 'success',
                         message: '删除成功!'
                     });
-                    this.getData()
+                    this.getData();
                 } else {
                     this.$message.error(data.msg);
                 }
@@ -389,5 +429,18 @@ export default {
         border: 1px solid #2A79EE;
         color: #2A79EE;
     }
+}
+.activeColor {
+    color: #2F343D !important;
+    font-weight: 700;
+}
+</style>
+<style>
+.audit-three-level .el-breadcrumb__inner {
+    color: #919AAD;
+}
+.audit-three-level .el-breadcrumb__item:last-child  .el-breadcrumb__inner{
+    color: #919AAD !important;
+    font-weight: 700;
 }
 </style>

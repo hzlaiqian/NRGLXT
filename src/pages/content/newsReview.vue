@@ -897,7 +897,6 @@ export default {
 
         .left {
             font-size: 14px;
-            font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
             color: #3C4556;
         }
@@ -908,7 +907,6 @@ export default {
             border-radius: 4px;
             border: 1px solid #F56C6C;
             font-size: 14px;
-            font-family: PingFangSC-Medium, PingFang SC;
             font-weight: 500;
             color: #F56C6C;
             text-align: center;
@@ -1015,7 +1013,6 @@ export default {
 
     .preview-author {
         font-size: 10px;
-        font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #919AAD;
         line-height: 14px;
@@ -1034,7 +1031,6 @@ export default {
 
     .preview-text {
         font-size: 12px;
-        font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #3C4556;
         line-height: 20px;
@@ -1059,7 +1055,6 @@ export default {
 
     .el-dialog__body h5 {
         font-size: 14px;
-        font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #3C4556;
         line-height: 16px;
@@ -1081,7 +1076,6 @@ export default {
         border: 1px solid #2A79EE;
         text-align: center;
         font-size: 14px;
-        font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #2A79EE;
         letter-spacing: 2px;
@@ -1091,7 +1085,6 @@ export default {
         width: 190px;
         height: 16px;
         font-size: 16px;
-        font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
         color: #3C4556;
         line-height: 16px;

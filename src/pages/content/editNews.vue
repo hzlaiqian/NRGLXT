@@ -239,7 +239,7 @@
                         <div class='flex preview-author' style='margin-top: 8px'>
                             <div style='width: 73px;height: 14px;overflow: hidden'>{{ article.inputTime }}</div>
                             <div>{{ article.newsSource }}</div>
-                            <div style='margin: 0 5px' v-if='article.newsSource'>|</div>
+                            <div style='margin: 0 5px' v-if='article.author'>|</div>
                             <div>{{ article.author }}</div>
                         </div>
                         <div class='flex pointer flex-wrap' style='margin-top: 12px'>
@@ -307,7 +307,7 @@ export default {
                 context: '',
                 sourceAddress: ''
             },
-            isUnfold: false,
+            isUnfold: true,
             moodList: [],
             recommendList: [],
             tagList: [],
@@ -947,7 +947,6 @@ console.log(val)
 
     .preview-author {
         font-size: 10px;
-        font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #919AAD;
         line-height: 14px;
@@ -966,7 +965,6 @@ console.log(val)
 
     .preview-text {
         font-size: 12px;
-        font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #3C4556;
         line-height: 20px;
@@ -995,7 +993,6 @@ console.log(val)
 
     .el-dialog__body h5 {
         font-size: 14px;
-        font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #3C4556;
         line-height: 16px;
@@ -1017,7 +1014,6 @@ console.log(val)
         border: 1px solid #2A79EE;
         text-align: center;
         font-size: 14px;
-        font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #2A79EE;
         letter-spacing: 2px;
@@ -1027,7 +1023,6 @@ console.log(val)
         width: 190px;
         height: 16px;
         font-size: 16px;
-        font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
         color: #3C4556;
         line-height: 16px;

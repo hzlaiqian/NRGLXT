@@ -128,7 +128,7 @@ export default {
                 language: this.language,
                 selector: `#${this.tinymceId}`,
                 toolbar_mode: 'sliding',
-                content_style: '* {font-family: Fangsong;} img {max-width:100% !important }',
+                content_style: '* {font-family: "Microsoft Yahei","PingFang SC";} img {max-width:100% !important }',
                 height: this.height,
                 body_class: 'panel-body ',
                 object_resizing: false,
