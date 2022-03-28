@@ -392,8 +392,9 @@ export default {
             emotionId: []
         };
     },
-    created() {
-        this.initData();
+    mounted() {
+        this.getMood();
+        this.getColumn();
     },
     components: {
         Tinymce, Tag, EmotionTag, RecommendTag
@@ -445,7 +446,6 @@ export default {
                     }
                 }
                 this.tagList = arr;
-                console.log(arr);
                 this.dialogPreviewVisible = true;
             });
 
@@ -464,16 +464,9 @@ export default {
         },
         initData() {
             this.dialogVisible = false;
-            const loading = this.$loading({
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.7)'
-            });
-
-
             this.$nextTick(() => {
-                this.$refs.tinymce.setContent('')
+                console.log(this.$refs.tinymce)
+
                 this.form.newsTitle = '';
                 this.form.newsContext = null;
                 this.form.newsSource = '';
@@ -484,7 +477,7 @@ export default {
                 this.waitList = [];
                 this.form.context = null;
                 console.log(this.form.newsContext)
-                loading.close();
+                this.$refs.tinymce.setContent('')
             });
 
 

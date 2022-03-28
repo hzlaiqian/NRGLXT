@@ -354,7 +354,6 @@ export default {
         async aKeyLayout() {
             if (this.article.context.length !== 0) {
                 const data = await getArticleLayout({ context: this.article.context });
-                console.log(data);
                 if (data.code === 200) {
                     // this.form.newsContext = data.data;
                     this.article.context = data.data;
@@ -830,6 +829,8 @@ console.log(val)
                         type: 'success',
                         message: '修改成功！'
                     });
+                    this.$router.go(-1)
+                    console.log(this.$route)
                 } else {
                     this.$message({
                         type: 'error',

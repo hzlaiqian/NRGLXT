@@ -190,42 +190,11 @@ export default {
                 this.previewData.newsSource = data.data.source
                 this.previewData.createTime = data.data.inputTime
                 this.previewData.newsTitle = data.data.title
-                this.initRecommend(data.data.recommend)
-            }
-            this.dialogPreviewVisible = true
-        },
-        async initRecommend(val) {
-            if (val != null) {
-                this.previewData.tagList = [];
-                let res = await getConceptByList({
-                    ids: JSON.parse(val)
-                });
-                if (res != null && res.code === 200) {
-                    this.initTree(res.data, this.previewData.tagList);
+                if (Array.isArray(data.data.recommendList)) {
+                    this.previewData.tagList = data.data.recommendList
                 }
             }
-        },
-        initTree(data, list) {
-            data.forEach(i => {
-                const p = {};
-                p.id = i.id;
-                p.name = i.name;
-                p.color = i.color;
-                p.bColor = i.bColor;
-                p.isLight = false;
-                var child = [];
-                i.child.forEach(j => {
-                    const c = {};
-                    c.id = j.id;
-                    c.name = j.name;
-                    c.color = j.color;
-                    c.bColor = j.bColor;
-                    c.isLight = false;
-                    child.push(c);
-                });
-                p.child = child;
-                list.push(p);
-            });
+            this.dialogPreviewVisible = true
         },
         setTime() {
             const end = new Date();

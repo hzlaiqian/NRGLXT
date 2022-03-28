@@ -61,10 +61,15 @@
                         min-width='96'>
                     </el-table-column>
                     <el-table-column
-                        prop='type'
                         label='媒体类型'
                         align='center'
                         min-width='79'>
+                        <template slot-scope='{row}'>
+                            <span v-if='row.type === 1'>媒体</span>
+                            <span v-if='row.type === 2'>电子报</span>
+                            <span v-if='row.type === 3'>公众号</span>
+                            <span v-if='row.type === 4'>专业栏</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                         prop='weight'
@@ -88,11 +93,7 @@
                         min-width='249'
                         label='自动化审核'>
                         <template slot-scope='{row}'>
-                            <span v-if='row.original && row.alias'>{{ row.alias }},</span>
-                            <span v-if='row.filter'>合规过滤,</span>
-                            <span v-if='row.repeat'>,源内去重</span>
-                            <span v-if='row.mark'>,机器排版</span>
-                            <span v-if='row.mark'>,机器打标</span>
+                            {{ autoCheck(row) }}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -284,7 +285,19 @@ export default {
     created() {
         this.getData();
     },
+    computed: {
+
+    },
     methods: {
+        autoCheck(row) {
+            let arr = [];
+            if (row.original) arr.push('原创识别');
+            if (row.filter) arr.push('合规过滤');
+            if (row.repeat) arr.push('源内去重');
+            if (row.mark) arr.push('机器打标');
+            if (row.layout) arr.push('机器排版');
+            return arr.join();
+        },
         oneKeyCheckAll() {
             this.mediaForm.original = true;
             this.mediaForm.filter = true;
@@ -358,13 +371,14 @@ export default {
         async getData() {
             this.userList = [];
             this.mediaList = [];
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
             try {
-                const loading = this.$loading({
-                    lock: true,
-                    text: 'Loading',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.7)'
-                });
+
                 let userData = await getUsers();
                 if (userData.code === 200) {
                     this.userList = userData.data;

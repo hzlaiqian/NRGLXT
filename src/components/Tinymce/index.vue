@@ -148,36 +148,57 @@ export default {
 
                 nonbreaking_force_tab: true,
                 images_upload_handler:async function(blobInfo,success,failurl) {
-                    console.log(blobInfo,success,failurl)
-                    let form = new FormData()
-                    form.append('file',blobInfo.blob())
-                    form.append('filename',blobInfo.filename())
-                    form.append('uploadType',1)
-                    let data = await uploadFile(form)
-                    if(data.code === 200) success(data.data)
-                    console.log(data)
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    try {
+                        let form = new FormData()
+                        form.append('file',blobInfo.blob())
+                        form.append('filename',blobInfo.filename())
+                        form.append('uploadType',1)
+                        let data = await uploadFile(form)
+                        if(data.code === 200) success(data.data)
+                        loading.close();
+                    } catch (err) {
+                        console.error(err)
+                        loading.close();
+                        this.$message.error('上传失败')
+                    }
                 },
                 file_picker_callback: (callback,value,meta) => {
-                    console.log(callback,value,meta)
-                    const input = document.createElement('input')
-                    input.setAttribute('type','file')
-                    const _this = this
-                    input.onchange = async function() {
-                        const file = this.files[0]
-                        let form = new FormData()
-                        form.append('file',file)
-                        form.append('filename',file.name)
-                        if (meta.filetype === 'media') {
-                            form.append('uploadType',2)
-                        } else  if (meta.filetype === 'image'){
-                            form.append('uploadType',1)
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    try {
+                        const input = document.createElement('input')
+                        input.setAttribute('type','file')
+                        const _this = this
+                        input.onchange = async function() {
+                            const file = this.files[0]
+                            let form = new FormData()
+                            form.append('file',file)
+                            form.append('filename',file.name)
+                            if (meta.filetype === 'media') {
+                                form.append('uploadType',2)
+                            } else  if (meta.filetype === 'image'){
+                                form.append('uploadType',1)
+                            }
+                            let data = await uploadFile(form)
+                            if(data.code === 200) callback(data.data)
+                            loading.close();
                         }
-                        let data = await uploadFile(form)
-                        if(data.code === 200) callback(data.data)
-                        console.log(data)
+                        input.click()
+                    } catch (err) {
+                        console.error(err)
+                        loading.close();
+                        this.$message.error('上传失败')
                     }
-                    input.click()
-
                 },
                 init_instance_callback: editor => {
                     if (_this.value) {
