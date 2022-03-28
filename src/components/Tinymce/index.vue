@@ -19,8 +19,8 @@ import load from './dynamicLoadScript';
 import request from '../../utils/request';
 import { uploadFile } from '@/api/getData';
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all@5.4.2/tinymce.min.js';
-
+const tinymceCDN = 'http://www.hzlaiqian.com/media/js/tinymce.js';
+ // const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all@5.4.2/tinymce.min.js';
 export default {
     name: 'Tinymce',
     components: { editorImage },

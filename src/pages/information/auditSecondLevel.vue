@@ -32,7 +32,7 @@
         <div style='height: calc(100% - 82px);margin-top: 30px'>
             <el-scrollbar style='height: 100%'>
                 <div class='flex flex-wrap'>
-                    <div class='list pointer' @click='openNext(item)' v-for='(item,i) in list' :key='i'>
+                    <div class='list pointer' @click='openAuditThree(item)' v-for='(item,i) in list' :key='i'>
                         <div class='box box-sizing'>
                             <div class='tag-content box-sizing'>
                                 <div class='flex space-between items-center' style='margin-top: 12px'>

@@ -10,11 +10,11 @@
 				<el-option v-for="item in stsusOptions" :key="item.value" :label="item.label"
 					:value="item.value" />
 			</el-select>
-			<el-select placeholder="请筛选不通过理由" v-model="wordsStatus" size="small"
-				style="width: 150px; margin-right: 10px" clearable>
-				<el-option v-for="item in unPassList" :key="item.value" :label="item.label"
-					:value="item.value" />
-			</el-select>
+<!--			<el-select placeholder="请筛选不通过理由" v-model="wordsStatus" size="small"-->
+<!--				style="width: 150px; margin-right: 10px" clearable>-->
+<!--				<el-option v-for="item in unPassList" :key="item.value" :label="item.label"-->
+<!--					:value="item.value" />-->
+<!--			</el-select>-->
 			<el-date-picker v-model="dateRange" size="small" style="width: 240px" value-format="yyyy-MM-dd"
 				type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
 				@change="timeChange" clearable>
@@ -24,7 +24,18 @@
 			</el-button>
 		</div>
 		<el-table :data="tableData" style="width: 100%">
-			<el-table-column prop="title" label="标题" min-width="500px" align="left">
+			<el-table-column  label="标题" min-width="500px" align="left">
+                <template slot-scope='scope'>
+					<span class='span-text' v-if='scope.row.sourceAddress!= undefined && scope.row.sourceAddress!=null'>
+						<a link style='color: #2A79EE' :href='scope.row.sourceAddress' target='_blank'>
+							<h4 v-text='scope.row.title' />
+						</a>
+					</span>
+                    <span class='span-text'
+                          v-if='scope.row.sourceAddress== undefined || scope.row.sourceAddress ==null'>
+						<h4 v-text='scope.row.title' />
+					</span>
+                </template>
 			</el-table-column>
 			<el-table-column prop="source" label="来源" min-width="180" align="center"></el-table-column>
 			<el-table-column prop="inputTime" label="入库时间" min-width="220" align="center"></el-table-column>
