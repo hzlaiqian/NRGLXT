@@ -72,9 +72,6 @@ export default {
                     },{
                         index: '/mediaAudit',
                         title: '审核维度配置'
-                    }, {
-                        index: 'labelList',
-                        title: '词典库'
                     }]
                 },
                 // {

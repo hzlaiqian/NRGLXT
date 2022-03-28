@@ -10,8 +10,8 @@
                     <el-input style='width: 100%' v-model='query.name' placeholder='请输入名称'></el-input>
                 </el-col>
                 <el-col style='width: 200px'>
-                    <el-button class='select'>查询</el-button>
-                    <el-button class='add-but' @click='addMedia'>新建</el-button>
+                    <el-button class='select' @click='getData'>查询</el-button>
+                    <el-button class='add-but' @click='addMedia(null)'>新建</el-button>
                 </el-col>
             </el-row>
             <div style='height: calc(100% - 82px);margin-top: 30px'>
@@ -22,17 +22,18 @@
                             <div class='box box-sizing'>
                                 <div class='tag-content box-sizing'>
                                     <div class='flex space-between items-center' style='margin-top: 12px'>
-                                        <div class='emotion-tag'>{{item.name}}</div>
+                                        <div class='emotion-tag'>{{ item.name }}</div>
                                         <div class='emotion-right-tag flex space-between'>
-                                            <span>批量添加</span>
-                                            <span>查看数据</span>
+                                            <span class='pointer' @click.stop='addMedia(item.id)'>批量添加</span>
+                                            <span class='pointer' @click.stop='openAuditThree(item)'
+                                                  v-if='item.count !== 0'>查看数据</span>
                                         </div>
                                     </div>
                                     <div style='margin-top: 16px' class='data-size'>下级数据量：<span
                                         style='color: #2F343D'>{{ item.count }}</span></div>
                                     <div class='flex space-between' style='margin-top: 26px'>
                                         <div class='create-time'>创建时间：<span
-                                            style='color: #2F343D'>{{ item.cdate.substring(0,16) }}</span></div>
+                                            style='color: #2F343D'>{{ item.cdate.substring(0, 16) }}</span></div>
                                         <div class='del-tag' @click.stop='del(item.id)'>
                                             <i class='el-icon-delete' style='margin-right: 6px'></i>
                                             <span>删除</span>
@@ -82,8 +83,8 @@ export default {
                 names: '',
                 pid: 0,
                 id: 0,
-                page:1,
-                size:100
+                page: 1,
+                size: 100
             },
             list: [],
             mediaForm: {
@@ -94,7 +95,10 @@ export default {
         };
     },
     created() {
-        this.getData()
+        this.getData();
+    },
+    activated() {
+        this.getData();
     },
     methods: {
         del(id) {
@@ -109,7 +113,7 @@ export default {
                         type: 'success',
                         message: '删除成功!'
                     });
-                    this.getData()
+                    this.getData();
                 } else {
                     this.$message.error(data.msg);
                 }
@@ -121,24 +125,53 @@ export default {
                 });
             });
         },
-        addMedia() {
-            this.mediaForm.labels = '';
+        addMedia(id) {
+            this.mediaForm.names = '';
+            id ? this.mediaForm.pid = id : this.mediaForm.pid = 0;
             this.dialogVisible = true;
         },
         openNext(item) {
-            this.$router.push({ path: '/auditSecondLevel',query: {id: item.id} });
+            if (item.count !== 0) {
+                const router = {
+                    path: {
+                        path: '/auditSecondLevel',
+                        query: {
+                            id: item.id
+                        }
+                    },
+                    type: 1,
+                    name: item.name
+                };
+                this.$store.commit('setMediaBreadcrumbList', router);
+                this.$router.push({ path: '/auditSecondLevel', query: { id: item.id } });
+            }
+
         },
-       async getData() {
-          const data = await getAuditLabelList(this.query)
-           if (data.code === 200) {
-               console.log(data)
-               this.list = data.data
-           } else {
-               this.$message.error(data.msg);
-           }
+        openAuditThree(item) {
+            const router = {
+                path: {
+                    path: '/auditThreeLevel',
+                    query: {
+                        id: item.id
+                    }
+                },
+                type: 2,
+                name: item.name
+            };
+            this.$store.commit('setMediaBreadcrumbList', router);
+            this.$router.push({ path: '/auditThreeLevel', query: { id: item.id } });
+        },
+        async getData() {
+            const data = await getAuditLabelList(this.query);
+            if (data.code === 200) {
+                console.log(data);
+                this.list = data.data;
+            } else {
+                this.$message.error(data.msg);
+            }
         },
         async save() {
-            this.dialogVisible = false
+            this.dialogVisible = false;
             if (this.mediaForm.names.length !== 0) {
                 const data = await addAuditLabel(this.mediaForm);
                 if (data.code === 200) {

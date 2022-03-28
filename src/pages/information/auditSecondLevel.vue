@@ -1,14 +1,21 @@
 <template>
 <div class='audit-second-level box-sizing'>
     <div class='header flex items-center box-sizing'>
-       <div class='flex items-center'>
-           <img class='pointer' @click='back' src='../../assets/img/back@2x.png'>
-           <router-link class='router-link' :to="{ path: '/mediaAudit'}">首页</router-link>
-       </div>
-        <div style='padding: 0 10px'>/</div>
-        <div>
-            <router-link class='router-link router-link-active' :to="{ path: '/auditSecondLevel'}">栏目标签</router-link>
-        </div>
+        <img class='pointer' @click='back' src='../../assets/img/back@2x.png'>
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item class='flex items-center' :to="{ path: '/mediaAudit' }">首页
+            </el-breadcrumb-item>
+
+            <el-breadcrumb-item :to='item.path' v-for='(item,i) in mediaBreadcrumbList' :key='i'>{{item.name}}</el-breadcrumb-item>
+        </el-breadcrumb>
+<!--       <div class='flex items-center'>-->
+<!--           <img class='pointer' @click='back' src='../../assets/img/back@2x.png'>-->
+<!--           <router-link class='router-link' :to="{ path: '/mediaAudit'}">首页</router-link>-->
+<!--       </div>-->
+<!--        <div style='padding: 0 10px'>/</div>-->
+<!--        <div>-->
+<!--            <router-link class='router-link router-link-active' :to="{ path: '/auditSecondLevel'}">栏目标签</router-link>-->
+<!--        </div>-->
     </div>
     <div class='table-box box-sizing'>
         <el-row :gutter='20'>
@@ -17,7 +24,7 @@
             </el-col>
             <el-col style='width: 200px'>
                 <el-button class='select'>查询</el-button>
-                <el-button class='add-but' @click='addMedia'>新建</el-button>
+                <el-button class='add-but' @click='addMedia(null)'>新建</el-button>
             </el-col>
         </el-row>
         <div style='height: calc(100% - 82px);margin-top: 30px'>
@@ -29,8 +36,8 @@
                                 <div class='flex space-between items-center' style='margin-top: 12px'>
                                     <div class='emotion-tag'>{{item.name}}</div>
                                     <div class='emotion-right-tag flex space-between'>
-                                        <span>批量添加</span>
-                                        <span>查看数据</span>
+                                        <span @click.stop='addMedia(item.id)'>批量添加</span>
+                                        <span @click.stop='openAuditThree(item)' v-if='item.count !== 0'>查看数据</span>
                                     </div>
                                 </div>
                                 <div style='margin-top: 16px' class='data-size'>下级数据量：<span
@@ -51,11 +58,33 @@
         </div>
 
     </div>
+    <el-dialog
+        title='批量添加'
+        :visible.sync='dialogVisible'
+        width='519px'>
+        <div>
+            <el-form :model='mediaForm' label-position='right' ref='mediaForm' label-width='80px'>
+                <el-form-item label='数据名称'>
+                    <el-input
+                        type='textarea'
+                        :rows='2'
+                        placeholder='批量添加请用英文,隔开'
+                        v-model='mediaForm.names'>
+                    </el-input>
+                </el-form-item>
+            </el-form>
+
+        </div>
+        <span slot='footer' class='dialog-footer'>
+                <el-button class='cancel' @click='dialogVisible = false'>取 消</el-button>
+                <el-button type='primary' @click='save'>确 定</el-button>
+              </span>
+    </el-dialog>
 </div>
 </template>
 
 <script>
-import { delAuditLabel, getAuditLabelList } from '@/api/getData';
+import { addAuditLabel, delAuditLabel, getAuditLabelList } from '@/api/getData';
 
 export default {
     name: 'auditSecondLevel',
@@ -69,22 +98,53 @@ export default {
                 size:100
             },
             list: [],
-            pid: ''
+            mediaForm: {
+                names: '',
+                pid: 0
+            },
+            dialogVisible: false,
+            mediaBreadcrumbList: this.$store.state.mediaBreadcrumbList
         }
     },
     created() {
-        this.$route.meta.title = '栏目标签'
         this.query.pid = Number(this.$route.query.id);
+        this.mediaForm.pid = Number(this.$route.query.id);
+        console.log(this.$route.query.id)
         this.getData()
     },
     activated() {
+        console.log(this.$route.query.id)
         this.query.pid = Number(this.$route.query.id);
+        this.mediaForm.pid = Number(this.$route.query.id);
+        this.getData()
     },
     beforeRouteUpdate(to, from, next) {
+        console.log(to)
         this.query.pid = Number(to.query.id);
+        this.mediaForm.pid = Number(to.query.id);
+        this.getData()
         next();
     },
+
     methods: {
+        async save() {
+            this.dialogVisible = false
+            if (this.mediaForm.names.length !== 0) {
+                const data = await addAuditLabel(this.mediaForm);
+                if (data.code === 200) {
+                    this.$message({
+                        message: '添加成功',
+                        type: 'success'
+                    });
+                    this.getData();
+                } else {
+                    this.$message.error(data.msg);
+                }
+            } else {
+                this.$message.error('请填写标签');
+            }
+
+        },
         del(id) {
             this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -109,6 +169,20 @@ export default {
                 });
             });
         },
+        openAuditThree(item) {
+            const router = {
+                path: {
+                    path: '/auditThreeLevel',
+                    query: {
+                        id: item.id
+                    }
+                },
+                type: 2,
+                name: item.name
+            };
+            this.$store.commit('setMediaBreadcrumbList', router);
+            this.$router.push({ path: '/auditThreeLevel', query: { id: item.id } });
+        },
        async getData() {
             const data = await getAuditLabelList(this.query)
             if (data.code === 200) {
@@ -121,9 +195,15 @@ export default {
         back() {
             this.$router.go(-1)
         },
-        addMedia() {},
-        openNext() {
-            this.$router.push({ path: '/auditThreeLevel' });
+        addMedia(id) {
+            this.mediaForm.names = '';
+            if (id) this.mediaForm.pid = id
+            this.dialogVisible = true;
+        },
+        openNext(item) {
+            if (item.count !== 0) {
+                this.$router.push({ path: '/auditSecondLevel', query: { id: item.id } });
+            }
         }
     }
 };

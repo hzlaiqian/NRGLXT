@@ -28,11 +28,11 @@
 			</el-table-column>
 			<el-table-column prop="source" label="来源" min-width="180" align="center"></el-table-column>
 			<el-table-column prop="inputTime" label="入库时间" min-width="220" align="center"></el-table-column>
-			<el-table-column prop="checkState" label="状态" min-width="200" align="center" :formatter="setStatus">
+			<el-table-column prop="checkStatus" label="状态" min-width="200" align="center" :formatter="setStatus">
 			</el-table-column>
 			<el-table-column label="操作" min-width="200" align="center" fixed="right">
 				<template #default="scope">
-					<router-link :to="{ path: '/editNews', query: { articleID : scope.row.id}}">修改
+					<router-link :to="{ path: '/editNews', query: { checkID: scope.row.checkID }}">修改
 					</router-link>
 				</template>
 			</el-table-column>
@@ -60,7 +60,7 @@
 				newsSource: '',
 				newsLabel: '',
 				dateRange: [],
-				checkStatus: 0,
+                checkStatus: 0,
 				wordsStatus: '',
 				total: 0, // 总条数
 				currentPage: 1, // 当前页
@@ -68,13 +68,13 @@
 				tableData: [],
 				stsusOptions: [{
 					value: 0,
-					label: '待审核'
+					label: '未审核'
 				}, {
 					value: 1,
 					label: '已通过'
 				}, {
 					value: 2,
-					label: '未通过'
+					label: '不通过'
 				}],
 				unPassList: []
 			}
@@ -118,7 +118,7 @@
 						size: this.pageSize,
 						title: this.newsTitle,
 						source: this.newsSource,
-						checkState: this.checkStatus == '' ? 0 : this.checkStatus,
+                        checkStatus: this.checkStatus == '' ? 0 : this.checkStatus,
 						stop: this.wordsStatus == '' ? -1 : this.wordsStatus
 					}
 
@@ -140,13 +140,14 @@
 			},
 			setStatus(row, column) {
 				try {
+                    console.log(column)
 					const status = row[column.property];
 					if (status == null || status == '' || status == 0) {
-						return "待审核";
+						return "未审核";
 					} else if (status == 1) {
 						return "已通过";
 					} else if (status == 2) {
-						return "未通过";
+						return "不通过";
 					}
 				} catch (e) {
 					console.log(e);

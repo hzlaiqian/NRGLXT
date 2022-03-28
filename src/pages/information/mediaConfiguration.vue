@@ -133,6 +133,7 @@
         </div>
         <div class='pagination flex row-center items-center'>
             <el-pagination
+                @size-change='getData'
                 :page-size='query.size'
                 :current-page='query.page'
                 layout='prev, pager, next, jumper'
