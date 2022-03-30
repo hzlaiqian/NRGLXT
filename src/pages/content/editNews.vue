@@ -255,7 +255,7 @@
                             </div>
                         </div>
                         <div class='preview-text' style='margin-top: 10px'
-                             v-html='article.newsContext + "<style>img {width: 100%}</style>"'>
+                             v-html='article.newsContext + "<style>img {max-width: 100%} table {width: 100%}</style>"'>
                         </div>
                     </div>
                 </div>
@@ -354,13 +354,13 @@ export default {
         async aKeyLayout() {
             if (this.article.context.length !== 0) {
                 const data = await getArticleLayout({ context: this.article.context });
+                console.log(this.$refs)
                 if (data.code === 200) {
-                    // this.form.newsContext = data.data;
-                    this.article.context = data.data;
                     this.$nextTick(() => {
-                        this.article.context = data.data;
-                        this.$refs.tinymce.setContent(data.data)
+                        this.article.context = data.data.context;
+                        this.$refs.tinymce.setContent(data.data.context)
                     });
+
                 } else {
                     this.$message.error(data.msg);
                 }
@@ -458,6 +458,8 @@ export default {
 
         },
         async loadData(data) {
+            this.article.newsContext = data.context;
+            this.$refs.tinymce.setContent(data.context)
             await this.initMood(data.mood);
             await this.initRecommend(data.recommend);
             await this.initColumn(data.column);
@@ -541,8 +543,11 @@ console.log(val)
             // })
             let res = await getOnMark({
                 title: this.article.newsTitle,
-                context: this.article.newsContext,
-                source: this.article.newsSource
+                context: this.article.context,
+                source: this.article.newsSource,
+                sourceAddress: this.article.sourceAddress,
+                author: this.article.author,
+                desc: this.article.desc
             });
             console.log(res);
             if (res !== null && res.code === 200) {

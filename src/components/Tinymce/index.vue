@@ -19,8 +19,8 @@ import load from './dynamicLoadScript';
 import request from '../../utils/request';
 import { uploadFile } from '@/api/getData';
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = 'http://www.hzlaiqian.com/media/js/tinymce.js';
- // const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all@5.4.2/tinymce.min.js';
+// const tinymceCDN = 'http://www.hzlaiqian.com/media/js/tinymce.js';
+ const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all@5.4.2/tinymce.min.js';
 export default {
     name: 'Tinymce',
     components: { editorImage },
@@ -128,10 +128,12 @@ export default {
                 language: this.language,
                 selector: `#${this.tinymceId}`,
                 toolbar_mode: 'sliding',
-                content_style: '* {font-family: "Microsoft Yahei","PingFang SC";} img {max-width:100% !important }',
+                content_style: '* {font-family: "Microsoft Yahei","PingFang SC";} img {max-width:100% !important } table {width: 100%}',
                 height: this.height,
                 body_class: 'panel-body ',
                 object_resizing: false,
+                contextmenu: 'copy paste',
+                removed_menuitems: 'spellchecker,print,Insert template,codesample',
                 toolbar: 'searchreplace bold italic underline strikethrough alignleft aligncenter alignright  undo redo  code codesample  fontsizeselect | link image media table forecolor backcolor  fullscreen | hr removeformat subscript superscript outdent indent  blockquote  bullist numlist  charmap preview anchor pagebreak insertdatetime  emoticons preview',
                 menubar: this.menubar,
                 plugins: plugins,

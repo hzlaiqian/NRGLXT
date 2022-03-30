@@ -3,7 +3,7 @@
         <div style='height: 100%; width: 100%;'>
             <el-row style='display: inline-flex;width: 100%;height: 100%'>
                 <el-col class='box-sizing' :span='16'
-                        style='height: 100%;padding: 20px 0 20px 20px;margin-right: 64px;overflow-y: auto'>
+                        style='height: 100%;padding: 20px 0 20px 20px;margin-right: 64px;'>
 
                     <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
                         <div class='bd3 flex-col'></div>
@@ -311,7 +311,7 @@
                         <!--                            </el-tag>-->
                         <!--                        </div>-->
                         <div class='preview-text' style='margin-top: 10px'
-                             v-html='form.newsContext  + "<style>img {width: 100%}</style>"'>
+                             v-html='form.context  + "<style>img {max-width: 100%} table {width: 100%}</style>"'>
                         </div>
                     </div>
                 </div>
@@ -420,11 +420,9 @@ export default {
                 const data = await getArticleLayout({ context: this.form.context });
                 console.log(data);
                 if (data.code === 200) {
-                    // this.form.newsContext = data.data;
-                    this.form.context = data.data;
                     this.$nextTick(() => {
-                        this.form.context = data.data;
-                        this.$refs.tinymce.setContent(data.data)
+                        this.form.context = data.data.context;
+                        this.$refs.tinymce.setContent(data.data.context)
                     });
                 } else {
                     this.$message.error(data.msg);
@@ -500,7 +498,7 @@ export default {
             this.sourceAddress = data.sourceAddress;
             this.sourceTime = data.sourceTime;
             this.inputTime = data.inputTime;
-
+            this.$refs.tinymce.setContent(data.context)
             await this.initMood(data.mood);
             await this.initRecommend(data.recommend);
             await this.initColumn(data.column);
@@ -570,7 +568,10 @@ export default {
             let res = await getOnMark({
                 title: this.form.newsTitle,
                 context: this.form.context,
-                source: this.form.newsSource
+                source: this.form.newsSource,
+                sourceAddress: this.form.sourceAddress,
+                author: this.form.author,
+                desc: this.form.desc
             });
             console.log(res);
             if (res !== null && res.code === 200) {
