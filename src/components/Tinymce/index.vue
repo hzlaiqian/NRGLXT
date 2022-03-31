@@ -98,7 +98,7 @@ export default {
     },
 
     mounted() {
-        this.init();
+        this.initTinymce();
     },
     activated() {
         if (window.tinymce) {
@@ -119,7 +119,7 @@ export default {
                     this.$message.error(err.message);
                     return;
                 }
-                this.initTinymce();
+
             });
         },
         initTinymce() {
