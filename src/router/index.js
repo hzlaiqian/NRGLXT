@@ -152,6 +152,22 @@ export default new Router({
 					meta: {
 						title: '过滤标签'
 					}
+				},
+				{
+					path: '/statistics',
+					name: 'statistics',
+					component: () => import('../pages/statistics/articleNumber'),
+					meta: {
+						title: '文章数据报表'
+					}
+				},
+				{
+					path: '/systemMonitoring',
+					name: 'systemMonitoring',
+					component: () => import('../pages/statistics/systemMonitoring'),
+					meta: {
+						title: '系统监控页面'
+					}
 				}
 			]
 		},

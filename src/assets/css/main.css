@@ -277,6 +277,9 @@ a {
 .mr-5 {
     margin-right: 5px;
 }
+.ml-15 {
+    margin-left: 15px;
+}
 .news .el-autocomplete-suggestion li.highlighted, .el-autocomplete-suggestion li:hover {
     color: #2A79EE !important;
 

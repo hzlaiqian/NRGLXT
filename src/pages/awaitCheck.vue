@@ -71,7 +71,7 @@
 				newsSource: '',
 				newsLabel: '',
 				dateRange: [],
-                checkStatus: 0,
+                checkStatus: '',
 				wordsStatus: '',
 				total: 0, // 总条数
 				currentPage: 1, // 当前页
@@ -129,8 +129,8 @@
 						size: this.pageSize,
 						title: this.newsTitle,
 						source: this.newsSource,
-                        checkStatus: this.checkStatus == '' ? 0 : this.checkStatus,
-						stop: this.wordsStatus == '' ? -1 : this.wordsStatus
+                        checkStatus: this.checkStatus,
+						unPass: this.wordsStatus == '' ? -1 : this.wordsStatus
 					}
 
 					if (this.dateRange != null && this.dateRange.length > 0) {
