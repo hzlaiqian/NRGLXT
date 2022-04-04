@@ -72,10 +72,18 @@ export default {
                     },{
                         index: '/mediaAudit',
                         title: '审核维度配置'
-                    }, {
-                        index: 'labelList',
-                        title: '词典库'
-                    }]
+                    }],
+                }, {
+                    icon: 'el-icon-s-data',
+                    index: 'statistics',
+                    title: '数据报表及监控',
+                    subs: [{
+                        index: '/statistics',
+                        title: '今日数据'
+                    },{
+                        index: '/systemMonitoring',
+                        title: '监控'
+                    }],
                 },
                 // {
                 // 	icon: 'el-icon-lx-copy',
@@ -116,6 +124,7 @@ export default {
     position: absolute;
     left: 0;
     top: 70px;
+    width: 200px;
     bottom: 0;
     overflow-y: scroll;
     height: 100%;
@@ -126,7 +135,7 @@ export default {
 }
 
 .sidebar-el-menu:not(.el-menu--collapse) {
-    width: 150px;
+    width: 200px;
 }
 
 .sidebar > ul {

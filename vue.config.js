@@ -4,11 +4,11 @@ module.exports = {
     productionSourceMap: false,
     devServer: {
          proxy: {
-             '/api':{
-                target:'http://jsonplaceholder.typicode.com',
+             '/nrglxt':{
+                target:'http://47.96.18.55:8080/nrglxt',
                 changeOrigin:true,
                  pathRewrite:{
-                    '/api':''
+                    '^/nrglxt':''
                 }}
         }
      }

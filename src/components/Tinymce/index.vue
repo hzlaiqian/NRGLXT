@@ -17,9 +17,10 @@ import plugins from './plugins';
 import toolbar from './toolbar';
 import load from './dynamicLoadScript';
 import request from '../../utils/request';
+import { uploadFile } from '@/api/getData';
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all@5.4.2/tinymce.min.js';
-
+// const tinymceCDN = 'http://www.hzlaiqian.com/media/js/tinymce.js';
+ const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all@5.4.2/tinymce.min.js';
 export default {
     name: 'Tinymce',
     components: { editorImage },
@@ -97,7 +98,7 @@ export default {
     },
 
     mounted() {
-        this.init();
+        this.initTinymce();
     },
     activated() {
         if (window.tinymce) {
@@ -118,7 +119,7 @@ export default {
                     this.$message.error(err.message);
                     return;
                 }
-                this.initTinymce();
+
             });
         },
         initTinymce() {
@@ -127,11 +128,13 @@ export default {
                 language: this.language,
                 selector: `#${this.tinymceId}`,
                 toolbar_mode: 'sliding',
-                content_style: '* {font-family: Fangsong;}',
+                content_style: '* {font-family: "Microsoft Yahei","PingFang SC";} img {max-width:100% !important } table {width: 100%}',
                 height: this.height,
                 body_class: 'panel-body ',
                 object_resizing: false,
-                toolbar: 'searchreplace bold italic underline strikethrough alignleft aligncenter alignright  undo redo  code codesample  fontsizeselect | link image media table forecolor backcolor  fullscreen | hr removeformat subscript superscript outdent indent  blockquote  bullist numlist  charmap preview anchor pagebreak insertdatetime  emoticons ',
+                contextmenu: 'copy paste',
+                removed_menuitems: 'spellchecker,print,Insert template,codesample',
+                toolbar: 'searchreplace bold italic underline strikethrough alignleft aligncenter alignright  undo redo  code codesample  fontsizeselect | link image media table forecolor backcolor  fullscreen | hr removeformat subscript superscript outdent indent  blockquote  bullist numlist  charmap preview anchor pagebreak insertdatetime  emoticons preview',
                 menubar: this.menubar,
                 plugins: plugins,
                 end_container_on_empty_block: true,
@@ -146,23 +149,58 @@ export default {
                 toolbar_drawer: 'sliding',
 
                 nonbreaking_force_tab: true,
-                images_upload_handler:function(blobInfo,success,failure) {
-                    console.log(blobInfo,success,failure)
-                    let form = new FormData()
-                    form.append('MultipartFile',blobInfo.blob())
-                    form.append('filename',blobInfo.filename())
-                    request({
-                        url: 'http://47.96.18.55:8080/nrglxt/media/uploadimg',
-                        method: 'POST',
-                        data: form,
-                       success:function(data) {
-                           success(data.url)
-                            console.log(data)
-                       },
-                        error:function(err) {
-                            this.$message.error('上传失败');
+                images_upload_handler:async function(blobInfo,success,failurl) {
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    try {
+                        let form = new FormData()
+                        form.append('file',blobInfo.blob())
+                        form.append('filename',blobInfo.filename())
+                        form.append('uploadType',1)
+                        let data = await uploadFile(form)
+                        if(data.code === 200) success(data.data)
+                        loading.close();
+                    } catch (err) {
+                        console.error(err)
+                        loading.close();
+                        this.$message.error('上传失败')
+                    }
+                },
+                file_picker_callback: (callback,value,meta) => {
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    try {
+                        const input = document.createElement('input')
+                        input.setAttribute('type','file')
+                        const _this = this
+                        input.onchange = async function() {
+                            const file = this.files[0]
+                            let form = new FormData()
+                            form.append('file',file)
+                            form.append('filename',file.name)
+                            if (meta.filetype === 'media') {
+                                form.append('uploadType',2)
+                            } else  if (meta.filetype === 'image'){
+                                form.append('uploadType',1)
+                            }
+                            let data = await uploadFile(form)
+                            if(data.code === 200) callback(data.data)
+                            loading.close();
                         }
-                    })
+                        input.click()
+                    } catch (err) {
+                        console.error(err)
+                        loading.close();
+                        this.$message.error('上传失败')
+                    }
                 },
                 init_instance_callback: editor => {
                     if (_this.value) {

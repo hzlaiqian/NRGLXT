@@ -7,51 +7,45 @@
         <div class='table-box box-sizing'>
             <el-row :gutter='20'>
                 <el-col style='width: 240px'>
-                    <el-input style='width: 100%' v-model='query.name' placeholder='请输入媒体名称'></el-input>
+                    <el-input style='width: 100%' clearable v-model='query.name' placeholder='请输入媒体名称'></el-input>
                 </el-col>
                 <el-col style='width: 240px'>
-                    <el-select style='width: 100%' v-model='query.class' placeholder='请选择媒体类型'>
+                    <el-select style='width: 100%' clearable v-model='query.type' placeholder='请选择媒体类型'>
                         <el-option
-                            v-for='item in options'
+                            v-for='item in mediaType'
                             :key='item.value'
-                            :label='item.label'
+                            :label='item.name'
                             :value='item.value'>
                         </el-option>
                     </el-select>
                 </el-col>
                 <el-col style='width: 160px'>
-                    <el-select style='width: 100%' v-model='query.class' placeholder='请选择媒体权重'>
-                        <el-option
-                            v-for='item in options'
-                            :key='item.value'
-                            :label='item.label'
-                            :value='item.value'>
-                        </el-option>
+                    <el-select style='width: 100%' clearable v-model='query.weight' placeholder='请选择媒体权重'>
+                        <el-option label='1' :value='1'></el-option>
+                        <el-option label='2' :value='2'></el-option>
+                        <el-option label='3' :value='3'></el-option>
+                        <el-option label='4' :value='4'></el-option>
                     </el-select>
                 </el-col>
                 <el-col style='width: 160px'>
-                    <el-select style='width: 100%' v-model='query.class' placeholder='请选择所属客户'>
+                    <el-select style='width: 100%' clearable v-model='query.user' placeholder='请选择所属客户'>
                         <el-option
-                            v-for='item in options'
-                            :key='item.value'
-                            :label='item.label'
-                            :value='item.value'>
+                            v-for='(item,i) in userList'
+                            :key='i'
+                            :label='item'
+                            :value='item'>
                         </el-option>
                     </el-select>
                 </el-col>
                 <el-col style='width: 160px;margin-right: 96px'>
-                    <el-select style='width: 100%' v-model='query.class' placeholder='请选择生效状态'>
-                        <el-option
-                            v-for='item in options'
-                            :key='item.value'
-                            :label='item.label'
-                            :value='item.value'>
-                        </el-option>
+                    <el-select clearable style='width: 100%' v-model='query.open' placeholder='请选择生效状态'>
+                        <el-option label='已开启' :value='true'></el-option>
+                        <el-option label='已关闭' :value='false'></el-option>
                     </el-select>
                 </el-col>
                 <el-col style='width: 200px'>
                     <el-button class='add-but' @click='addMedia'>新建</el-button>
-                    <el-button class='select'>查询</el-button>
+                    <el-button class='select' @click='getData'>查询</el-button>
 
                 </el-col>
             </el-row>
@@ -61,49 +55,58 @@
                     border
                     style='width: 100%'>
                     <el-table-column
-                        prop='mediaName'
+                        prop='name'
                         label='媒体名称'
                         align='center'
                         min-width='96'>
                     </el-table-column>
                     <el-table-column
-                        prop='mediaClass'
                         label='媒体类型'
                         align='center'
                         min-width='79'>
+                        <template slot-scope='{row}'>
+                            <span v-if='row.type === 1'>媒体</span>
+                            <span v-if='row.type === 2'>电子报</span>
+                            <span v-if='row.type === 3'>公众号</span>
+                            <span v-if='row.type === 4'>专业栏</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
-                        prop='mediaWeight'
+                        prop='weight'
                         min-width='87'
                         align='center'
                         label='媒体权重'>
                     </el-table-column>
                     <el-table-column
-                        prop='client'
+                        prop='user'
                         min-width='77'
                         align='center'
                         label='所属客户'>
                     </el-table-column>
                     <el-table-column
                         min-width='255'
-                        prop='mediaDomain'
+                        prop='domain'
                         label='媒体域名'>
                     </el-table-column>
                     <el-table-column
                         prop='auto'
                         min-width='249'
                         label='自动化审核'>
+                        <template slot-scope='{row}'>
+                            {{ autoCheck(row) }}
+                        </template>
                     </el-table-column>
                     <el-table-column
-                        prop='state'
                         min-width='107'
                         align='center'
                         label='状态'>
+
                         <template slot-scope='{row}'>
                             <div class='flex row-center'>
-                                <div v-if='row.state' class='switch flex items-center'>
+                                <div v-if='row.open === true' class='switch flex items-center'>
                                     <div class='open'></div>
                                     <div>已开启</div>
+
                                 </div>
                                 <div v-else class='switch flex items-center'>
                                     <div class='close'></div>
@@ -118,10 +121,10 @@
                         label='操作'>
                         <template slot-scope='{row}'>
                             <div class='flex space-between'>
-                                <el-switch active-color='#2A79EE'
-                                           inactive-color='#C0C4CC' v-model='row.switch === 0'></el-switch>
-                                <span class='pointer but' @click='handleUpdate'>修改</span>
-                                <span class='pointer but' @click='del'>删除</span>
+                                <el-switch @change='switchChange($event,row)' active-color='#2A79EE'
+                                           inactive-color='#C0C4CC' v-model='row.open'></el-switch>
+                                <span class='pointer but' @click='handleUpdate(row)'>修改</span>
+                                <span class='pointer but' @click='del(row.id)'>删除</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -130,10 +133,9 @@
         </div>
         <div class='pagination flex row-center items-center'>
             <el-pagination
-                @size-change='handleSizeChange'
-                @current-change='handleCurrentChange'
-                :current-page.sync='currentPage3'
-                :page-size='1'
+                @size-change='getData'
+                :page-size='query.size'
+                :current-page='query.page'
                 layout='prev, pager, next, jumper'
                 :total='1'>
             </el-pagination>
@@ -144,78 +146,74 @@
             width='519px'>
             <div>
                 <el-form :model='mediaForm' label-position='right' :rules='rules' ref='mediaForm' label-width='80px'>
-                    <el-form-item label='媒体名称' prop='mediaName'>
-                        <el-input placeholder='请输入命题名称' v-model='mediaForm.mediaName'></el-input>
+                    <el-form-item label='媒体名称' prop='name'>
+                        <el-input placeholder='请输入媒体名称' v-model='mediaForm.name'></el-input>
                     </el-form-item>
                     <el-row style='margin-bottom: 0'>
                         <el-col :span='12'>
                             <el-form-item style='margin-bottom: 0' label='媒体权重'>
                                 <el-select style='width: 100%' v-model='mediaForm.weight' placeholder='请选择媒体权重'>
-                                    <el-option
-                                        v-for='item in options'
-                                        :key='item.value'
-                                        :label='item.label'
-                                        :value='item.value'>
-                                    </el-option>
+                                    <el-option label='1' :value='1'></el-option>
+                                    <el-option label='2' :value='2'></el-option>
+                                    <el-option label='3' :value='3'></el-option>
+                                    <el-option label='4' :value='4'></el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :span='12'>
                             <el-form-item style='margin-bottom: 0' label='所属客户' prop='client'>
-                                <el-select  style='width: 100%' v-model='mediaForm.client' placeholder='请选择所属客户'>
+                                <el-select style='width: 100%' v-model='mediaForm.user' placeholder='请选择所属客户'>
                                     <el-option
-                                        v-for='item in options'
-                                        :key='item.value'
-                                        :label='item.label'
-                                        :value='item.value'>
+                                        v-for='(item,i) in userList'
+                                        :key='i'
+                                        :label='item'
+                                        :value='item'>
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-form-item label='媒体类型'>
-                        <el-select style='width: 100%' v-model='mediaForm.class' placeholder='请选择媒体类型'>
+                        <el-select style='width: 100%' v-model='mediaForm.type' placeholder='请选择媒体类型'>
                             <el-option
-                                v-for='item in options'
+                                v-for='item in mediaType'
                                 :key='item.value'
-                                :label='item.label'
+                                :label='item.name'
                                 :value='item.value'>
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label='媒体域名' prop='mediaDomain'>
+                    <el-form-item label='媒体域名' prop='domain'>
                         <el-input
                             type='textarea'
                             :rows='2'
                             placeholder='多个域名用英文，隔开'
-                            v-model='mediaForm.mediaDomain'>
+                            v-model='mediaForm.domain'>
                         </el-input>
                     </el-form-item>
                 </el-form>
                 <div class='auto-audit mt-20'>
                     <div class='flex space-between'>
                         <div class='title-left'>自动化审核配置</div>
-                        <div class='title-right pointer'> 一键全选</div>
+                        <div class='title-right pointer' @click='oneKeyCheckAll'> 一键全选</div>
                     </div>
                     <div class='mt-20'>
-                        <el-checkbox v-model='recognition'>原创识别</el-checkbox>
+                        <el-checkbox v-model='mediaForm.original'>原创识别</el-checkbox>
                     </div>
                     <div class='mt-10'>
-                        <el-input style='width: 100%' placeholder='原创别名添加，英文，隔开'></el-input>
+                        <el-input v-model='mediaForm.alias' style='width: 100%' placeholder='原创别名添加，英文，隔开'></el-input>
                     </div>
-                    <div class='mt-20'>
-                        <el-checkbox-group v-model='checkList'>
-                            <el-checkbox label='合规过滤'></el-checkbox>
-                            <el-checkbox label='源内去重'></el-checkbox>
-                            <el-checkbox label='机器排版'></el-checkbox>
-                            <el-checkbox label='机器打标'></el-checkbox>
-                        </el-checkbox-group>
+                    <div class='mt-20 flex space-between'>
+                        <el-checkbox v-model='mediaForm.filter'>合规过滤</el-checkbox>
+                        <el-checkbox v-model='mediaForm.repeat'>源内去重</el-checkbox>
+                        <el-checkbox v-model='mediaForm.layout'>机器排版</el-checkbox>
+                        <el-checkbox v-model='mediaForm.mark'>机器打标</el-checkbox>
                     </div>
                 </div>
             </div>
             <span slot='footer' class='dialog-footer'>
                 <el-button class='cancel' @click='dialogVisible = false'>取 消</el-button>
-                <el-button type='primary' @click='dialogVisible = false'>确 定</el-button>
+                <el-button type='primary' @click='isUpdate ? updata() :save()'>确 定</el-button>
               </span>
         </el-dialog>
 
@@ -223,130 +221,215 @@
 </template>
 
 <script>
+import {
+    addMediaConfigList,
+    deleteMediaConfigList, getMediaConfigByID,
+    getMediaConfigList,
+    getUsers,
+    updateMediaConfigList
+} from '@/api/getData';
+
 export default {
     name: 'mediaConfiguration',
     data() {
         return {
             query: {
-                name: ''
+                name: null,
+                type: null,
+                weight: null,
+                user: null,
+                open: null,
+                page: 1,
+                size: 10
             },
+            mediaType: [{
+                name: '媒体',
+                value: 1
+            }, {
+                name: '电子报',
+                value: 2
+            }, {
+                name: '公众号',
+                value: 3
+            }, {
+                name: '专业栏',
+                value: 4
+            }],
             recognition: '',
             dialogVisible: false,
             checkList: ['源内去重', '机器打标'],
             options: [],
             isUpdate: false,
             rules: {
-                mediaName: [{ required: true, message: '请输入媒体名称', trigger: 'blur' }],
-                client: [{ required: true, message: '请选择所属客户', trigger: 'change' }],
-                mediaDomain: [{ required: true, message: '请输入媒体域名', trigger: 'blur' }]
+                name: [{ required: true, message: '请输入媒体名称', trigger: 'blur' }],
+                user: [{ required: true, message: '请选择所属客户', trigger: 'change' }],
+                domain: [{ required: true, message: '请输入媒体域名', trigger: 'blur' }]
             },
             mediaForm: {
-                mediaName: '',
+                name: '',
                 weight: '',
-                client: '',
-                class: '',
-                mediaDomain: ''
+                user: '',
+                type: '',
+                domain: '',
+                original: false,
+                filter: false,
+                repeat: false,
+                layout: false,
+                mark: false,
+                alias: '',
+                open: false
             },
-            mediaList: [{
-                mediaName: '中国证券报',
-                mediaClass: '媒体',
-                mediaWeight: 4,
-                client: '客户1',
-                mediaDomain: 'cs.com.cn、cs.com.cn、cs.com.cn',
-                auto: '原创识别、合规过滤、源内去重',
-                state: 0,
-                switch: 1
-            }, {
-                mediaName: '中国证券报',
-                mediaClass: '媒体',
-                mediaWeight: 4,
-                client: '客户1',
-                mediaDomain: 'cs.com.cn、cs.com.cn、cs.com.cn',
-                auto: '原创识别、合规过滤、源内去重',
-                state: 1,
-                switch: 0
-            }, {
-                mediaName: '中国证券报',
-                mediaClass: '媒体',
-                mediaWeight: 4,
-                client: '客户1',
-                mediaDomain: 'cs.com.cn、cs.com.cn、cs.com.cn',
-                auto: '原创识别、合规过滤、源内去重',
-                state: 0,
-                switch: 1
-            }, {
-                mediaName: '中国证券报',
-                mediaClass: '媒体',
-                mediaWeight: 4,
-                client: '客户1',
-                mediaDomain: 'cs.com.cn、cs.com.cn、cs.com.cn',
-                auto: '原创识别、合规过滤、源内去重',
-                state: 0,
-                switch: 1
-            }, {
-                mediaName: '中国证券报',
-                mediaClass: '媒体',
-                mediaWeight: 4,
-                client: '客户1',
-                mediaDomain: 'cs.com.cn、cs.com.cn、cs.com.cn',
-                auto: '原创识别、合规过滤、源内去重',
-                state: 0,
-                switch: 1
-            }, {
-                mediaName: '中国证券报',
-                mediaClass: '媒体',
-                mediaWeight: 4,
-                client: '客户1',
-                mediaDomain: 'cs.com.cn、cs.com.cn、cs.com.cn',
-                auto: '原创识别、合规过滤、源内去重',
-                state: 0,
-                switch: 1
-            }, {
-                mediaName: '中国证券报',
-                mediaClass: '媒体',
-                mediaWeight: 4,
-                client: '客户1',
-                mediaDomain: 'cs.com.cn、cs.com.cn、cs.com.cn',
-                auto: '原创识别、合规过滤、源内去重',
-                state: 0,
-                switch: 1
-            }, {
-                mediaName: '中国证券报',
-                mediaClass: '媒体',
-                mediaWeight: 4,
-                client: '客户1',
-                mediaDomain: 'cs.com.cn、cs.com.cn、cs.com.cn',
-                auto: '原创识别、合规过滤、源内去重',
-                state: 0,
-                switch: 1
-            }]
+            mediaList: [],
+            userList: []
         };
     },
+    created() {
+        this.getData();
+    },
+    computed: {
+
+    },
     methods: {
-        handleSizeChange() {
+        autoCheck(row) {
+            let arr = [];
+            if (row.original) arr.push('原创识别');
+            if (row.filter) arr.push('合规过滤');
+            if (row.repeat) arr.push('源内去重');
+            if (row.mark) arr.push('机器打标');
+            if (row.layout) arr.push('机器排版');
+            return arr.join();
         },
-        handleCurrentChange() {
+        oneKeyCheckAll() {
+            this.mediaForm.original = true;
+            this.mediaForm.filter = true;
+            this.mediaForm.repeat = true;
+            this.mediaForm.layout = true;
+            this.mediaForm.mark = true;
         },
-        currentPage3() {
+        async switchChange(state, item) {
+            item.open = state;
+            let data = await updateMediaConfigList(item);
+            if (data.code === 200) {
+                this.$message({
+                    message: '修改成功',
+                    type: 'success'
+                });
+                this.getData();
+            } else {
+                this.$message.error('修改失败');
+            }
         },
-        handleUpdate() {
-            this.isUpdate = true;
-            this.dialogVisible = true;
+        updata() {
+            this.$refs['mediaForm'].validate(async (valid) => {
+                if (!valid) return;
+                this.dialogVisible = false;
+                const data = await updateMediaConfigList(this.mediaForm);
+                if (data.code === 200) {
+                    this.$message({
+                        message: '修改成功',
+                        type: 'success'
+                    });
+                    this.getData();
+
+                } else {
+                    this.$message.error('修改失败');
+                }
+
+            });
+        },
+        save() {
+            this.$refs['mediaForm'].validate(async (valid) => {
+                if (!valid) return;
+                this.dialogVisible = false;
+                const data = await addMediaConfigList(this.mediaForm);
+                if (data.code === 200) {
+                    this.$message({
+                        message: '添加成功',
+                        type: 'success'
+                    });
+                    this.getData();
+
+                } else {
+                    this.$message.error('添加失败');
+                }
+
+            });
+        },
+        initializeData() {
+            this.mediaForm.name = '';
+            this.mediaForm.weight = '';
+            this.mediaForm.user = '';
+            this.mediaForm.type = '';
+            this.mediaForm.domain = '';
+            this.mediaForm.alias = '';
+            this.mediaForm.original = false;
+            this.mediaForm.filter = false;
+            this.mediaForm.repeat = false;
+            this.mediaForm.layout = false;
+            this.mediaForm.mark = false;
+            this.mediaForm.open = false;
+        },
+        async getData() {
+            this.userList = [];
+            this.mediaList = [];
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            try {
+
+                let userData = await getUsers();
+                if (userData.code === 200) {
+                    this.userList = userData.data;
+                } else {
+                    this.$message.error(userData.msg);
+                }
+                let listData = await getMediaConfigList(this.query);
+                if (listData.code === 200) {
+                    this.mediaList = listData.data;
+                } else {
+                    this.$message.error(listData.msg);
+                }
+                loading.close();
+            } catch (err) {
+                loading.close();
+                console.error(err);
+            }
+        },
+        async handleUpdate(row) {
+            const data = await getMediaConfigByID({ id: row.id });
+            if (data.code === 200) {
+                this.mediaForm = data.data;
+                this.isUpdate = true;
+                this.dialogVisible = true;
+            } else {
+                this.$message.error(listData.msg);
+            }
+
         },
         addMedia() {
+            this.initializeData();
             this.isUpdate = false;
             this.dialogVisible = true;
         },
-        del() {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        del(id) {
+            this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
-            }).then(() => {
-                this.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                });
+            }).then(async () => {
+                let data = await deleteMediaConfigList({ id: id });
+                if (data.code === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                } else {
+                    this.$message.error(data.msg);
+                }
+
             }).catch(() => {
                 this.$message({
                     type: 'info',
@@ -429,7 +512,7 @@ export default {
     .auto-audit {
         .title-left {
             font-size: 14px;
-            font-family:SimSun, Microsoft Yahei, PingFangSC-Medium, PingFang SC, sans-serif;
+            font-family: SimSun, Microsoft Yahei, PingFangSC-Medium, PingFang SC, sans-serif;
             font-weight: 500;
             color: #2F343D;
             line-height: 20px;
@@ -498,6 +581,7 @@ export default {
     .el-checkbox__input.is-checked + .el-checkbox__label {
         color: #2F343D;
     }
+
     .el-dialog__footer .cancel {
         background: #FFFFFF;
         border-radius: 2px;

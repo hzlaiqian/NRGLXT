@@ -10,11 +10,11 @@
 				<el-option v-for="item in stsusOptions" :key="item.value" :label="item.label"
 					:value="item.value" />
 			</el-select>
-			<el-select placeholder="请筛选不通过理由" v-model="wordsStatus" size="small"
-				style="width: 150px; margin-right: 10px" clearable>
-				<el-option v-for="item in unPassList" :key="item.value" :label="item.label"
-					:value="item.value" />
-			</el-select>
+<!--			<el-select placeholder="请筛选不通过理由" v-model="wordsStatus" size="small"-->
+<!--				style="width: 150px; margin-right: 10px" clearable>-->
+<!--				<el-option v-for="item in unPassList" :key="item.value" :label="item.label"-->
+<!--					:value="item.value" />-->
+<!--			</el-select>-->
 			<el-date-picker v-model="dateRange" size="small" style="width: 240px" value-format="yyyy-MM-dd"
 				type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
 				@change="timeChange" clearable>
@@ -24,15 +24,26 @@
 			</el-button>
 		</div>
 		<el-table :data="tableData" style="width: 100%">
-			<el-table-column prop="title" label="标题" min-width="500px" align="center">
+			<el-table-column  label="标题" min-width="500px" align="left">
+                <template slot-scope='scope'>
+					<span class='span-text' v-if='scope.row.sourceAddress!= undefined && scope.row.sourceAddress!=null'>
+						<a link style='color: #2A79EE' :href='scope.row.sourceAddress' target='_blank'>
+							<h4 v-text='scope.row.title' />
+						</a>
+					</span>
+                    <span class='span-text'
+                          v-if='scope.row.sourceAddress== undefined || scope.row.sourceAddress ==null'>
+						<h4 v-text='scope.row.title' />
+					</span>
+                </template>
 			</el-table-column>
 			<el-table-column prop="source" label="来源" min-width="180" align="center"></el-table-column>
 			<el-table-column prop="inputTime" label="入库时间" min-width="220" align="center"></el-table-column>
-			<el-table-column prop="checkState" label="状态" min-width="200" align="center" :formatter="setStatus">
+			<el-table-column prop="checkStatus" label="状态" min-width="200" align="center" :formatter="setStatus">
 			</el-table-column>
 			<el-table-column label="操作" min-width="200" align="center" fixed="right">
 				<template #default="scope">
-					<router-link :to="{ path: '/editNews', query: { articleID : scope.row.id}}">修改
+					<router-link :to="{ path: '/editNews', query: { checkID: scope.row.checkID }}">修改
 					</router-link>
 				</template>
 			</el-table-column>
@@ -60,7 +71,7 @@
 				newsSource: '',
 				newsLabel: '',
 				dateRange: [],
-				checkStatus: 0,
+                checkStatus: '',
 				wordsStatus: '',
 				total: 0, // 总条数
 				currentPage: 1, // 当前页
@@ -68,13 +79,13 @@
 				tableData: [],
 				stsusOptions: [{
 					value: 0,
-					label: '待审核'
+					label: '未审核'
 				}, {
 					value: 1,
 					label: '已通过'
 				}, {
 					value: 2,
-					label: '未通过'
+					label: '不通过'
 				}],
 				unPassList: []
 			}
@@ -118,8 +129,8 @@
 						size: this.pageSize,
 						title: this.newsTitle,
 						source: this.newsSource,
-						checkState: this.checkStatus == '' ? 0 : this.checkStatus,
-						stop: this.wordsStatus == '' ? -1 : this.wordsStatus
+                        checkStatus: this.checkStatus,
+						unPass: this.wordsStatus == '' ? -1 : this.wordsStatus
 					}
 
 					if (this.dateRange != null && this.dateRange.length > 0) {
@@ -140,13 +151,14 @@
 			},
 			setStatus(row, column) {
 				try {
+                    console.log(column)
 					const status = row[column.property];
 					if (status == null || status == '' || status == 0) {
-						return "待审核";
+						return "未审核";
 					} else if (status == 1) {
 						return "已通过";
 					} else if (status == 2) {
-						return "未通过";
+						return "不通过";
 					}
 				} catch (e) {
 					console.log(e);

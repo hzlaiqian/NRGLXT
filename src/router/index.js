@@ -2,6 +2,12 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 Vue.use(Router);
+// 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+	return originalPush.call(this, location).catch(err => err)
+}
+
 
 export default new Router({
 	routes: [{
@@ -25,7 +31,7 @@ export default new Router({
 				{
 					path: '/newsWrite',
 					name: 'newsWrite',
-					component: () => import('../pages/newsWrite.vue'),
+					component: () => import('../pages/content/newsWrite.vue'),
 					meta: {
 						title: '新闻录入'
 					}
@@ -47,7 +53,7 @@ export default new Router({
 				{
 					path: '/newsReview',
 					name: 'newsReview',
-					component: () => import('../pages/newsReview.vue'),
+					component: () => import('../pages/content/newsReview.vue'),
 					meta: {
 						title: '新闻审核'
 					}
@@ -55,7 +61,7 @@ export default new Router({
 				{
 					path: '/editNews',
 					name: 'editNews',
-					component: () => import('../pages/editNews.vue'),
+					component: () => import('../pages/content/editNews.vue'),
 					meta: {
 						title: '新闻编辑'
 					}
@@ -145,6 +151,22 @@ export default new Router({
 					component: () => import('../pages/information/auditThreeLevel.vue'),
 					meta: {
 						title: '过滤标签'
+					}
+				},
+				{
+					path: '/statistics',
+					name: 'statistics',
+					component: () => import('../pages/statistics/articleNumber'),
+					meta: {
+						title: '文章数据报表'
+					}
+				},
+				{
+					path: '/systemMonitoring',
+					name: 'systemMonitoring',
+					component: () => import('../pages/statistics/systemMonitoring'),
+					meta: {
+						title: '系统监控页面'
 					}
 				}
 			]

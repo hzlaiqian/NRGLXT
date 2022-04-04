@@ -1,124 +1,128 @@
 <template>
     <div class=' newWrite news'>
-        <div  style='height: 100%; width: 100%;'>
+        <div style='height: 100%; width: 100%;'>
             <el-row style='display: inline-flex;width: 100%;height: 100%'>
-                <el-col class='box-sizing' :span='16' style='height: 100%;padding: 20px 0 20px 20px'>
-                    <el-scrollbar style='height: 100%;margin-right: 60px;'>
-                        <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
-                            <div class='bd3 flex-col'></div>
-                            <h3 style='margin-left: 5px'>基本信息</h3>
-                        </div>
-                        <!--                    表单-->
-                        <div>
-                            <el-form :rules='rules' ref='formData' label-position='left' :model='form' label-width='77px'>
-                                <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
-                                    <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
-                                              v-model='form.newsTitle'></el-input>
-                                </el-form-item>
-                                <!--                            <el-form-item label='来源：' prop='newsSource'>-->
-                                <!--                                <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
-                                <!--                                          v-model='form.newsSource'></el-input>-->
-                                <!--                            </el-form-item>-->
-                                <!--                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>-->
-                                <!--                                <el-col :span='14'>-->
-                                <!--                                    <el-form-item label='来源：' prop='newsSource'>-->
-                                <!--                                        <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
-                                <!--                                                  v-model='form.newsSource'></el-input>-->
-                                <!--                                    </el-form-item>-->
-                                <!--                                </el-col>-->
-                                <!--                                <el-col class='flex flex-row-reverse' :span='8'>-->
-                                <!--                                    <el-form-item style='width: 100%;' label='发布时间：'>-->
-                                <!--                                        <el-date-picker-->
-                                <!--                                            disabled-->
-                                <!--                                            style='width: 100%'-->
-                                <!--                                            v-model='form.createTime'-->
-                                <!--                                            type='datetime'-->
-                                <!--                                            placeholder='选择日期时间'>-->
-                                <!--                                        </el-date-picker>-->
-                                <!--                                    </el-form-item>-->
-                                <!--                                </el-col>-->
-                                <!--                            </el-row>-->
+                <el-col class='box-sizing' :span='16'
+                        style='height: 100%;padding: 20px 0 20px 20px;margin-right: 64px;'>
 
-                                <el-row style='margin-bottom: 0' type='flex' justify='space-between'>
-                                    <el-col :span='10'>
-                                        <el-form-item label='来源：' prop='newsSource'>
-                                            <el-input style='width: 100%;' placeholder='请输入来源' show-word-limit clearable
-                                                      maxlength='20'
-                                                      v-model='form.newsSource'></el-input>
-                                        </el-form-item>
+                    <div class='grid-content bg-purple' style='align-items: center;display: flex;'>
+                        <div class='bd3 flex-col'></div>
+                        <h3 style='margin-left: 5px'>基本信息</h3>
+                    </div>
+                    <!--                    表单-->
+                    <div style='height: calc(100% - 60px)'>
+                        <el-form :rules='rules' ref='formData' label-position='left' style='height: 100%' :model='form'
+                                 label-width='77px'>
+                            <el-form-item class='mt-20' label='标题：' prop='newsTitle'>
+                                <el-input show-word-limit placeholder='请输入标题' clearable maxlength='100'
+                                          v-model='form.newsTitle'></el-input>
+                            </el-form-item>
+                            <!--                            <el-form-item label='来源：' prop='newsSource'>-->
+                            <!--                                <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
+                            <!--                                          v-model='form.newsSource'></el-input>-->
+                            <!--                            </el-form-item>-->
+                            <!--                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>-->
+                            <!--                                <el-col :span='14'>-->
+                            <!--                                    <el-form-item label='来源：' prop='newsSource'>-->
+                            <!--                                        <el-input placeholder='请输入来源' show-word-limit clearable maxlength='20'-->
+                            <!--                                                  v-model='form.newsSource'></el-input>-->
+                            <!--                                    </el-form-item>-->
+                            <!--                                </el-col>-->
+                            <!--                                <el-col class='flex flex-row-reverse' :span='8'>-->
+                            <!--                                    <el-form-item style='width: 100%;' label='发布时间：'>-->
+                            <!--                                        <el-date-picker-->
+                            <!--                                            disabled-->
+                            <!--                                            style='width: 100%'-->
+                            <!--                                            v-model='form.createTime'-->
+                            <!--                                            type='datetime'-->
+                            <!--                                            placeholder='选择日期时间'>-->
+                            <!--                                        </el-date-picker>-->
+                            <!--                                    </el-form-item>-->
+                            <!--                                </el-col>-->
+                            <!--                            </el-row>-->
 
-                                    </el-col>
-                                    <el-col class='flex flex-row-reverse' :span='12'>
-                                        <!--                                                                        <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>-->
-                                        <!--                                                                            <span>{{isUnfold ? '收起信息' :'展开信息'}}</span>-->
-                                        <!--                                                                            <i :class='{"is-active": isUnfold}'-->
-                                        <!--                                                                               class='el-collapse-item__arrow el-icon-arrow-right '></i>-->
-                                        <!--                                                                        </div>-->
-                                    </el-col>
-                                </el-row>
-                                <el-collapse-transition>
-                                    <div v-show='isUnfold'>
-                                        <el-form-item label-width='67px' label='摘要：' style='margin-left: 11px'>
-                                            <el-input
+                            <el-row style='margin-bottom: 0' type='flex' justify='space-between'>
+                                <el-col :span='10'>
+                                    <el-form-item label='来源：' prop='newsSource'>
+                                        <el-input style='width: 100%;' placeholder='请输入来源' show-word-limit clearable
+                                                  maxlength='20'
+                                                  v-model='form.newsSource'></el-input>
+                                    </el-form-item>
 
-                                                type='textarea'
-                                                :rows='4'
-                                                maxlength='200'
-                                                show-word-limit
-                                                v-model='form.newsDesc'
-                                                placeholder='请输入摘要'>
-                                            </el-input>
-                                        </el-form-item>
+                                </el-col>
+                                <el-col class='flex flex-row-reverse' :span='12'>
+                                    <!--                                                                        <div class='pointer color-1683ff' @click='isUnfold = !isUnfold'>-->
+                                    <!--                                                                            <span>{{isUnfold ? '收起信息' :'展开信息'}}</span>-->
+                                    <!--                                                                            <i :class='{"is-active": isUnfold}'-->
+                                    <!--                                                                               class='el-collapse-item__arrow el-icon-arrow-right '></i>-->
+                                    <!--                                                                        </div>-->
+                                </el-col>
+                            </el-row>
+                            <el-collapse-transition>
+                                <div v-show='isUnfold'>
+                                    <el-form-item label-width='67px' label='摘要：' style='margin-left: 11px'>
+                                        <el-input
 
-                                        <el-row type='flex' justify='space-between'>
-                                            <el-col :span='10'>
-                                                <el-form-item label='作者：' label-width='67px'
-                                                              style='margin-left: 11px;margin-bottom: 0'>
-                                                    <el-input style='width: 100%' placeholder='请输入作者'
-                                                              v-model='form.newsAuthor'
-                                                              clearable></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :span='12'>
-                                                <el-form-item label-width='90px' style='margin-bottom: 0' label='来源地址：'>
-                                                    <el-input placeholder='请输入来源地址' v-model='form.sourceAddress'
-                                                              clearable></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                        </el-row>
+                                            type='textarea'
+                                            :rows='4'
+                                            maxlength='200'
+                                            show-word-limit
+                                            v-model='form.desc'
+                                            placeholder='请输入摘要'>
+                                        </el-input>
+                                    </el-form-item>
+
+                                    <el-row type='flex' justify='space-between'>
+                                        <el-col :span='10'>
+                                            <el-form-item label='作者：' label-width='67px'
+                                                          style='margin-left: 11px;margin-bottom: 0'>
+                                                <el-input style='width: 100%' placeholder='请输入作者'
+                                                          v-model='form.author'
+                                                          clearable></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span='12'>
+                                            <el-form-item label-width='90px' style='margin-bottom: 0' label='来源地址：'>
+                                                <el-input placeholder='请输入来源地址' v-model='form.sourceAddress'
+                                                          clearable></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+
+                                </div>
+                            </el-collapse-transition>
+
+                            <el-form-item class='context' label='正文：'
+                                          :style=' isUnfold ? "height: calc(100% - 280px)" :"height: calc(100% - 120px)"'
+                                          prop='context'>
+                                <div class='flex' style='flex-direction: row-reverse'>
+                                    <div style='margin-left: 20px;color: #20A0FF' class='pointer'
+                                         @click='isUnfold = !isUnfold'>
+                                        <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
+                                        <!--                                        <i :class='{"is-active": isUnfold}'-->
+                                        <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
+                                        <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
+                                           class='el-collapse-item__arrow  '></i>
+                                    </div>
+                                    <div class='pointer' style='color: #20A0FF' @click='aKeyLayout'>一键排版</div>
+
+                                </div>
+                                <div class='editor-box relative' style='height: 100%'>
+                                    <div class='absolute fold'>
 
                                     </div>
-                                </el-collapse-transition>
-
-                                <el-form-item class='context' label='正文：' prop='newsContext'>
-                                    <div class='flex' style='flex-direction: row-reverse'>
-                                        <div style='margin-left: 20px;color: #20A0FF' class='pointer' @click='isUnfold = !isUnfold'>
-                                            <span>{{ isUnfold ? '收起信息' : '展开信息' }}</span>
-                                            <!--                                        <i :class='{"is-active": isUnfold}'-->
-                                            <!--                                           class='el-collapse-item__arrow el-icon-arrow-up '></i>-->
-                                            <i :class='isUnfold ? "el-icon-arrow-up": "el-icon-arrow-down"'
-                                               class='el-collapse-item__arrow  '></i>
-                                        </div>
-                                        <div class='pointer' style='color: #20A0FF' @click='aKeyLayout'>一键排版</div>
-
-                                    </div>
-                                    <div class='editor-box relative'>
-                                        <div class='absolute fold'>
-
-                                        </div>
-                                        <!--                                    <quill-editor id='quill-editor' v-model='form.newsContext' ref='myQuillEditor'-->
-                                        <!--                                                  :options='editorOption'-->
-                                        <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
-                                        <!--                                    </quill-editor>-->
-                                        <tinymce @input='tinymceChange' :value='form.newsContext' :height='430' />
-                                        <!--                                    <span class='absolute'-->
-                                        <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
-                                        <!--                                        }}字</span>-->
-                                    </div>
-                                </el-form-item>
-                            </el-form>
-                        </div>
-                    </el-scrollbar>
+                                    <!--                                    <quill-editor id='quill-editor' v-model='form.newsContext' ref='myQuillEditor'-->
+                                    <!--                                                  :options='editorOption'-->
+                                    <!--                                                  @change='onEditorChange' @ready='onEditorReady($event)'>-->
+                                    <!--                                    </quill-editor>-->
+                                    <tinymce ref='tinymce' @input='tinymceChange' :value='form.newsContext' height='100%' />
+                                    <!--                                    <span class='absolute'-->
+                                    <!--                                          style='right: 10px;bottom: 10px;color: rgba(145, 154, 173, 1)'>当前输入{{ editorTextLength-->
+                                    <!--                                        }}字</span>-->
+                                </div>
+                            </el-form-item>
+                        </el-form>
+                    </div>
 
                     <!--                    <div class='grid-content bg-purple'-->
                     <!--                         style='width: 100%; display: flex;align-items: center;margin: 5px 0px;'>-->
@@ -163,157 +167,50 @@
                     <!--                    </div>-->
                 </el-col>
                 <el-col :span='8' style='height: 100%;padding: 20px 20px 20px 0' class='flex flex-column'>
-                        <el-scrollbar class='grid-content bg-purple' style='width: 100%;height: auto;'>
-                            <div class='grid-content bg-purple'>
-                                <div class='grid-content bg-purple'
-                                     style='align-items: center;display: flex;'>
-                                    <div class='bd3 flex-col'></div>
-                                    <h4 class='ml-5'>情绪标签：</h4>
-                                </div>
-                                <el-radio-group class='mt-20' @change='radioGroupChange'
-                                                :text-color='radioGroupStyle.textColor'
-                                                :fill='radioGroupStyle.fill' v-model='form.value'>
-                                    <el-radio-button v-for='item in moodList' :key='item.id'
-                                                     :label='item.name'></el-radio-button>
-                                </el-radio-group>
-                                <!--                                <div v-for='i in moodList' :key='i.id' style='display: inline-flex;'>-->
-                                <!--                                    <template>-->
-                                <!--                                        <el-tag :key='i.id' v-if='i.isLight'-->
-                                <!--                                                v-bind:style="{'color':i.color,'background-color':i.bColor,'border-color':i.color,'margin': '0 5px 0 5px'}"-->
-                                <!--                                                @click='moodClick(i)'>-->
-                                <!--                                            {{ i.name }}-->
-                                <!--                                        </el-tag>-->
-                                <!--                                        <el-tag :key='i.id' v-if='!i.isLight'-->
-                                <!--                                                style='color: #8C939D;background-color: #FFFFFF;border-color: #8C939D; margin: 0 5px 0 5px;'-->
-                                <!--                                                @click='moodClick(i)'>-->
-                                <!--                                            {{ i.name }}-->
-                                <!--                                        </el-tag>-->
-                                <!--                                    </template>-->
-                                <!--                                </div>-->
-                                <div style='padding: 20px 0px; '>
-                                    <div class='tableTitle'></div>
-                                </div>
+                    <el-scrollbar class='grid-content bg-purple' style='width: 100%;height: auto;'>
+                        <div class='grid-content bg-purple mt-10'>
+                            <emotion-tag @click='emotionClick' :list='moodList'></emotion-tag>
+                            <div style='padding-bottom: 10px'>
+                                <div class='tableTitle'></div>
                             </div>
-                            <div class='grid-content bg-purple'>
-                                <div>
-                                    <el-row type='flex' :span='24'>
-                                        <el-col style='display:flex;align-items: center;'>
-                                            <div class='bd3 flex-col'></div>
-                                            <h4 class='ml-5'>推荐标签：</h4>
-                                        </el-col>
-                                        <el-col>
-                                            <el-button type='text' size='medium' style='float: right;color: #20A0FF;'
-                                                       @click='onMark'>一键打标
-                                            </el-button>
-                                        </el-col>
-                                    </el-row>
+                        </div>
+                        <div class='grid-content bg-purple'>
+                            <recommend-tag :list='recommendList' @recommendChange='recommendChange'
+                                           @marking='onMark'></recommend-tag>
+                            <div style='padding: 10px 0; '>
+                                <div class='tableTitle'></div>
+                            </div>
+                        </div>
+                        <div class='grid-content bg-purple'>
+                            <div class='flex items-center'>
+                                <div class='flex items-center'>
+                                    <img style='width: 22px;height: 21px' src='../../assets/img/mark.png'>
                                 </div>
-                                <div v-for='p in recommendList' :key='p.id' class='grid-content bg-purple flex flex-wrap'
-                                     style='width: 100%; display: flex;align-items: center;'>
-                                    <div style='width:auto;text-align: center;min-width: 60px;margin-right: 5px;'>
-                                        <h5>{{ p.name }}:</h5>
+                                <h3 class='ml-5'>栏目标签：</h3>
+                            </div>
+                            <div style='margin: 10px 0 10px 0;display: inline-block;'>
+                                <div class='flex flex-wrap'>
+                                    <div v-for='item in colList' :key='item.id'>
+                                        <transition mode='out-in' name='el-zoom-in-center' appear>
+                                            <tag @del='tagClose(item.id,0)' style='margin:12px 12px 0 0'
+                                                 type='closeTag' color='#2A79EE' :title='item.name'></tag>
+                                        </transition>
                                     </div>
 
-                                    <el-tooltip style='margin-right: 5px;margin-bottom: 5px' v-for='c in p.child' :key='c.id'
-                                                class='pointer ' effect='dark'
-                                                placement='top'>
-                                        <div slot='content'> {{ c.name }}</div>
-                                        <div>
-
-<!--                                            <div v-if='p.name === "A股公司"'>-->
-                                                <transition mode='out-in' name='el-zoom-in-center' appear>
-                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '
-                                                         :color='c.color' :bg-color='c.bColor'></tag>
-                                                </transition>
-<!--                                            </div>-->
-<!--                                            <div v-else-if='p.name === "二级行业"'>-->
-<!--                                                <transition mode='out-in' name='el-zoom-in-center' appear>-->
-<!--                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '-->
-<!--                                                         color='#2A79EE' bg-color='rgba(42, 121, 238, 0.11)'></tag>-->
-<!--                                                </transition>-->
-<!--                                            </div>-->
-<!--                                            <div v-else>-->
-<!--                                                <transition mode='out-in' name='el-zoom-in-center' appear>-->
-<!--                                                    <tag @del='tagClose(c.id,1)' type='tag' :title='c.name '-->
-<!--                                                         color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>-->
-<!--                                                </transition>-->
-<!--                                            </div>-->
-                                            <!--                                            <el-tag size='small'-->
-                                            <!--                                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'margin': '5px 5px'}"-->
-                                            <!--                                                    @close='tagClose(c.id,1)' @click='handleClick(c)' closable>-->
-                                            <!--                                                {{ c.name }}-->
-                                            <!--                                            </el-tag>-->
-                                        </div>
-                                    </el-tooltip>
-                                </div>
-                                <div class='grid-content bg-purple'
-                                     style='align-items: center;margin: 5px 0px;display: flex;'>
-                                    <el-autocomplete class='searcch' v-model='txtSearch'
-                                                     :fetch-suggestions='showRecommend' placeholder='请输入内容'
-                                                     @blur='inputFocus = false'
-                                                     @focus='inputFocus = true'
-                                                     value-key='name'
-                                                     :trigger-on-focus='false' @select='handleSelect' size='small'
-                                    >
-                                        <i slot='suffix' :style=' inputFocus?"color: rgba(42, 121, 238, 1)" : ""'
-                                           class='el-input__icon el-icon-search'></i>
-                                        <template slot-scope='scope'>
-                                            <span>{{ scope.item.name }}</span>
-                                            <span style='float: right;color: #919AAD;'>{{ scope.item.ideaName }}</span>
-                                        </template>
-                                    </el-autocomplete>
-                                </div>
-                                <div style='padding: 10px 0px; '>
-                                    <div class='tableTitle'></div>
+                                    <el-tag class='new-tag pointer' style='margin:12px 12px 0 0' size='small'
+                                            @click='showDialog()'>+添加标签
+                                    </el-tag>
                                 </div>
                             </div>
-                            <div class='grid-content bg-purple'>
-                                <div class='grid-content bg-purple'
-                                     style='align-items: center;display: flex;'>
-                                    <div class='bd3 flex-col'></div>
-                                    <h4 class='ml-5'>栏目标签：</h4>
-                                </div>
-                                <div style='margin: 10px 0 10px 0;display: inline-block;'>
-                                    <!--                                    <el-tooltip v-for='(c,index) in colList' :key='index' class='mr-5 pointer' effect='dark'-->
-                                    <!--                                                :content='c.name' placement='top'>-->
-                                    <!--                                        <el-tag size='small'-->
-                                    <!--                                                v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px 0 5px'}"-->
-                                    <!--                                                @close='tagClose(c.id,0)' @click='handleClick(c)' closable>-->
-                                    <!--                                            {{ c.name }}-->
-                                    <!--                                        </el-tag>-->
-                                    <!--                                    </el-tooltip>-->
-
-                                    <!--                                    <el-tag v-for='c in colList' :key='c.id' size='small'-->
-                                    <!--                                            v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px 0 5px'}"-->
-                                    <!--                                            @close='tagClose(c.id,0)' @click='handleClick(c)' closable>-->
-                                    <!--                                        {{ c.name }}-->
-                                    <!--                                    </el-tag>-->
-                                    <div class='flex flex-wrap'>
-                                        <div v-for='item in colList' :key='item.id'>
-                                            <transition mode='out-in' name='el-zoom-in-center' appear>
-                                                <tag @del='tagClose(item.id,0)' style='margin:12px 12px 0 0'
-                                                     type='closeTag' color='#2A79EE' :title='item.name'></tag>
-                                            </transition>
-                                        </div>
-
-                                        <el-tag class='new-tag pointer' style='margin:12px 12px 0 0' size='small'
-                                                @click='showDialog()'>+添加标签
-                                        </el-tag>
-                                    </div>
-                                </div>
-                                <!--                                <div style='margin: 10px 0 10px 0;display: inline-block;'>-->
-                                <!--                                    <el-tag class='new-tag pointer' size='small' @click='showDialog()'>+添加标签</el-tag>-->
-                                <!--                                </div>-->
-                                <!--                                <div style='padding: 10px 0px; '>-->
-                                <!--                                    <div class='tableTitle'></div>-->
-                                <!--                                </div>-->
-                            </div>
-                        </el-scrollbar>
+                        </div>
+                    </el-scrollbar>
 
                     <div class='grid-content bg-purple' style='margin-top: 30px'>
                         <el-row :gutter='20'>
                             <el-col :span='12'>
-                                <el-button type='primary' style='float: right;letter-spacing: 2px;width: 100%;height: 38px;font-size: 14px' @click='submitTag()'>提交
+                                <el-button type='primary'
+                                           style='float: right;letter-spacing: 2px;width: 100%;height: 38px;font-size: 14px'
+                                           @click='submit()'>提交
                                 </el-button>
                             </el-col>
                             <el-col :span='12'>
@@ -335,7 +232,8 @@
                     <div class='flex flex-wrap'>
                         <div v-for='item in isLightTagArr' :key='item.id'>
                             <transition mode='out-in' name='el-zoom-in-center' appear>
-                                <tag @del='delHandleClick(item)' style='margin:12px 12px 0 0' type='closeTag' color='#2A79EE'
+                                <tag @del='delHandleClick(item)' style='margin:12px 12px 0 0' type='closeTag'
+                                     color='#2A79EE'
                                      :title='item.name'></tag>
                             </transition>
                         </div>
@@ -349,7 +247,7 @@
                     </div>
                     <div v-for='c in p.child' :key='c.id' style='display: inline-flex;'>
                         <template>
-                            <tag  @add='handleClick(c)'
+                            <tag @add='handleClick(c)'
                                  :title='c.name' style='margin:12px 12px 0 0'></tag>
                             <!--                            <el-tag class='pointer' :key='c.id' v-if='c.isLight'-->
                             <!--                                    v-bind:style="{'color':c.color,'background-color':c.bColor,'border-color':c.color,'margin': '5px 5px'}"-->
@@ -390,18 +288,18 @@
                         <div class='flex preview-author' style='margin-top: 8px'>
                             <div style='width: 73px;height: 14px;overflow: hidden'>{{ form.createTime }}</div>
                             <div>{{ form.newsSource }}</div>
-                            <div style='margin: 0 5px' v-if='form.newsSource'>|</div>
+                            <div style='margin: 0 5px' v-if='form.newsAuthor'>|</div>
                             <div>{{ form.newsAuthor }}</div>
                         </div>
                         <div class='flex pointer flex-wrap' style='margin-top: 12px'>
                             <div v-for='c in tagList' :key='c.id' class=' preview-tag'>
-                                <tag  :showClose='false' @del='tagClose(c.id,1)' type='tag'
+                                <tag :showClose='false' @del='tagClose(c.id,1)' type='tag'
                                      :title='c.name ' :color='c.color' :bg-color='c.bColor'></tag>
-<!--                                <tag v-else-if='c.bColor === "#E8F0FD"' :showClose='false' @del='tagClose(c.id,1)'-->
-<!--                                     type='tag' :title='c.name ' color='#2A79EE'-->
-<!--                                     bg-color='rgba(42, 121, 238, 0.11)'></tag>-->
-<!--                                <tag v-else :showClose='false' @del='tagClose(c.id,1)' type='tag' :title='c.name '-->
-<!--                                     color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>-->
+                                <!--                                <tag v-else-if='c.bColor === "#E8F0FD"' :showClose='false' @del='tagClose(c.id,1)'-->
+                                <!--                                     type='tag' :title='c.name ' color='#2A79EE'-->
+                                <!--                                     bg-color='rgba(42, 121, 238, 0.11)'></tag>-->
+                                <!--                                <tag v-else :showClose='false' @del='tagClose(c.id,1)' type='tag' :title='c.name '-->
+                                <!--                                     color='#E6A23C' bg-color='rgba(230, 162, 60, 0.11)'></tag>-->
 
                             </div>
                         </div>
@@ -412,12 +310,13 @@
                         <!--                                {{ c.name }}-->
                         <!--                            </el-tag>-->
                         <!--                        </div>-->
-                        <div class='preview-text' style='margin-top: 10px' v-html='form.newsContext'>
+                        <div class='preview-text' style='margin-top: 10px'
+                             v-html='form.context  + "<style>img {max-width: 100%} table {width: 100%}</style>"'>
                         </div>
                     </div>
                 </div>
                 <div class='close absolute pointer' @click='dialogPreviewVisible = false'>
-                    <img style='width: 30px;height: 30px' src='../assets/img/close2x.png'>
+                    <img style='width: 30px;height: 30px' src='../../assets/img/close2x.png'>
                 </div>
             </div>
         </el-dialog>
@@ -437,13 +336,14 @@ import {
     getConceptByName,
     getConceptByList
 
-} from '../api/getData.js';
+} from '../../api/getData.js';
 import Tinymce from '@/components/Tinymce';
 import Tag from '@/components/Tag';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
-
+import EmotionTag from '@/pages/content/components/EmotionTag';
+import RecommendTag from '@/pages/content/components/RecommendTag';
 import {
     quillEditor
 } from 'vue-quill-editor';
@@ -469,10 +369,12 @@ export default {
                 newsContext: '',
                 context: '',
                 newsSource: '',
-                createTime: dayjs(new Date).format('YYYY-MM-DD HH:mm:ss'),
-                value: ''
+                value: '',
+                sourceAddress: '',
+                author: '',
+                desc: ''
             },
-            isUnfold: false,
+            isUnfold: true,
             moodList: [],
             recommendList: [],
             tagList: [],
@@ -480,40 +382,48 @@ export default {
             rules: {
                 newsTitle: [{ required: true, message: '请输入标题', trigger: 'blur' }],
                 newsSource: [{ required: true, message: '请输入来源', trigger: 'blur' }],
-                newsContext: [{ required: true, message: '请输入正文' }]
+                context: [{ required: true, message: '请输入正文' }]
             },
             waitList: [],
             radioGroupStyle: {
                 textColor: '',
                 fill: ''
-            }
+            },
+            emotionId: []
         };
     },
-    created() {
-        this.initData();
+    mounted() {
+        this.getMood();
+        this.getColumn();
     },
     components: {
-         Tinymce, Tag
+        Tinymce, Tag, EmotionTag, RecommendTag
     },
     computed: {
         editor() {
             return this.$refs.myQuillEditor.quill;
         }
     },
-    watch: {
-
-    },
+    watch: {},
     methods: {
-        tinymceChange(value) {
-            console.log(value)
-            this.form.context = value
+        recommendChange(value) {
+            this.recommendList = value;
         },
-       async aKeyLayout () {
+        emotionClick(value) {
+            this.emotionId = value.map(q => q.id);
+        },
+        tinymceChange(value) {
+            this.form.context = value;
+        },
+        async aKeyLayout() {
             if (this.form.context.length !== 0) {
-               const data = await getArticleLayout({context: this.form.context})
-                console.log(data)
+                const data = await getArticleLayout({ context: this.form.context });
+                console.log(data);
                 if (data.code === 200) {
-                    this.form.newsContext = data.data
+                    this.$nextTick(() => {
+                        this.form.context = data.data.context;
+                        this.$refs.tinymce.setContent(data.data.context)
+                    });
                 } else {
                     this.$message.error(data.msg);
                 }
@@ -534,7 +444,6 @@ export default {
                     }
                 }
                 this.tagList = arr;
-                console.log(arr);
                 this.dialogPreviewVisible = true;
             });
 
@@ -551,21 +460,30 @@ export default {
                 this.radioGroupStyle.textColor = 'rgba(230, 162, 60, 1)';
             }
         },
-        async initData() {
+        initData() {
             this.dialogVisible = false;
+            this.$nextTick(() => {
+                console.log(this.$refs.tinymce)
 
-            this.newsTitle = '';
-            this.newsContext = '';
-            this.newsSource = '';
+                this.form.newsTitle = '';
+                this.form.newsContext = null;
+                this.form.newsSource = '';
+                this.form.sourceAddress = '';
+                this.form.author = '';
+                this.form.desc = '';
+                this.queryList = [];
+                this.waitList = [];
+                this.form.context = null;
+                console.log(this.form.newsContext)
+                this.$refs.tinymce.setContent('')
+            });
 
-            this.queryList = [];
-            this.waitList = [];
 
             this.moodList = [];
             this.recommendList = [];
             this.colList = [];
-            await this.getMood();
-            await this.getColumn();
+            this.getMood();
+            this.getColumn();
         },
         onEditorChange(event) {
             this.editorTextLength = event.quill.getLength() - 1;
@@ -574,16 +492,13 @@ export default {
 
         },
         async loadData(data) {
-            if (data.articleID !== null) {
-                this.articleID = data.articleID;
-            }
             this.form.newsTitle = data.title;
             this.form.newsContext = data.context;
             this.form.newsSource = data.source;
             this.sourceAddress = data.sourceAddress;
             this.sourceTime = data.sourceTime;
             this.inputTime = data.inputTime;
-
+            this.$refs.tinymce.setContent(data.context)
             await this.initMood(data.mood);
             await this.initRecommend(data.recommend);
             await this.initColumn(data.column);
@@ -616,35 +531,34 @@ export default {
         },
         async initColumn(val) {
             console.log(val);
-
+            if (!val) {
+                this.colList = [];
+                return;
+            }
             this.colList = [];
             this.isLightTagArr = [];
+            this.lightTree(JSON.parse(val), this.waitList);7
             let res = await getLabelByList({
                 ids: JSON.parse(val)
             });
             if (res !== null && res.code === 200) {
                 this.colList = [];
-                console.log(this.waitList);
                 this.waitList.forEach(i => {
                     if (i.child != null) {
                         i.child.forEach(j => {
                             if (j.isLight) {
-
+                                const c = {};
+                                c.id = j.id;
+                                c.color = j.color;
+                                c.name = j.name;
+                                this.colList.push(c);
+                                this.isLightTagArr.push(c);
                             }
-                            const c = {};
-                            c.id = j.id;
-                            c.color = j.color;
-                            c.name = j.name;
-                            this.colList.push(c);
-                            this.isLightTagArr.push(c);
-                            console.log(j);
-
                         });
                     }
                 });
-                console.log(this.colList);
-                this.lightTree(JSON.parse(val), this.waitList);
             }
+
         },
         async onMark() {
             // this.$refs['formData'].validate(async (valid) => {
@@ -653,8 +567,11 @@ export default {
             // })
             let res = await getOnMark({
                 title: this.form.newsTitle,
-                context: this.form.newsContext,
-                source: this.form.newsSource
+                context: this.form.context,
+                source: this.form.newsSource,
+                sourceAddress: this.form.sourceAddress,
+                author: this.form.author,
+                desc: this.form.desc
             });
             console.log(res);
             if (res !== null && res.code === 200) {
@@ -907,33 +824,38 @@ export default {
             });
             return arr;
         },
-        async submit() {
-            var moodArr = this.getList(this.moodList);
-            var recommendArr = this.getTreeList(this.recommendList);
-            var colArr = this.getList(this.colList);
-
-            var article = {
-                title: this.newsTitle,
-                context: this.newsContext.toString(),
-                source: this.newsSource,
-                mood: moodArr,
-                recommend: recommendArr,
-                column: colArr
-            };
-
-            const res = await addCheck(article);
-            if (res != null && res.code == 200) {
-                this.$message({
-                    type: 'success',
-                    message: '录入成功'
-                });
-                this.initData();
-            } else {
-                this.$message({
-                    type: 'error',
-                    message: '录入失败'
-                });
-            }
+        submit() {
+            this.$refs['formData'].validate(async (valid) => {
+                if (!valid) return false;
+                let recommendArr = this.getTreeList(this.recommendList);
+                let colArr = this.colList.map(item => item.id);
+                let article = {
+                    title: this.form.newsTitle,
+                    context: this.form.context,
+                    source: this.form.newsSource,
+                    mood: this.emotionId,
+                    sourceAddress: this.form.sourceAddress,
+                    author: this.form.author,
+                    desc: this.form.desc,
+                    sourceTime: dayjs(new Date).format('YYYY-MM-DD HH:mm:ss'),
+                    recommend: recommendArr,
+                    column: colArr
+                };
+                console.log(article);
+                const res = await addCheck(article);
+                if (res != null && res.code === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: '录入成功'
+                    });
+                    this.initData();
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: '录入失败'
+                    });
+                }
+            });
         }
     }
 };
@@ -987,12 +909,12 @@ export default {
 .bd3 {
     width: 14px;
     height: 12px;
-    background: url(../assets/img/mark.png) -2px -5px no-repeat;
+    background: url(../../assets/img/mark.png) -2px -5px no-repeat;
     margin-top: 2px;
 }
 
 .searcch {
-    background: url(../assets/img/mark.png) -2px -5px no-repeat;
+    background: url(../../assets/img/mark.png) -2px -5px no-repeat;
 }
 
 .tableTitle {
@@ -1017,13 +939,17 @@ export default {
     height: 526px;
 
     transform: translate(-50%, 0);
-    background-image: url("../assets/img/phone2x.png");
+    background-image: url("../../assets/img/phone2x.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-color: #fff;
     border-radius: 30px;
     padding: 20px;
     box-sizing: border-box;
+}
+
+.preview .preview-content img {
+    width: 100%;
 }
 
 .preview-header {
@@ -1045,7 +971,6 @@ export default {
 
 .preview-author {
     font-size: 10px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #919AAD;
     line-height: 14px;
@@ -1064,7 +989,6 @@ export default {
 
 .preview-text {
     font-size: 12px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #3C4556;
     line-height: 20px;
@@ -1089,7 +1013,6 @@ export default {
 
 .el-dialog__body h5 {
     font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #3C4556;
     line-height: 16px;
@@ -1103,7 +1026,6 @@ export default {
     border: 1px solid #2A79EE;
     text-align: center;
     font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #2A79EE;
     letter-spacing: 2px;
@@ -1111,11 +1033,11 @@ export default {
 
 .dialog-title h5 {
     font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #3C4556;
     line-height: 16px;
 }
+
 .newWrite {
     height: 100%;
     background-color: #fff;
@@ -1125,10 +1047,19 @@ export default {
 <style>
 .newWrite .context .el-form-item__content {
     margin-top: -20px;
+    height: 100%;
 }
+
 .newWrite .el-scrollbar .el-scrollbar__wrap {
     overflow: auto;
     padding-right: 17px;
     padding-bottom: 17px;
+}
+
+.ql-align-center img {
+    width: 100%;
+}
+.el-form-item__label {
+    font-weight: 600;
 }
 </style>
