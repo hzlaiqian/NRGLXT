@@ -168,7 +168,21 @@ export default new Router({
 					meta: {
 						title: '系统监控页面'
 					}
-				}
+				},
+				{
+					path: '/user',
+					component: () => import('../pages/systemManagement/user'),
+					meta: {
+						title: '人员及权限管理'
+					}
+				},
+				{
+					path: '/role',
+					component: () => import('../pages/systemManagement/role'),
+					meta: {
+						title: '角色管理'
+					}
+				},
 			]
 		},
 		{
@@ -181,6 +195,6 @@ export default new Router({
 		{
 			path: '*',
 			redirect: '/404'
-		}
+		},
 	]
 });

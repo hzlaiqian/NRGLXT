@@ -85,6 +85,18 @@ export default {
                         title: '监控'
                     }],
                 },
+                {
+                    icon: 'el-icon-s-data',
+                    index: 'systemManagement',
+                    title: '系统管理',
+                    subs: [{
+                        index: '/role',
+                        title: '角色管理'
+                    },{
+                        index: '/user',
+                        title: '人员及权限管理'
+                    }],
+                },
                 // {
                 // 	icon: 'el-icon-lx-copy',
                 // 	index: 'markManage',
