@@ -1,32 +1,38 @@
 <template>
 	<div class="container">
 		<div style="height: 100%; width: 100%;">
-			<el-row style="border-bottom: 1 solid #BCBEC2;">
+			<el-row >
 				<div style="float: left;align-self: center;">
-					<h3>待审核新闻数量：{{countNumber}}条</h3>
+                    <h3 style='color: #3C4556;font-size: 14px'>待审核新闻数量：<span style='color: #F56C6C'>{{countNumber}}&nbsp;</span>条</h3>
 				</div>
 				<div style="float: right;align-self: center;">
 					<el-button type="danger" @click="articleCheck">
 						{{btnCaption}}
 					</el-button>
 				</div>
+                <div style='width: 100%;height: 8px;border-bottom: 1px solid #EAEDF7;clear: both;'></div>
 			</el-row>
 			<el-row :gutter="20" style="display: inline-flex;">
 				<el-col :xs="16" :sm="16" :md="16" :lg="18" :xl="24">
-					<div class="grid-content bg-purple" style="align-items: center;margin: 5px 0px;display: flex;">
+					<div class="grid-content bg-purple" style="align-items: center;margin: 0px 0px;display: flex;">
 						<div class="bd3 flex-col"></div>
-						<h3>基本信息</h3>
+						<h3 style='color: #3C4556;    margin-left: 6px;font-size: 16px!important;'>基本信息</h3>
 					</div>
-					<div class="grid-content bg-purple"
-						style="width: 100%; display: flex;align-items: center;margin: 5px 0px;">
-						<div style="width:auto;align-self: center;text-align: center;min-width: 50px;">
-							<h4>标题：</h4>
-						</div>
-						<el-col>
-							<el-input v-model="newsTitle" style="width: 100%;" maxlength="100" show-word-limit
-								clearable></el-input>
-						</el-col>
-					</div>
+                    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="60px" class="demo-ruleForm">
+                        <el-form-item label="标题：" prop="name">
+                            <el-input v-model="newsTitle"></el-input>
+                        </el-form-item>
+
+<!--					<div class="grid-content bg-purple"-->
+<!--						style="width: 100%; display: flex;align-items: center;margin: 5px 0px;">-->
+<!--						<div style="width:auto;align-self: center;text-align: center;min-width: 50px;">-->
+<!--							<h4>标题：</h4>-->
+<!--						</div>-->
+<!--						<el-col>-->
+<!--							<el-input v-model="newsTitle" style="width: 100%;" maxlength="100" show-word-limit-->
+<!--								clearable></el-input>-->
+<!--						</el-col>-->
+<!--					</div>-->
 					<div class="grid-content bg-purple"
 						style="width: 100%;display: flex;align-items: center;margin: 5px 0px;">
 						<div style="width: 50%;display: inline-flex;align-items: center;">
@@ -57,15 +63,16 @@
 							</quill-editor>
 						</el-col>
 					</div>
+                    </el-form>
 				</el-col>
 				<el-col :xs="8" :sm="8" :md="8" :lg="9" :xl="8">
 					<div class="grid-content bg-purple">
 						<el-scrollbar style="width: 100%;height: auto;">
 							<div class="grid-content bg-purple">
 								<div class="grid-content bg-purple"
-									style="align-items: center;margin: 5px 0px;display: flex;">
+									style="align-items: center;margin: 0px 0px;display: flex;">
 									<div class="bd3 flex-col"></div>
-									<h4>情绪标签：</h4>
+									<h4 style='    margin-left: 6px;font-size: 16px!important;'>情绪标签：</h4>
 								</div>
 								<div v-for="i in moodList" :key="i.id" style="display: inline-flex;">
 									<template>
@@ -90,7 +97,7 @@
 									<el-row type="flex" :span="24">
 										<el-col style="display:flex;align-items: center;">
 											<div class="bd3 flex-col"></div>
-											<h4>推荐标签：</h4>
+											<h4 style='    margin-left: 6px;font-size: 16px!important;'>推荐标签：</h4>
 										</el-col>
 										<el-col>
 											<el-button type="text" size="medium" style="float: right;color: #20A0FF;"
@@ -131,7 +138,7 @@
 								<div class="grid-content bg-purple"
 									style="align-items: center;margin: 5px 0px;display: flex;">
 									<div class="bd3 flex-col"></div>
-									<h4>栏目标签：</h4>
+									<h4 style='    margin-left: 6px;font-size: 16px!important;'>栏目标签：</h4>
 								</div>
 								<div style="margin: 10px 0 10px 0;display: inline-block;">
 									<el-tag v-for="c in colList" :key="c.id" size="small"
@@ -150,7 +157,7 @@
 					<div class="grid-content bg-purple">
 						<div class="grid-content bg-purple" style="align-items: center;margin: 5px 0px;display: flex;">
 							<div class="bd3 flex-col"></div>
-							<h4>不通过理由：</h4>
+							<h4 style='    margin-left: 6px;font-size: 16px!important;'>不通过理由：</h4>
 						</div>
 						<div v-for="i in unPassList" :key="i.id" style="display: inline-flex;">
 							<template>
@@ -703,6 +710,12 @@
 </script>
 
 <style>
+body{
+    color:#3C4556 ;
+}
+h4{
+    font-size: 12px!important;
+}
 	.el-row {
 		margin-bottom: 20px;
 
