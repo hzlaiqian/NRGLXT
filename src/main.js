@@ -7,6 +7,9 @@ import './assets/css/icon.css';
 import './components/directives';
 import 'babel-polyfill';
 import store from './store'
+import clipboard from 'clipboard';
+import moment from "moment";
+
 
 import * as echarts from 'echarts/core'
 
@@ -54,6 +57,8 @@ Vue.use(ElementUI, {
 	size: 'small'
 });
 Vue.prototype.$echarts = echarts
+Vue.prototype.clipboard = clipboard;
+Vue.prototype.$moment= moment;
 //使用钩子函数对路由进行权限跳转
 // router.beforeEach((to, from, next) => {
 // 	document.title = `${to.meta.title}`;
