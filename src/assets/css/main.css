@@ -284,11 +284,11 @@ a {
     color: #2A79EE !important;
 
 }
-.dialog .el-dialog__header {
+ .el-dialog__header {
     border-bottom: 1px solid #EAEDF7;
 }
 
-.dialog .el-dialog__footer {
+ .el-dialog__footer {
     border-top: 1px solid #EAEDF7;
     padding: 20px;
 }
@@ -299,3 +299,12 @@ a {
     padding-top: 0 ;
 }
 
+.el-dialog__footer .cancel {
+    background: #FFFFFF;
+    border-radius: 2px;
+    border: 1px solid #2A79EE;
+    color: #2A79EE;
+}
+.el-dialog__header {
+    border-bottom: 1px solid #EAEDF7;;
+}
