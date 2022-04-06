@@ -13,7 +13,7 @@
                 </div>
                 <div class="TR">
                   <div class="img">
-                    <img :src="item.imgUrl" alt="">
+                    <img :src="item.picUrl" alt="">
                   </div>
                 </div>
               </div>
@@ -439,7 +439,7 @@ export default {
       editFocusImageShow: false,
       heights: '',
       tableHeight: '',
-      activeName: 'second',
+      activeName: 'first',
       importantNews: [
 
       ],
@@ -847,7 +847,7 @@ export default {
           justify-content: space-between;
 
           .TL {
-            width: 255px;
+            width: 210px;
 
             .title {
               color: #2F343D;
@@ -874,7 +874,7 @@ export default {
 
           .TR {
             .img {
-              width: 82px;
+              width: 100px;
               height: 68px;
 
               img {

@@ -106,7 +106,7 @@
         userGrout: [],
         tableData: [],
         currentPage:1,
-        tablePageSize:5,
+        tablePageSize:10,
         params:{
           title:null,
           startTime:null,
@@ -114,9 +114,9 @@
           userName:null,
           groupId:null,
           page:1,
-          size:5
+          size:10
         },
-        total:5
+        total:10
       }
     },
     mounted() {

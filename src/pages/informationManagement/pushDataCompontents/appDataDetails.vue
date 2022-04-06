@@ -106,7 +106,7 @@
         userGrout: [],
         tableData: [],
         currentPage:1,
-        tablePageSize:5,
+        tablePageSize:10,
         total:null,
         params:{
           title:null,
