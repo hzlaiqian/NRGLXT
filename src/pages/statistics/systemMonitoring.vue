@@ -69,7 +69,7 @@
                 </div>
                 <div class='mt-20 ml-20 text'>积压（条）</div>
             </div>
-            <div id='echarts2' style='margin-bottom: 100px'></div>
+            <div id='echarts2'></div>
         </div>
 
         <el-dialog
@@ -146,7 +146,7 @@ export default {
 .system-monitoring {
     width: 100%;
     height: 100%;
-
+    overflow-y: auto;
     .system-monitoring-top {
         height: 550px;
         width: 100%;
@@ -202,8 +202,7 @@ export default {
     .system-monitoring-bottom {
         background-color: #fff;
         width: 100%;
-        height: calc(100% - 560px);
-        overflow-y: auto;
+
 
         .monitoring-bottom-header {
             height: 50px;

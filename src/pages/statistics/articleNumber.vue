@@ -46,21 +46,22 @@
                     <img style='width: 22px;height: 21px' src='../../assets/img/mark.png'>
                 </div>
                 <h3 class='ml-5'>本周数据</h3>
+                <div class='query-time ml-20'>
+                    <el-date-picker
+                        style='width: 230px'
+                        v-model='query.time'
+                        type='daterange'
+                        align='right'
+                        unlink-panels
+                        range-separator='~'
+                        start-placeholder='开始日期'
+                        end-placeholder='结束日期'
+                        :default-time='defaultTime'
+                        :picker-options='pickerOptions'>
+                    </el-date-picker>
+                </div>
             </div>
-            <div class='query-time ml-20'>
-                <el-date-picker
-                    style='width: 230px'
-                    v-model='query.time'
-                    type='daterange'
-                    align='right'
-                    unlink-panels
-                    range-separator='~'
-                    start-placeholder='开始日期'
-                    end-placeholder='结束日期'
-                    :default-time='defaultTime'
-                    :picker-options='pickerOptions'>
-                </el-date-picker>
-            </div>
+
             <div style='padding: 0 20px' class='box-sizing mt-20'>
                 <el-row style='width: 100%' type='flex' justify='space-between'>
                     <el-col class='echarts-content'>
@@ -174,7 +175,7 @@ export default {
 .article-number {
     width: 100%;
     height: 100%;
-
+    overflow-y: auto;
 
     .article-number-header {
         height: 50px;
@@ -236,15 +237,15 @@ export default {
 
     .echarts-box {
         background-color: #fff;
-        height: calc(100% - 224px);
-        overflow-y: auto;
+        //height: 700px;
+
         .echarts-box-header {
             height: 50px;
             border-bottom: 1px solid #EAEDF7;
         }
 
         .query-time {
-            margin-top: 16px;
+
         }
 
         .echarts-content {

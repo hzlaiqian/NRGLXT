@@ -76,13 +76,13 @@ export default {
                 }, {
                     icon: 'el-icon-s-data',
                     index: 'statistics',
-                    title: '数据报表及监控',
+                    title: '数据&监控',
                     subs: [{
                         index: '/statistics',
-                        title: '今日数据'
+                        title: '内容数据'
                     },{
                         index: '/systemMonitoring',
-                        title: '监控'
+                        title: '系统监控'
                     }],
                 },
                 {

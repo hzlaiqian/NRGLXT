@@ -68,54 +68,58 @@ const contentDistributionOption = {
     },
     color: color,
     gradientColor: color,
-    legend: legend,
-    //     {
-    //     left: 'center',
-    //     top: 'bottom',
-    //     itemHeight: 4,
-    //     data: [
-    //         '接入量',
-    //         '审核量',
-    //         '通过量',
-    //         '打标量',
-    //         '个股资讯量'
-    //     ]
-    // },
+    legend:
+        {
+        left: 'center',
+        top: 'bottom',
+        itemHeight: 4,
+        data: [
+            '接入量',
+            '审核量',
+            '通过量',
+            '打标量',
+            '个股资讯量'
+        ]
+    },
+    tooltip: {
+        show: true
+    },
     series: [
         {
             data: [150, 230, 224, 218, 135, 147, 260],
             type: 'line',
+            stack: 'Total',
             smooth: true,
             name: '接入量',
-            showSymbol: false
+
         },
         {
             data: [180, 290, 294, 298, 195, 197, 200],
             type: 'line',
             smooth: true,
             name: '审核量',
-            showSymbol: false
+
         },
         {
             data: [180, 290, 294, 98, 195, 197, 200],
             type: 'line',
             smooth: true,
             name: '通过量',
-            showSymbol: false
+
         },
         {
             data: [180, 290, 294, 298, 195, 17, 200],
             type: 'line',
             smooth: true,
             name: '打标量',
-            showSymbol: false
+
         },
         {
             data: [180, 290, 294, 298, 195, 197, 20],
             type: 'line',
             smooth: true,
             name: '个股资讯量',
-            showSymbol: false
+
         }
     ]
 };
@@ -139,7 +143,7 @@ const processingOption = {
         {
             indicator: [{
                 text: '分发量',
-                max: 3000
+                max: 2500
             }, {
                 text: '通过量',
                 max: 3000,
@@ -180,7 +184,7 @@ const processingOption = {
             data: [
                 {
                     value: [600, 730, 850, 400, 500, 290],
-                    name: '本周数据'
+                    name: '日均数据'
                 }
             ]
         },
@@ -193,7 +197,7 @@ const processingOption = {
             data: [
                 {
                     value: [1000, 1130, 1850, 1400, 1500, 1290],
-                    name: '上周数据'
+                    name: '标准数据'
                 }
             ]
         }
