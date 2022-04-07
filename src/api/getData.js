@@ -278,3 +278,264 @@ export const getAuditLabelList = data => post('/label/getLabelList', data)
 export const delAuditLabel = data => post('/label/delLabel', data)
 // 根据pid查询标签
 export const getAuditLabelListByPID = data => post('/label/getLabelListByPID', data)
+
+
+//===================================    YanM   ==========================================================
+
+/**
+ * 推送标准配置读取
+ */
+
+export const getCommon = data => get('/pushConfig/getCommon', data)
+
+
+/**
+ * 推送标准配置存储
+ */
+
+export const savaCommon = data => post('/pushConfig/savaCommon', data)
+/**
+ * 新增内容推送
+ */
+
+export const pushAdd = data => post('/push/add', data)
+
+/**
+ * 编辑内容推送
+ */
+
+export const getPushByID = data => post('/push/getPushByID', data)
+/**
+ * 推送详情查看
+ */
+
+export const getProcessByID = data => post('/pushAction/getProcessByID', data)
+
+/**
+ * 推送详情查看
+ */
+
+export const getProcessByID2 = data => get('/push/getProcessByID', data)
+
+/**
+ * 推送后台列表
+ */
+
+export const getPushList = data => post('/push/getPushList', data)
+
+/**
+ * 推送数据报表(app推送或app弹窗推送详细数据)
+ */
+export const getCount = data => post('/push/getCount', data)
+/**
+ *  推送数据报表(短信推送详细数据)
+ */
+export const getCountByMsg = data => post('/push/getCountByMsg', data)
+/**
+ * 推送列表统计
+ */
+export const getPushCount = data => get('/push/getPushCount', data)
+
+
+/**
+ * 精推策略配置清单
+ */
+export const getStrategyList = data => get('/precise/getPreciseList', data)
+/**
+ * 精推策略配置清单
+ */
+export const getRuleByID = data => get('/push/getRuleByID', data)
+/**
+ * 推送效果数据-日均打开率
+ */
+export const getClickRate = data => post('/precise/getOpenRate', data)
+/**
+ * 推送效果数据-人均停留时间
+ */
+export const getKeepRate = data => post('/precise/getKeepRate', data)
+/**
+ * 获取推送审核页面详情-H5
+ */
+export const checkPushH5 = data => get('/push/getCheckPush', data)
+/**
+ * 提交推送审核-H5
+ */
+export const submitPushH5 = data => post('/push/saveCheckPush', data)
+/**
+ * 用户组列表
+ */
+export const getPushUserList = data => get('/push/getPushUserList', data)
+
+/**
+ * 精准推送配置 规则标签分类
+ */
+
+export const getRootList = data => get('/idea/getRootList', data)
+/**
+ * 精准推送配置 规则标签
+ */
+
+export const getListByRootIdeaID = data => post('/concept/getListByRootIdeaID', data)
+/**
+ * 精推策略配置 根据策略查询规则
+
+ */
+
+export const getPreciseByID = data => post('/precise/getPreciseByID', data)
+/**
+ * 精推策略配置  保存配置
+ */
+
+export const savePrecise = data => post('/precise/save', data)
+/**
+ * 精准策略配置 新增
+
+ */
+
+export const addPrecise = data => post('/precise/add', data)
+/**
+ * 精准策略配置 删除
+
+ */
+
+export const deleteByID = data => post('/precise/deleteByID', data)
+
+/**
+ * 根据URL提取文章信息
+
+ */
+
+export const getCheckByUrl = data => post('/push/getCheckByUrl', data)
+
+/**
+ * 删除推送内容
+
+
+ */
+
+export const deleteByIDPush = data => post('/push/deleteByID', data)
+
+/**
+ * 全部推送页面顶部数据
+ */
+
+export const allPushDataTop = data => get('/pushStat/allPushStat/top', data)
+
+/**
+ * 历史推送数据总量折线图
+ */
+
+export const allHisLineData = data => get('/pushStat/allPushStat/total', data)
+
+/**
+ * 历史推送用户分布折线图
+ */
+
+export const userHisLineData = data => get('/pushStat/allPushStat/user', data)
+
+/**
+ * 历史点击用户折线图
+ */
+
+export const clickHisLineData = data => get('/pushStat/allPushStat/userClick', data)
+
+/**
+ * app推送顶部数据
+ */
+
+export const getAppPushTopData = data => get('/pushStat/appPushStat/top', data)
+
+/**
+ * app推送统计历史推送量和历史点击率
+ */
+
+export const getHisAndClick = data => get('/pushStat/appPushStat/countAndRate', data)
+
+/**
+ * app推送统计 历史推送用户数和点击数
+ */
+
+export const getHisUserAndClick = data => get('/pushStat/appPushStat/userCountAndRate', data)
+
+/**
+ * app推送统计 历史热点推送点击率和固定推送点击率
+ */
+
+export const getHotClickAndGu = data => get('/pushStat/appPushStat/pushType', data)
+
+/**
+ * app推送统计 用户组区分
+ */
+
+export const getUserGroup = data => get('/pushStat/appPushStat/userGroup', data)
+
+/**
+ * 短信推送顶部数据
+ */
+
+export const getMsgTopData = data => get('/pushStat//smsPushStat/top', data)
+
+/**
+ * 短信推送图表数据
+ */
+
+
+export const getMsgPushData = data => get(' /pushStat//smsPushStat/data', data)
+
+/**
+ * 根据url查询文章信息
+ *
+ */
+
+export const queryArticle = data => post('/article/queryArticle', data)
+/**
+ *
+ * 上传文件接口,传入filename,uploadType传入1
+ */
+export const uploadfile = data => post('/media/uploadfile', data)
+
+/**
+ *
+ * 增加运营信息
+ */
+export const addOperateInfo = data => post('/operate/addOperateInfo', data)
+
+
+/**
+ *
+ * 查询文章信息带分页
+ */
+export const queryRecom = data => post('/article/queryRecom', data)
+/**
+ *
+ * 删除运营信息,只需传入checkId
+ */
+export const delOperate = data => post('/operate/delOperate', data)
+/**
+ *
+ * 查询焦点或者要闻图,只需要传type即可
+ */
+export const queryFocusNews = data => post('/operate/queryFocusNews', data)
+
+
+/**
+ *
+ * 修改,删除焦点或者要闻图
+ */
+export const changeFocusNews = data => post('/operate/changeFocusNews', data)
+
+
+/**
+ * app推送，app弹窗推送表格获取
+ */
+
+export const getAppOrBoxTable = data => post('/operate/queryClickRate', data)
+
+/**
+ * 短信推送表格获取
+ */
+
+export const getMsgTable = data => post('/operate/queryUnsubscribeRate', data)
+
+
+//===================================    YanM   ==========================================================

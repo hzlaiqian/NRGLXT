@@ -62,7 +62,29 @@ export default {
                         index: 'formalCheck',
                         title: '正式库'
                     }]
-                }, {
+                },
+                {
+                    icon: 'el-icon-lx-cascades',
+                    index: 'Config',
+                    title: '咨讯管理',
+                    subs: [{
+                        index: 'pushStandardConfig',
+                        title: '推送标准配置'
+                    }, {
+                        index: 'finePushStandardConfig',
+                        title: '精推策略配置'
+                    }, {
+                        index: 'pushBackground',
+                        title: '推送后台'
+                    }, {
+                        index: 'pushDataReport',
+                        title: '推送数据报表'
+                    }, {
+                        index: 'moreSceneOperation',
+                        title: '多场景运营'
+                    }]
+                },
+                {
                     icon: 'el-icon-document-copy',
                     index: 'informationConfiguration',
                     title: '资讯配置',

@@ -183,6 +183,62 @@ export default new Router({
 						title: '角色管理'
 					}
 				},
+				{
+					path: '/pushStandardConfig',
+					component: () => import('../pages/informationManagement/pushStandardConfig.vue'),
+					meta: {
+						title: '推送标准配置'
+					}
+				},
+				{
+					path: '/finePushStandardConfig',
+					component: () => import('../pages/informationManagement/finePushStandardConfig.vue'),
+					meta: {
+						title: '精推策略配置'
+					}
+				},
+				{
+					path: '/pushBackground',
+					component: () => import('../pages/informationManagement/pushBackground.vue'),
+					meta: {
+						title: '推送后台'
+					}
+				},
+				{
+					path: '/pushDataReport',
+					component: () => import('../pages/informationManagement/pushDataReport.vue'),
+					meta: {
+						title: '推送数据报表'
+					}
+				},
+				{
+					path: '/appDataDetails',
+					component: () => import('../pages/informationManagement/pushDataCompontents/appDataDetails.vue'),
+					meta: {
+						title: 'app推送详情'
+					}
+				},
+				{
+					path: '/appAndMessageDataDetails',
+					component: () => import('../pages/informationManagement/pushDataCompontents/appAndMessageDataDetails.vue'),
+					meta: {
+						title: 'app弹窗推送详情'
+					}
+				},
+				{
+					path: '/messageDataDetails',
+					component: () => import('../pages/informationManagement/pushDataCompontents/messageDataDetails.vue'),
+					meta: {
+						title: '短信推送详情'
+					}
+				},
+				{
+					path: '/moreSceneOperation',
+					component: () => import('../pages/moreSceneOperation/moreSceneOperationHome.vue'),
+					meta: {
+						title: '多场景运营'
+					}
+				},
 			]
 		},
 		{
@@ -190,6 +246,13 @@ export default new Router({
 			component: () => import('../pages/Login.vue'),
 			meta: {
 				title: '登录'
+			}
+		},
+		{
+			path: '/checkThePushH5',
+			component: () => import('../pages/checkThePushH5.vue'),
+			meta: {
+				title: 'checkThePushH5'
 			}
 		},
 		{
